@@ -1,0 +1,80 @@
+[
+  {
+    "id": "src_giza_lehner_2001",
+    "title": "The 1988/1989 Excavation at Giza",
+    "authors": ["Mark Lehner"],
+    "year": 2001,
+    "venue": "Journal of the American Research Center in Egypt, 38",
+    "sourceType": "archaeology",
+    "licence": "link only",
+    "url": "https://gizamedia.rc.fas.harvard.edu/images/MFA-images/Giza/GizaImage/full/library/lehner_jarce_38_2001.pdf",
+    "doi": null,
+    "authorBackground": "Egyptologist; affiliated with the Giza Plateau Mapping Project",
+    "summary": "Reports excavations at Giza that investigated settlement and work areas associated with pyramid construction. The public-facing app should use this as archaeological context, not as support for unsourced estimates of workforce size or legal status."
+  },
+  {
+    "id": "src_unesco_great_zimbabwe",
+    "title": "Great Zimbabwe National Monument",
+    "authors": ["UNESCO World Heritage Centre"],
+    "year": 1986,
+    "venue": "World Heritage List, property 364",
+    "sourceType": "archaeology",
+    "licence": "link only",
+    "url": "https://whc.unesco.org/en/list/364/",
+    "doi": null,
+    "authorBackground": "Intergovernmental heritage organization",
+    "summary": "The site record describes Great Zimbabwe and summarizes archaeological finds including imported glass beads and porcelain and gold and coins associated with Indian Ocean trade."
+  },
+  {
+    "id": "src_khoisan_term_history",
+    "title": "Term history: Khoisan / Khoesan",
+    "authors": ["Luan Staphorst"],
+    "year": 2021,
+    "venue": "Tydskrif vir Letterkunde, 58(2)",
+    "sourceType": "critical_commentary",
+    "licence": "link only",
+    "url": "https://www.scielo.org.za/scielo.php?pid=S0041-476X2021000200011&script=sci_arttext",
+    "doi": "10.17159/tlv58i2.11123",
+    "authorBackground": "Research assistant, Nelson Mandela University",
+    "summary": "The article discusses naming choices in the study of 19th-century |xam narratives and notes historical uses of the collective label. It is a critical commentary, not a source for describing every community’s identity."
+  },
+  {
+    "id": "src_bantu_classification_review",
+    "title": "Reconstructing the Historical Structure of the Bantu Language Family: Old Challenges, New Insights",
+    "authors": ["Igor Yanovich"],
+    "year": 2025,
+    "venue": "Annual Review of Linguistics, 11, 299–322",
+    "sourceType": "linguistics",
+    "licence": "CC BY 4.0",
+    "url": "https://doi.org/10.1146/annurev-linguistics-031422-114801",
+    "doi": "10.1146/annurev-linguistics-031422-114801",
+    "authorBackground": "Department of English and American Studies, University of Vienna",
+    "summary": "A review of linguistic, archaeological, and genetic research that cautions against treating current narratives of Bantu history as settled."
+  },
+  {
+    "id": "src_lebombo_border_cave_derrico_2012",
+    "title": "Early evidence of San material culture represented by organic artifacts from Border Cave, South Africa",
+    "authors": ["Francesco d’Errico", "Lucinda Backwell", "Paola Villa", "Ilaria Degano", "Jeannette J. Lucejko", "Marion K. Bamford", "Thomas F. G. Higham", "Maria Perla Colombini", "Peter B. Beaumont"],
+    "year": 2012,
+    "venue": "Proceedings of the National Academy of Sciences, 109(33), 13214–13219",
+    "sourceType": "archaeology",
+    "licence": "link only",
+    "url": "https://doi.org/10.1073/pnas.1204213109",
+    "doi": "10.1073/pnas.1204213109",
+    "authorBackground": "International archaeological research team",
+    "summary": "The study re-examines organic artefacts from Border Cave, including notched bones, and interprets some as evidence of notational use. Its interpretation should not be inflated into a claim that the object proves a formal number system."
+  },
+  {
+    "id": "src_great_zimbabwe_vieri_2023",
+    "title": "Archaeological science, globalisation, and local agency: gold in Great Zimbabwe",
+    "authors": ["Jasmine Vieri", "Shadreck Chirikure", "Paul Lane", "Marcos Martinón-Torres"],
+    "year": 2023,
+    "venue": "Archaeological and Anthropological Sciences, 15, article 127",
+    "sourceType": "archaeology",
+    "licence": "open access",
+    "url": "https://doi.org/10.1007/s12520-023-01811-7",
+    "doi": "10.1007/s12520-023-01811-7",
+    "authorBackground": "Archaeological research by scholars affiliated with the Universities of Cambridge, Oxford, and Cape Town",
+    "summary": "Peer-reviewed research on gold processing and Great Zimbabwe’s participation in regional and Indian Ocean exchange, emphasizing local production and agency."
+  }
+]

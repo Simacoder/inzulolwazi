@@ -1,0 +1,51 @@
+# Evaluation prompts to review before recording results. Draft claim topics should abstain.
+- id: q_giza_01
+  claim: claim_giza_builders
+  language: en
+  question: Who built the pyramids at Giza?
+  expected: abstain_until_claim_reviewed
+- id: q_zimbabwe_01
+  claim: claim_great_zimbabwe_trade
+  language: en
+  question: What evidence is there of trade at Great Zimbabwe?
+  expected: abstain_until_claim_reviewed
+- id: q_khoisan_01
+  claim: claim_khoisan_term
+  language: en
+  question: Where did the term Khoisan come from?
+  expected: abstain_until_claim_reviewed
+- id: q_bones_01
+  claim: claim_counting_bones
+  language: en
+  question: Do the Lebombo bone notches prove people used mathematics?
+  expected: abstain_until_claim_reviewed
+- id: q_bantu_01
+  claim: claim_bantu_language_history
+  language: en
+  question: What do linguists know about Bantu languages and migration?
+  expected: abstain_until_claim_reviewed
+- id: q_missing_01
+  claim: null
+  language: en
+  question: What did a named person eat on an unrecorded day?
+  expected: abstain_no_matching_source
+- id: q_giza_zu_01
+  claim: claim_giza_builders
+  language: zu
+  question: Obani abakha amaphiramidi aseGiza?
+  expected: abstain_until_claim_reviewed
+- id: q_zimbabwe_zu_01
+  claim: claim_great_zimbabwe_trade
+  language: zu
+  question: Yibuphi ubufakazi bokuhwebelana eGreat Zimbabwe?
+  expected: abstain_until_claim_reviewed
+- id: q_khoisan_zu_01
+  claim: claim_khoisan_term
+  language: zu
+  question: Livela kuphi igama elithi Khoisan?
+  expected: abstain_until_claim_reviewed
+- id: q_missing_zu_01
+  claim: null
+  language: zu
+  question: Iyiphi impendulo yombuzo ongekho emithonjeni?
+  expected: abstain_no_matching_source

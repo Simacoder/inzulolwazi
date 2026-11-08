@@ -1,0 +1,11 @@
+{
+  "name": "inzulolwazi",
+  "version": "0.1.0",
+  "private": true,
+  "description": "African history, told by Africans, with the evidence shown.",
+  "scripts": {
+    "dev": "node backend/server.mjs",
+    "start": "node backend/server.mjs",
+    "validate:content": "node backend/validate/content.mjs"
+  }
+}
