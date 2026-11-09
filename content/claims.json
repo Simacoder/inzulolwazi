@@ -27,14 +27,18 @@
       "en": "Starter framing from the design brief. Source review and community-sensitive editorial review are required."
     },
     "sourceIds": [
-      "src_khoisan_term_history"
+      "src_khoisan_term_history",
+      "src_hadebe_colonial_race_2025"
     ],
     "reviewers": [],
     "translation": {
       "zu": "Umbhalo osalungiswa: cwaninga ukuthi igama elihlanganisayo elithi ‘Khoisan’ lakhiwa futhi lasetshenziswa kanjani; ungalisebenzisi njengokungathi lichaza ubuwena obubodwa bemiphakathi ehlukene.",
       "method": "machine",
       "reviewedBy": null
-    }
+    },
+    "termNotes": [
+      "The sources here disagree on how to read 'Khoisan'. Staphorst (2021) discusses the naming choices scholars made when they studied nineteenth-century |xam narratives, and notes the collective label's historical uses. Hadebe (2025), an opinion column, argues the label belongs to colonial classification and that a 'First Nation' identity built on it risks reviving colonial divisions. Neither is a source for how any community names itself, so listen to those communities first."
+    ]
   },
   {
     "id": "claim_giza_builders",
