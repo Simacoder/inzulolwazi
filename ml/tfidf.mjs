@@ -1,5 +1,5 @@
 const STOP_WORDS = new Set([
-  'about', 'after', 'along', 'also', 'and', 'are', 'at', 'by', 'can', 'did', 'do', 'for', 'from', 'have',
+  'about', 'after', 'along', 'also', 'an', 'and', 'are', 'at', 'by', 'can', 'did', 'do', 'for', 'from', 'have',
   'how', 'in', 'is', 'it', 'of', 'on', 'or', 'the', 'their', 'there', 'this', 'to', 'was', 'were', 'what',
   'when', 'where', 'which', 'who', 'why', 'with', 'yet', 'yini', 'yibuphi', 'ukuthi', 'kakhulu', 'lapho', 'uma',
   'ngoba', 'futhi', 'kanye', 'abantu', 'bona', 'ingabe', 'kanjani', 'kuphi', 'ngani', 'leyo', 'lesi',

@@ -5,7 +5,7 @@ Rules for any coding agent working in this repo. Read this first. App name: `inz
 ## What this project is
 `inzulolwazi` helps people discover African history told by Africans, with the evidence shown. Users ask a question or search a topic and get an answer drawn only from a curated, citable corpus. Every claim carries a grade and its evidence types. Answers can be read in English or machine-translated into isiZulu. The hackathon track is Discovery & Audience, with Truth, Authorship & Ownership as a secondary angle.
 
-This is a proof of concept for 5 claims, not a production system. Do not build features that are not in `docs/architecture.md`.
+This is a proof of concept for 6 topics (the 5 in the design brief plus African-centred history, added by the project owner), not a production system. Do not build features that are not in `docs/architecture.md`.
 
 ## Commands
 Keep these current. Node.js 22 was used to run the checks.

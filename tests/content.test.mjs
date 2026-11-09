@@ -12,9 +12,9 @@ test('repo content has no validation errors', async () => {
   assert.deepEqual(errors, []);
 });
 
-test('the PoC holds five starter topics', async () => {
+test('the PoC holds six starter topics', async () => {
   const { claims } = await loadCorpus();
-  assert.equal(claims.length, 5);
+  assert.equal(claims.length, 6);
 });
 
 test('every draft claim is unpublished and has no reviewer yet, or is complete', async () => {

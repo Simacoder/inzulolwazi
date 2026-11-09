@@ -132,8 +132,7 @@ test('claims list rejects bad parameters', async () => {
 });
 
 test('a claim carries its sources, labelled translation and readiness checklist', async () => {
-  const { json: list } = await api('/api/v1/claims');
-  const id = list.items[0].id;
+  const id = 'claim_khoisan_term';
   const { response, json } = await api(`/api/v1/claims/${id}`);
   assert.equal(response.status, 200);
   assert.equal(json.id, id);

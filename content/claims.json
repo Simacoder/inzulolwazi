@@ -191,5 +191,39 @@
       "method": "machine",
       "reviewedBy": null
     }
+  },
+  {
+    "id": "claim_african_centred_history",
+    "topic": "African-centred history (Chancellor Williams)",
+    "keywords": [
+      "williams",
+      "chancellor",
+      "destruction",
+      "civilization",
+      "civilisation",
+      "african-centred",
+      "afrocentric"
+    ],
+    "keywordsZu": [
+      "abansundu",
+      "imvelaphi"
+    ],
+    "status": "draft",
+    "grade": "draft",
+    "statement": {
+      "en": "Research draft: present Chancellor Williams's book as an African-centred interpretation of Black Africa's past, attribute each point to him, and read it beside archaeological, linguistic and genetic evidence."
+    },
+    "rationale": {
+      "en": "Added because this perspective is central to the project. The book is recorded as critical commentary, not primary evidence. Any specific claim taken from it needs a page reference, a second source, and reviewer sign-off before it can be published."
+    },
+    "sourceIds": [
+      "src_williams_destruction_1987"
+    ],
+    "reviewers": [],
+    "translation": {
+      "zu": "Umbhalo osalungiswa: nikeza incwadi ka-Chancellor Williams njengencazelo egxile e-Afrika yesikhathi esedlule sabantu abansundu base-Afrika, uyibhekise kuye ngamunye umbono, futhi uyifunde eduze kobufakazi bokuvubukula, bezilimi nobofuzo.",
+      "method": "machine",
+      "reviewedBy": null
+    }
   }
 ]

@@ -14,6 +14,6 @@ Report by language and by claim. Do not combine language scores into an overall 
 
 ## Current limitations
 
-The app uses deterministic TF-IDF retrieval over local JSON. It returns only published claims with at least two distinct sources and reviewer sign-off. All five starter topics are drafts, so the app abstains on them. There is no answer generation, translation model, or reviewer workflow yet.
+The app uses deterministic TF-IDF retrieval over local JSON. It returns only published claims with at least two distinct sources and reviewer sign-off. All six starter topics are drafts, so the app abstains on them. There is no answer generation, translation model, or reviewer workflow yet.
 
 Retrieval is not yet a relevance gate. Generic words such as "history", "people" and "language" can retrieve an unrelated claim (see the known issues in `eval/questions.yaml`). Once a claim is published, such a question would return a wrong cited answer, so fix retrieval before publishing anything.
