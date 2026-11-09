@@ -8,9 +8,10 @@ The visual palette is Arid Mirage: twilight blue `#1A365D`, desert sand `#E2D4C9
 
 ## Run
 
-Requires Node.js 20 or newer. There are no third-party dependencies.
+The app has no runtime dependencies. The checks were run on Node.js 22.
 
 ```sh
+npm install   # dev dependencies only, needed for lint, type check and eval
 npm run dev
 ```
 
@@ -18,13 +19,26 @@ Then open http://localhost:3000.
 
 ## Current commands
 
-- Install: no dependencies
+- Install: `npm install`
 - Run dev server: `npm run dev`
-- Lint: not configured
-- Type check: not configured
-- Tests: not configured
+- Lint: `npm run lint`
+- Type check: `npm run typecheck`
+- Tests: `npm test`
 - Validate content: `npm run validate:content`
-- Run evaluation: not configured
+- Run evaluation: `npm run eval`
+- Everything at once: `npm run check`
+
+## Development dependencies
+
+None of these ship with the app. Each was added for one job (AGENTS.md rule 23):
+
+- `eslint`, `@eslint/js`, `globals`: linting.
+- `typescript`, `@types/node`: type checking the JavaScript through its JSDoc types (`npm run typecheck`).
+- `yaml`: reading `eval/questions.yaml`.
+
+## Evaluation
+
+`npm run eval` runs the questions in `eval/questions.yaml` against the pipeline and writes `eval/results/latest.md`. Results are reported per language and per claim and are never averaged across languages. While no claim is published, groundedness and citation accuracy are reported as "not measured", not as a score. `eval/results/translation-review.csv` is a sheet for a fluent isiZulu reviewer. Three questions are listed as known issues, where retrieval matches generic words such as "history" or "people". Fix these before publishing any claim.
 
 ## Content status
 

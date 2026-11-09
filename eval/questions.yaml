@@ -1,4 +1,14 @@
-# Evaluation prompts to review before recording results. Draft claim topics should abstain.
+# Evaluation prompts. Run with `npm run eval`.
+#
+# expected:
+#   abstain_until_claim_reviewed  the claim is retrieved but withheld, because it is a draft
+#   abstain_no_matching_source    nothing in the corpus matches, and the app says so
+#   answer                        a published claim is used, with a valid citation on every sentence
+#
+# known_issue: a question that currently fails. It is reported as a known issue and does not
+# fail the run. Remove the note when the question passes.
+#
+# isiZulu questions must be written or checked by a fluent speaker before results are reported.
 - id: q_giza_01
   claim: claim_giza_builders
   language: en
@@ -49,3 +59,36 @@
   language: zu
   question: Iyiphi impendulo yombuzo ongekho emithonjeni?
   expected: abstain_no_matching_source
+- id: q_offtopic_01
+  claim: null
+  language: en
+  question: What is the capital of France?
+  expected: abstain_no_matching_source
+- id: q_offtopic_02
+  claim: null
+  language: en
+  question: How do I bake bread?
+  expected: abstain_no_matching_source
+- id: q_vague_01
+  claim: null
+  language: en
+  question: What is the history of Africa?
+  expected: abstain_no_matching_source
+  known_issue: "Matches draft claims only on the word 'history' (scores 0.125 to 0.141, above the 0.08 threshold). Raise the threshold or require a distinctive keyword match, then tune on a larger set."
+- id: q_mismatch_01
+  claim: null
+  language: en
+  question: Who were the first people in southern Africa?
+  expected: abstain_no_matching_source
+  known_issue: "Retrieves the Giza claim (score 0.141) because the claim text contains the word 'people'. Once Giza is published this would produce a wrong cited answer."
+- id: q_generic_01
+  claim: null
+  language: en
+  question: What is a language?
+  expected: abstain_no_matching_source
+  known_issue: "Retrieves the Bantu claim (score 0.201) on the word 'language'. Same cause as q_mismatch_01."
+- id: q_giza_aliens_01
+  claim: claim_giza_builders
+  language: en
+  question: Were the pyramids built by aliens?
+  expected: abstain_until_claim_reviewed

@@ -8,16 +8,17 @@ Rules for any coding agent working in this repo. Read this first. App name: `inz
 This is a proof of concept for 5 claims, not a production system. Do not build features that are not in `docs/architecture.md`.
 
 ## Commands
-Fill these in as the tooling is chosen, and keep them current.
-- Install: `TODO`
-- Run dev server: `TODO`
-- Lint: `TODO`
-- Type check: `TODO`
-- Tests: `TODO`
-- Validate content (corpus, claims, translations): `TODO`
-- Run evaluation: `TODO`
+Keep these current. Node.js 22 was used to run the checks.
+- Install: `npm install` (dev dependencies only, the app has no runtime dependencies)
+- Run dev server: `npm run dev`
+- Lint: `npm run lint`
+- Type check: `npm run typecheck`
+- Tests: `npm test`
+- Validate content (corpus, claims, translations): `npm run validate:content`
+- Run evaluation: `npm run eval` (writes `eval/results/latest.md` and `eval/results/translation-review.csv`)
+- Everything at once: `npm run check`
 
-Run lint, tests, and content validation before declaring any task done.
+Run `npm run check` before declaring any task done.
 
 ## Non-negotiable rules
 
