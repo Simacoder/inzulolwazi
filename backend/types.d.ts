@@ -161,6 +161,7 @@ export interface ClaimView {
   newestSourceYear: number | null;
   reviewers: Reviewer[];
   contestedTerms: string[];
+  termNotes: string[];
   readiness: Readiness;
 }
 

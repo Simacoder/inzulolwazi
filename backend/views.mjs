@@ -156,6 +156,7 @@ export function claimView(claim, corpus) {
     newestSourceYear: sources.length ? Math.max(...sources.map((source) => source.year)) : null,
     reviewers: claim.reviewers,
     contestedTerms: contestedTermsIn(claim),
+    termNotes: claim.termNotes ?? [],
     readiness: readiness(claim, corpus),
   };
 }

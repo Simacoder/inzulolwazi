@@ -40,7 +40,7 @@ const schemas = {
     rationale: str('Why the claim is framed this way.'), sourceCount: int('Distinct sources cited.'),
     sourceTypes: { type: 'array', items: object({ type: { type: 'string', enum: SOURCE_TYPES }, label: str('Type label.'), count: int('Sources of this type.') }) },
     newestSourceYear: { type: ['integer', 'null'] }, reviewers: { type: 'array', items: object({ name: str('Name.'), date: str('Date of sign-off.') }, ['name', 'date']) },
-    contestedTerms: { type: 'array', items: { type: 'string' } }, readiness: ref('Readiness'),
+    contestedTerms: { type: 'array', items: { type: 'string' } }, termNotes: { type: 'array', items: { type: 'string' }, description: 'Term-history notes for contested labels.' }, readiness: ref('Readiness'),
   }),
   ClaimDetail: { allOf: [ref('Claim'), object({ sources: { type: 'array', items: ref('Source') } })] },
   SearchResult: object({

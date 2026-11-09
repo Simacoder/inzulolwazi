@@ -277,3 +277,18 @@ test('legacy routes still work next to v1', async () => {
   const search = await api('/api/search', { method: 'POST', body: JSON.stringify({ question: 'pyramids' }) });
   assert.equal(search.response.status, 200);
 });
+
+test('the Bantu topic carries its term-history note and two distinct sources, and the page shows the note', async () => {
+  const { json } = await api('/api/v1/claims/claim_bantu_language_history');
+  assert.ok(json.termNotes.length >= 1);
+  assert.equal(json.sources.length, 2);
+  assert.ok(json.readiness.checks.find((/** @type {any} */ c) => c.id === 'terms').done);
+  assert.ok(json.readiness.checks.find((/** @type {any} */ c) => c.id === 'sources').done);
+  assert.equal(json.status, 'draft');
+});
+
+test('Williams is recorded as critical commentary, never as primary evidence', async () => {
+  const { json } = await api('/api/v1/sources/src_williams_destruction_1987');
+  assert.equal(json.sourceType, 'critical_commentary');
+  assert.match(json.summary, /not primary evidence/i);
+});

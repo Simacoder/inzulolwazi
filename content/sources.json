@@ -2,7 +2,9 @@
   {
     "id": "src_giza_lehner_2001",
     "title": "The 1988/1989 Excavation at Giza",
-    "authors": ["Mark Lehner"],
+    "authors": [
+      "Mark Lehner"
+    ],
     "year": 2001,
     "venue": "Journal of the American Research Center in Egypt, 38",
     "sourceType": "archaeology",
@@ -15,7 +17,9 @@
   {
     "id": "src_unesco_great_zimbabwe",
     "title": "Great Zimbabwe National Monument",
-    "authors": ["UNESCO World Heritage Centre"],
+    "authors": [
+      "UNESCO World Heritage Centre"
+    ],
     "authorKind": "organization",
     "year": 1986,
     "venue": "World Heritage List, property 364",
@@ -29,7 +33,9 @@
   {
     "id": "src_khoisan_term_history",
     "title": "Term history: Khoisan / Khoesan",
-    "authors": ["Luan Staphorst"],
+    "authors": [
+      "Luan Staphorst"
+    ],
     "year": 2021,
     "venue": "Tydskrif vir Letterkunde, 58(2)",
     "sourceType": "critical_commentary",
@@ -42,7 +48,9 @@
   {
     "id": "src_bantu_classification_review",
     "title": "Reconstructing the Historical Structure of the Bantu Language Family: Old Challenges, New Insights",
-    "authors": ["Igor Yanovich"],
+    "authors": [
+      "Igor Yanovich"
+    ],
     "year": 2025,
     "venue": "Annual Review of Linguistics, 11, 299–322",
     "sourceType": "linguistics",
@@ -55,7 +63,17 @@
   {
     "id": "src_lebombo_border_cave_derrico_2012",
     "title": "Early evidence of San material culture represented by organic artifacts from Border Cave, South Africa",
-    "authors": ["Francesco d’Errico", "Lucinda Backwell", "Paola Villa", "Ilaria Degano", "Jeannette J. Lucejko", "Marion K. Bamford", "Thomas F. G. Higham", "Maria Perla Colombini", "Peter B. Beaumont"],
+    "authors": [
+      "Francesco d’Errico",
+      "Lucinda Backwell",
+      "Paola Villa",
+      "Ilaria Degano",
+      "Jeannette J. Lucejko",
+      "Marion K. Bamford",
+      "Thomas F. G. Higham",
+      "Maria Perla Colombini",
+      "Peter B. Beaumont"
+    ],
     "year": 2012,
     "venue": "Proceedings of the National Academy of Sciences, 109(33), 13214–13219",
     "sourceType": "archaeology",
@@ -68,7 +86,12 @@
   {
     "id": "src_great_zimbabwe_vieri_2023",
     "title": "Archaeological science, globalisation, and local agency: gold in Great Zimbabwe",
-    "authors": ["Jasmine Vieri", "Shadreck Chirikure", "Paul Lane", "Marcos Martinón-Torres"],
+    "authors": [
+      "Jasmine Vieri",
+      "Shadreck Chirikure",
+      "Paul Lane",
+      "Marcos Martinón-Torres"
+    ],
     "year": 2023,
     "venue": "Archaeological and Anthropological Sciences, 15, article 127",
     "sourceType": "archaeology",
@@ -77,5 +100,35 @@
     "doi": "10.1007/s12520-023-01811-7",
     "authorBackground": "Archaeological research by scholars affiliated with the Universities of Cambridge, Oxford, and Cape Town",
     "summary": "Peer-reviewed research on gold processing and Great Zimbabwe’s participation in regional and Indian Ocean exchange, emphasizing local production and agency."
+  },
+  {
+    "id": "src_williams_destruction_1987",
+    "title": "The Destruction of Black Civilization: Great Issues of a Race from 4500 B.C. to 2000 A.D.",
+    "authors": [
+      "Chancellor Williams"
+    ],
+    "year": 1987,
+    "venue": "Third World Press, Chicago (3rd revised edition; first published 1971)",
+    "sourceType": "critical_commentary",
+    "licence": "link only",
+    "url": "https://openlibrary.org/books/OL612128M",
+    "doi": null,
+    "authorBackground": "Scholar and author (1893–1992)",
+    "summary": "A single-author interpretive history of Black Africa's past, written from an African-centred standpoint. It is recorded here as a perspective to read beside archaeological, linguistic and genetic evidence. It is not primary evidence, and each specific claim drawn from it needs its own page reference and a second source."
+  },
+  {
+    "id": "src_vanderwaal_bantu_2011",
+    "title": "Bantu: From Abantu to Ubuntu",
+    "authors": [
+      "Kees van der Waal"
+    ],
+    "year": 2011,
+    "venue": "In Grundlingh & Huigen (eds), Reshaping Remembrance: Critical Essays on Afrikaans Places of Memory, chapter 5. Rozenberg Publishers",
+    "sourceType": "critical_commentary",
+    "licence": "link only",
+    "url": "https://rozenbergquarterly.com/reshaping-remembrance-bantu-from-abantu-to-ubuntu/",
+    "doi": null,
+    "authorBackground": "Contributor to a volume of critical essays on Afrikaans places of memory",
+    "summary": "An essay on how 'Bantu' began as a linguistic label in a nineteenth-century grammar, was later used by anthropology and apartheid-era policy as a name for distinct peoples, and why the word is now regarded as offensive in South Africa. A critical essay, not a source for the classification of languages."
   }
 ]

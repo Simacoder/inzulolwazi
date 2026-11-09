@@ -176,7 +176,7 @@ export function claimDetailView(lang, claim, meta, from) {
   const back = from ? `<a class="back" href="${buildHash('search', undefined, { q: from })}">← ${esc(t(lang, 'backToSearch'))}</a>` : `<a class="back" href="#/explore">← ${esc(t(lang, 'back'))}</a>`;
   const checks = r.checks.map((/** @type {any} */ c) => `<li class="${c.done ? 'done' : 'open'}"><span class="mark" aria-hidden="true">${c.done ? '✓' : '○'}</span><span><strong>${esc(c.label)}</strong><br /><span class="muted">${esc(c.detail)} · ${esc(t(lang, c.done ? 'checklistDone' : 'checklistOpen'))}</span></span></li>`).join('');
   const terms = claim.contestedTerms.length
-    ? `<section class="panel note"><h2>${esc(t(lang, 'termHeading'))}: ${esc(claim.contestedTerms.join(', '))}</h2><p>${esc(t(lang, 'termPending'))}</p></section>` : '';
+    ? `<section class="panel note"><h2>${esc(t(lang, 'termHeading'))}: ${esc(claim.contestedTerms.join(', '))}</h2>${claim.termNotes.length ? claim.termNotes.map((/** @type {string} */ note) => `<p>${esc(note)}</p>`).join('') : `<p>${esc(t(lang, 'termPending'))}</p>`}</section>` : '';
   const sources = claim.sources.map((/** @type {any} */ s) => sourceCard(lang, s)).join('');
   const zuReviewed = claim.translation.method === 'human_reviewed';
   return `${back}

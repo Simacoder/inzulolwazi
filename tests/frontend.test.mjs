@@ -74,3 +74,13 @@ test('the topic chip always has text', async () => {
   const { results } = searchView('trade', corpus);
   assert.ok(results.every((r) => r.claim.topic));
 });
+
+test('a written term note is shown instead of the pending message', async () => {
+  const corpus = await loadCorpus();
+  const bantu = corpus.claims.find((c) => c.id === 'claim_bantu_language_history');
+  assert.ok(bantu);
+  const meta = metaView(corpus, 'https://example.org/repo');
+  const html = view.claimDetailView('en', claimDetailView(bantu, corpus), meta);
+  assert.match(html, /van der Waal/);
+  assert.doesNotMatch(html, /has not been written yet/);
+});
