@@ -148,6 +148,6 @@ try {
   const sourceResponse = await fetch('/api/sources');
   state.sources = await sourceResponse.json();
   applyLanguage();
-} catch (error) {
+} catch {
   document.querySelector('#claimGrid').innerHTML = '<p>Could not load the collection. Start the local server and refresh.</p>';
 }

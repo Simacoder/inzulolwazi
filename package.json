@@ -6,6 +6,19 @@
   "scripts": {
     "dev": "node backend/server.mjs",
     "start": "node backend/server.mjs",
-    "validate:content": "node backend/validate/content.mjs"
+    "validate:content": "node backend/validate/content.mjs",
+    "lint": "eslint .",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "node --test --test-reporter=spec \"tests/*.test.mjs\"",
+    "eval": "node eval/run.mjs",
+    "check": "npm run lint && npm run typecheck && npm run validate:content && npm test && npm run eval"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^26.6.6",
+    "eslint": "^10.14.0",
+    "globals": "^17.14.0",
+    "typescript": "^7.0.2",
+    "yaml": "^2.9.1"
   }
 }

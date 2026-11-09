@@ -5,23 +5,40 @@ const STOP_WORDS = new Set([
   'ngoba', 'futhi', 'kanye', 'abantu', 'bona', 'ingabe', 'kanjani', 'kuphi', 'ngani', 'leyo', 'lesi',
 ]);
 
-function tokenize(text) {
+/**
+ * @param {unknown} text
+ * @returns {string[]}
+ */
+export function tokenize(text) {
   return String(text ?? '').toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .split(/[^\p{L}\p{N}]+/u).filter((term) => term.length > 1 && !STOP_WORDS.has(term));
 }
 
+/**
+ * @param {string[]} tokens
+ * @param {Map<string, number>} inverseDocumentFrequency
+ * @returns {Map<string, number>}
+ */
 function vectorFor(tokens, inverseDocumentFrequency) {
+  /** @type {Map<string, number>} */
   const counts = new Map();
   for (const token of tokens) counts.set(token, (counts.get(token) ?? 0) + 1);
+  /** @type {Map<string, number>} */
   const vector = new Map();
   for (const [token, count] of counts) vector.set(token, (1 + Math.log(count)) * (inverseDocumentFrequency.get(token) ?? 1));
   return vector;
 }
 
-/** Rank curated claim documents with corpus-fitted TF-IDF and cosine similarity. */
+/**
+ * Rank curated claim documents with corpus-fitted TF-IDF and cosine similarity.
+ * @param {string} query
+ * @param {import('../backend/types.js').RankDocument[]} documents
+ * @returns {import('../backend/types.js').RankScore[]}
+ */
 export function rankDocuments(query, documents) {
   if (!documents.length) return [];
   const tokenizedDocs = documents.map((document) => ({ document, tokens: tokenize(document.text) }));
+  /** @type {Map<string, number>} */
   const documentFrequency = new Map();
   for (const { tokens } of tokenizedDocs) for (const token of new Set(tokens)) documentFrequency.set(token, (documentFrequency.get(token) ?? 0) + 1);
   const inverseDocumentFrequency = new Map([...documentFrequency].map(([term, frequency]) => [term, Math.log(1 + documents.length / (1 + frequency)) + 1]));
