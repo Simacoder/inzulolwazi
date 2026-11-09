@@ -5,7 +5,7 @@ import { loadCorpus } from '../backend/pipeline.mjs';
 import { validateCorpus } from '../backend/validate/content.mjs';
 import { CONTESTED_TERMS } from '../backend/schema.mjs';
 
-const frontendFiles = ['frontend/index.html', 'frontend/app.js'];
+const frontendFiles = ['frontend/index.html', 'frontend/app.js', 'frontend/js/i18n.mjs', 'frontend/js/render.mjs', 'frontend/js/util.mjs', 'frontend/js/api.mjs'];
 
 test('repo content has no validation errors', async () => {
   const { errors } = validateCorpus(await loadCorpus());
@@ -61,7 +61,9 @@ test('UI copy never uses "the real history" or "the truth" (AGENTS.md rule 4)', 
 });
 
 test('the frontend labels draft and machine-translated content', async () => {
-  const text = await readFile(new URL('../frontend/app.js', import.meta.url), 'utf8');
-  assert.match(text, /MACHINE TRANSLATED, NOT YET REVIEWED/);
-  assert.match(text, /DRAFT/);
+  const i18n = await readFile(new URL('../frontend/js/i18n.mjs', import.meta.url), 'utf8');
+  assert.match(i18n, /Machine translated, not yet reviewed by a fluent speaker/);
+  assert.match(i18n, /draft: 'Draft'/);
+  const render = await readFile(new URL('../frontend/js/render.mjs', import.meta.url), 'utf8');
+  assert.match(render, /claim\.translation\.label/);
 });

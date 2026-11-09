@@ -6,6 +6,13 @@ This proof of concept serves a curated local claim set, searchable evidence card
 
 The visual palette is Arid Mirage: twilight blue `#1A365D`, desert sand `#E2D4C9`, arid clay `#7A6F62`, and terracotta `#E67E22`.
 
+## What you can do in the app
+
+- Search as you type (press `/` from anywhere). Results are research leads while every topic is a draft, with matched words highlighted.
+- Explore topics and sources with filters and sorting, open a topic to see its translation label, what it still needs before publication, and its evidence.
+- Copy or download citations as plain text, BibTeX or RIS. Print a topic. Share a link.
+- Use the same data through the open JSON API: see `docs/api.md` and `/api/v1/openapi.json`.
+
 ## Run
 
 The app has no runtime dependencies. The checks were run on Node.js 22.

@@ -4,63 +4,32 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#E2D4C9" />
-    <meta name="description" content="Explore African history with sources, evidence types, and uncertainty shown." />
-    <title>inzulolwazi — African history, with the evidence shown</title>
+    <meta name="description" content="Search African history through cited scholarship, archaeology and other sources, with the evidence shown." />
+    <title>inzulolwazi · African history, with the evidence shown</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
+    <a class="skip" id="skip" href="#view">Skip to content</a>
     <header class="topbar">
-      <a class="brand" href="#home" aria-label="inzulolwazi home"><span class="brand-mark">i<span>.</span></span><span>inzulolwazi</span></a>
-      <nav class="topnav" aria-label="Main navigation">
-        <a href="#explore" data-copy="navExplore">Explore</a>
-        <a href="#method" data-copy="navMethod">Our method</a>
+      <a class="brand" href="#/" aria-label="inzulolwazi home"><span class="brand-mark">i<span>.</span></span><span>inzulolwazi</span></a>
+      <nav class="topnav" aria-label="Main">
+        <a data-nav="navSearch" href="#/search">Search</a>
+        <a data-nav="navExplore" href="#/explore">Explore</a>
+        <a data-nav="navSources" href="#/sources">Sources</a>
+        <a data-nav="navMethod" href="#/method">Method</a>
+        <a data-nav="navApi" href="#/api">API</a>
       </nav>
-      <button class="language-switch" id="languageSwitch" type="button" aria-label="Switch language"><span class="lang-current">EN</span><span class="lang-divider">/</span><span>isiZulu</span></button>
+      <button class="lang" id="lang" type="button" aria-label="Switch to isiZulu">isiZulu</button>
     </header>
-
-    <main id="home">
-      <section class="hero">
-        <div class="hero-copy">
-          <div class="eyebrow"><span class="eyebrow-dot"></span><span data-copy="eyebrow">A living library of African history</span></div>
-          <h1 data-copy="heroTitle">History has a story.<br /><em>Evidence gives it depth.</em></h1>
-          <p class="hero-description" data-copy="heroText">Explore questions about the past through African scholarship, archaeology, and other cited sources. See what supports an idea, what complicates it, and where the record is still quiet.</p>
-        </div>
-        <div class="hero-art" aria-hidden="true">
-          <div class="sun-disc"></div><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="landscape"><span></span><span></span><span></span></div>
-          <div class="art-label art-label-top">UBUFAKAZI · EVIDENCE</div><div class="art-label art-label-bottom">INDABA · STORY</div>
-          <div class="art-number">01 <i>/</i> 05</div>
-        </div>
-      </section>
-
-      <section class="search-section" id="explore">
-        <div class="search-intro"><div class="section-kicker" data-copy="searchKicker">START WITH A QUESTION</div><h2 data-copy="searchTitle">What would you like to know?</h2><p data-copy="searchText">Every answer comes from the sources in this collection.</p></div>
-        <form class="search-box" id="searchForm"><label class="sr-only" for="question" data-copy="inputLabel">Ask a question about African history</label><span class="search-icon" aria-hidden="true">⌕</span><input id="question" name="question" type="search" autocomplete="off" data-placeholder="searchPlaceholder" placeholder="Ask about African history…" /><button type="submit" class="search-submit"><span data-copy="searchButton">Explore</span><span aria-hidden="true">↗</span></button></form>
-        <div class="suggestions"><span data-copy="try">TRY</span><button type="button" data-query="Who built the pyramids at Giza?">Who built the pyramids at Giza?</button><i></i><button type="button" data-query="What evidence is there of trade at Great Zimbabwe?">Trade at Great Zimbabwe</button></div>
-      </section>
-
-      <section class="answer-wrap" id="answerWrap" hidden aria-live="polite"></section>
-
-      <section class="collection" id="collection">
-        <div class="collection-heading"><div><div class="section-kicker" data-copy="collectionKicker">THE COLLECTION</div><h2 data-copy="collectionTitle">A few paths into the past</h2></div><span class="collection-count"><b>05</b><span data-copy="starterTopics">STARTER TOPICS</span></span></div>
-        <div class="claim-grid" id="claimGrid"></div>
-        <div class="draft-note"><span class="note-icon">✳</span><p><strong data-copy="draftTitle">An honest beginning.</strong> <span data-copy="draftText">These starter cards are being prepared for review. Their framing is not a published historical answer.</span></p><span class="note-mark">RESEARCH IN PROGRESS</span></div>
-      </section>
-
-      <section class="method" id="method">
-        <div class="method-heading"><div class="section-kicker" data-copy="methodKicker">HOW WE WORK</div><h2 data-copy="methodTitle">The evidence stays<br /><em>in the conversation.</em></h2></div>
-        <div class="method-steps">
-          <article><span class="step-no">01</span><div><h3 data-copy="stepOneTitle">Start with sources</h3><p data-copy="stepOneText">Answers are drawn from a reviewed collection, not from what a model happens to remember.</p></div></article>
-          <article><span class="step-no">02</span><div><h3 data-copy="stepTwoTitle">Show the texture</h3><p data-copy="stepTwoText">Source types, evidence, and scholarly disagreement are visible alongside each claim.</p></div></article>
-          <article><span class="step-no">03</span><div><h3 data-copy="stepThreeTitle">Say when we don’t know</h3><p data-copy="stepThreeText">When the collection has no reviewed answer, we say so. Gaps are a reason to keep learning.</p></div></article>
-        </div>
-      </section>
-    </main>
-
-    <footer class="footer"><a class="brand" href="#home"><span class="brand-mark">i<span>.</span></span><span>inzulolwazi</span></a><p data-copy="footerLine">African history, told by Africans, with the evidence shown.</p><span>© 2026 INZULOLWAZI</span></footer>
-    <dialog id="claimDialog" class="claim-dialog"><form method="dialog"><button class="dialog-close" aria-label="Close">×</button></form><div id="dialogContent"></div></dialog>
+    <p class="zu-note" id="zuNote" hidden></p>
+    <main id="view" tabindex="-1"><p class="loading">Loading…</p></main>
+    <p class="sr-only" id="status" role="status" aria-live="polite"></p>
+    <noscript><p class="noscript">inzulolwazi needs JavaScript to search. The same data is open as JSON at <a href="/api/v1/openapi.json">/api/v1/openapi.json</a>.</p></noscript>
+    <footer class="footer"><span class="brand-mark">i<span>.</span></span><p id="footerLine">African history, told by Africans, with the evidence shown.</p><a href="#/api">Open API</a></footer>
     <script type="module" src="/app.js"></script>
   </body>
 </html>

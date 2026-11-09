@@ -16,6 +16,7 @@
     "id": "src_unesco_great_zimbabwe",
     "title": "Great Zimbabwe National Monument",
     "authors": ["UNESCO World Heritage Centre"],
+    "authorKind": "organization",
     "year": 1986,
     "venue": "World Heritage List, property 364",
     "sourceType": "archaeology",

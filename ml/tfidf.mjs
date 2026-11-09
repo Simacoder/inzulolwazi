@@ -11,7 +11,20 @@ const STOP_WORDS = new Set([
  */
 export function tokenize(text) {
   return String(text ?? '').toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .split(/[^\p{L}\p{N}]+/u).filter((term) => term.length > 1 && !STOP_WORDS.has(term));
+    .split(/[^\p{L}\p{N}]+/u).filter((term) => term.length > 1 && !STOP_WORDS.has(term)).map(foldPlural);
+}
+
+/**
+ * Fold simple English plurals so "pyramid" finds "pyramids" and "notch" finds "notches".
+ * Applied to queries and documents alike, so both sides always agree.
+ * @param {string} term
+ * @returns {string}
+ */
+export function foldPlural(term) {
+  if (term.length <= 3 || !term.endsWith('s')) return term;
+  if (/(ch|sh|x|z|ss)es$/.test(term)) return term.slice(0, -2);
+  if (/(ss|us|is)$/.test(term)) return term;
+  return term.slice(0, -1);
 }
 
 /**
