@@ -2,7 +2,7 @@
   {
     "id": "claim_khoisan_term",
     "topic": "Khoisan term history",
-    "keywords": ["khoisan", "khoesan", "san", "khoi", "term", "label", "identity"],
+    "keywords": ["khoisan", "khoesan", "khoikhoi", "khoekhoe", "san", "khoi", "term", "label", "identity"],
     "keywordsZu": ["igama", "ubuwena", "umlando"],
     "status": "draft",
     "grade": "draft",
@@ -28,7 +28,7 @@
   {
     "id": "claim_counting_bones",
     "topic": "Lebombo and Ishango bones",
-    "keywords": ["lebombo", "ishango", "bones", "notches", "counting", "mathematics", "artefact"],
+    "keywords": ["lebombo", "ishango", "bones", "notches", "counting", "mathematics", "maths", "artefact"],
     "keywordsZu": ["amathambo", "izimpawu", "ukubala", "izibalo"],
     "status": "draft",
     "grade": "draft",

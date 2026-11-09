@@ -15,7 +15,7 @@ export default [
     },
   },
   {
-    files: ['frontend/**/*.js'],
+    files: ['frontend/**/*.js', 'frontend/**/*.mjs'],
     languageOptions: { ecmaVersion: 2024, sourceType: 'module', globals: globals.browser },
     rules: {
       'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],

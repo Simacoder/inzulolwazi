@@ -48,6 +48,17 @@ export function retrieve(question, claims) {
 }
 
 /**
+ * The corpus sources a claim cites, each counted once.
+ * Distinct ids only: one source listed twice must not count as two pieces of evidence.
+ * @param {Claim} claim
+ * @param {Corpus} corpus
+ * @returns {import('./types.js').Source[]}
+ */
+export function linkedSources(claim, corpus) {
+  return [...new Set(claim.sourceIds)].flatMap((id) => corpus.sources.filter((source) => source.id === id));
+}
+
+/**
  * Stage 2: attach sources and decide which claims may be shown as an answer.
  * A claim is answerable only if it is published and backed by at least two sources.
  * @param {RankedClaim[]} matches
@@ -56,10 +67,10 @@ export function retrieve(question, claims) {
  */
 export function ground(matches, corpus) {
   return matches.map(({ claim }) => {
-    // Distinct ids only: one source listed twice must not count as two pieces of evidence.
-    const linked = [...new Set(claim.sourceIds)].flatMap((id) => corpus.sources.filter((source) => source.id === id));
+    const linked = linkedSources(claim, corpus);
     return {
       id: claim.id,
+      topic: claim.topic,
       statement: claim.statement.en,
       status: claim.status,
       grade: claim.grade,
