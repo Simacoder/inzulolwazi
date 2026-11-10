@@ -12,6 +12,8 @@ import { rankDocuments } from '../ml/tfidf.mjs';
 const root = path.dirname(fileURLToPath(import.meta.url));
 const contentPath = path.join(root, '..', 'content', 'claims.json');
 const sourcePath = path.join(root, '..', 'content', 'sources.json');
+const glossaryPath = path.join(root, '..', 'content', 'glossary.json');
+const chronologyPath = path.join(root, '..', 'content', 'chronology.json');
 
 /** Minimum cosine score for a claim to count as a retrieval match. */
 export const RETRIEVAL_THRESHOLD = 0.08;
@@ -20,11 +22,13 @@ export const MAX_MATCHES = 3;
 
 /** @returns {Promise<Corpus>} */
 export async function loadCorpus() {
-  const [claims, sources] = await Promise.all([
+  const [claims, sources, glossary, chronology] = await Promise.all([
     readFile(contentPath, 'utf8').then(JSON.parse),
     readFile(sourcePath, 'utf8').then(JSON.parse),
+    readFile(glossaryPath, 'utf8').then(JSON.parse),
+    readFile(chronologyPath, 'utf8').then(JSON.parse),
   ]);
-  return { claims, sources };
+  return { claims, sources, glossary, chronology };
 }
 
 /**
@@ -50,7 +54,7 @@ export function retrieve(question, claims) {
 /**
  * The corpus sources a claim cites, each counted once.
  * Distinct ids only: one source listed twice must not count as two pieces of evidence.
- * @param {Claim} claim
+ * @param {{ sourceIds: string[] }} claim
  * @param {Corpus} corpus
  * @returns {import('./types.js').Source[]}
  */

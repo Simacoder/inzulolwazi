@@ -54,6 +54,10 @@ export const api = {
   claim: (id, signal) => request(`/claims/${encodeURIComponent(id)}`, { signal }).then((r) => r.json()),
   /** @param {Record<string, string | number | undefined>} query @param {AbortSignal} [signal] */
   sources: (query, signal) => request(`/sources${qs(query)}`, { signal }).then((r) => r.json()),
+  /** @param {Record<string, string | number | undefined>} query @param {AbortSignal} [signal] */
+  glossary: (query, signal) => request(`/glossary${qs(query)}`, { signal }).then((r) => r.json()),
+  /** @param {Record<string, string | number | undefined>} query @param {AbortSignal} [signal] */
+  chronology: (query, signal) => request(`/chronology${qs(query)}`, { signal }).then((r) => r.json()),
   /** @param {string} id @param {AbortSignal} [signal] */
   source: (id, signal) => request(`/sources/${encodeURIComponent(id)}`, { signal }).then((r) => r.json()),
   /** @param {string} kind @param {string} id @param {string} format */

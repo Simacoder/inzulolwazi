@@ -133,6 +133,11 @@ reviewers: [{name, role, date}]
 
 A claim cannot be published with fewer than two evidence entries, or without a reviewer entry.
 
+### Glossary entry and dated event
+`content/glossary.json` holds defined terms (`id`, `term`, `aliases`, `definition.en`, `framing.en`, `sourceIds`). `content/chronology.json` holds dated events (`id`, `label`, `sortYear`, optional `endYear`, `event.en`, `framing.en`, `sourceIds`). Both are searched next to claims, and both are browsable at `#/glossary` and `#/timeline`.
+
+Rules: every entry needs at least one source, definitions and dates come from a cited source (never memory), and `framing.en` is required. The framing line says how the entry is read from an African-centred standpoint. Outside or colonial material is described as what outsiders claimed, and the timeline is anchored in African events before outsiders' arrival (AGENTS.md rule 25). The validator fails any entry without framing.
+
 ### Term note
 ```yaml
 id: term_bantu

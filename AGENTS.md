@@ -55,6 +55,7 @@ Run `npm run check` before declaring any task done.
 22. Report evaluation results per language and per claim. Never average across languages.
 23. Do not add dependencies without noting the reason in the PR or commit message.
 24. Do not claim something works until you have run it.
+25. **African-centred, always.** Every claim, term and dated event states how it is read from an African-centred standpoint (`rationale` or `framing`) and who the source is. Outside or colonial material is included only as what it is: a record of what outsiders claimed, labelled with its type, placed after African history in the timeline. The validator fails an entry with no framing line.
 
 ## Definition of done
 - Lint, type check, tests, and content validation pass.

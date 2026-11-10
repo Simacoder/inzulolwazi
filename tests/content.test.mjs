@@ -67,3 +67,17 @@ test('the frontend labels draft and machine-translated content', async () => {
   const render = await readFile(new URL('../frontend/js/render.mjs', import.meta.url), 'utf8');
   assert.match(render, /claim\.translation\.label/);
 });
+
+test('terms and dated events without a framing line, a source or a known source fail validation', async () => {
+  const { validateCorpus } = await import('../backend/validate/content.mjs');
+  const corpus = await loadCorpus();
+  const base = { claims: corpus.claims, sources: corpus.sources };
+  const term = { id: 't1', term: 'X', aliases: [], definition: { en: 'A thing.' }, framing: { en: 'Read from an African-centred standpoint.' }, sourceIds: [corpus.sources[0].id] };
+  const event = { id: 'e1', label: '1900', sortYear: 1900, event: { en: 'Something.' }, framing: { en: 'Read from an African-centred standpoint.' }, sourceIds: [corpus.sources[0].id] };
+  assert.deepEqual(validateCorpus({ ...base, glossary: [term], chronology: [event] }).errors, []);
+  assert.match(validateCorpus({ ...base, glossary: [{ ...term, framing: { en: '' } }] }).errors.join(), /African-centred framing/);
+  assert.match(validateCorpus({ ...base, chronology: [{ ...event, sourceIds: [] }] }).errors.join(), /at least one source/);
+  assert.match(validateCorpus({ ...base, glossary: [{ ...term, sourceIds: ['nope'] }] }).errors.join(), /unknown source/);
+  assert.match(validateCorpus({ ...base, glossary: [term, term] }).errors.join(), /duplicated/);
+  assert.match(validateCorpus({ ...base, chronology: [{ ...event, sortYear: undefined }] }).errors.join(), /numeric sortYear/);
+});

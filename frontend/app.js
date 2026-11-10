@@ -41,7 +41,7 @@ function focusHeading() {
 
 function applyChrome() {
   document.documentElement.lang = state.lang;
-  const names = { navSearch: '#/search', navExplore: '#/explore', navSources: '#/sources', navMethod: '#/method', navApi: '#/api' };
+  const names = { navSearch: '#/search', navExplore: '#/explore', navTimeline: '#/timeline', navGlossary: '#/glossary', navSources: '#/sources', navMethod: '#/method', navApi: '#/api' };
   document.querySelectorAll('[data-nav]').forEach((link) => {
     const key = /** @type {keyof typeof names} */ (link.getAttribute('data-nav'));
     link.textContent = t(state.lang, key);
@@ -92,6 +92,12 @@ async function render() {
     } else if (name === 'sources') {
       const page = await api.sources({ ...query, limit: 50 }, signal);
       show(view.sourcesView(state.lang, meta, query, page), t(state.lang, 'sourcesTitle'));
+    } else if (name === 'glossary') {
+      const page = await api.glossary({ ...query, limit: 50 }, signal);
+      show(view.glossaryPageView(state.lang, query, page), t(state.lang, 'glossaryTitle'));
+    } else if (name === 'timeline') {
+      const page = await api.chronology({ ...query, limit: 50 }, signal);
+      show(view.timelinePageView(state.lang, query, page), t(state.lang, 'timelineTitle'));
     } else if (name === 'claim' && id) {
       const claim = await api.claim(id, signal);
       show(view.claimDetailView(state.lang, claim, meta, query.from), claim.topic);
@@ -165,11 +171,16 @@ const refreshList = debounce(async () => {
   state.route = parseHash(location.hash);
   const signal = freshSignal();
   try {
-    const target = /** @type {HTMLElement} */ (main.querySelector(kind === 'sources' ? '#sources-results' : '#explore-results'));
-    const page = kind === 'sources' ? await api.sources({ ...query, limit: 50 }, signal) : await api.claims({ ...query, limit: 50 }, signal);
-    const html = kind === 'sources' ? view.sourcesView(state.lang, state.meta, query, page) : view.exploreView(state.lang, state.meta, query, page);
+    const pick = {
+      sources: { id: '#sources-results', load: () => api.sources({ ...query, limit: 50 }, signal), render: (/** @type {any} */ page) => view.sourcesView(state.lang, state.meta, query, page) },
+      glossary: { id: '#glossary-results', load: () => api.glossary({ ...query, limit: 50 }, signal), render: (/** @type {any} */ page) => view.glossaryPageView(state.lang, query, page) },
+      timeline: { id: '#timeline-results', load: () => api.chronology({ ...query, limit: 50 }, signal), render: (/** @type {any} */ page) => view.timelinePageView(state.lang, query, page) },
+      explore: { id: '#explore-results', load: () => api.claims({ ...query, limit: 50 }, signal), render: (/** @type {any} */ page) => view.exploreView(state.lang, state.meta, query, page) },
+    }[/** @type {'sources' | 'glossary' | 'timeline' | 'explore'} */ (kind ?? 'explore')];
+    const target = /** @type {HTMLElement} */ (main.querySelector(pick.id));
+    const html = pick.render(await pick.load());
     const doc = new DOMParser().parseFromString(`<body>${html}</body>`, 'text/html');
-    const fresh = doc.querySelector(kind === 'sources' ? '#sources-results' : '#explore-results');
+    const fresh = doc.querySelector(pick.id);
     if (fresh) target.innerHTML = fresh.innerHTML;
   } catch (error) {
     if (!isAbort(error)) announce(error instanceof Error ? error.message : String(error));
