@@ -2,6 +2,10 @@
 
 African history, told by Africans, with the evidence shown.
 
+## Project presentation
+
+[Download the inzulolwazi slide deck](Inzulolwazi%20African%20History%2C%20Evidence%20Shown.pptx)
+
 ## Live demo
 
 [Open inzulolwazi](https://inzulolwazi-api.onrender.com/#/)
