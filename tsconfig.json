@@ -10,5 +10,5 @@
     "types": ["node"],
     "skipLibCheck": true
   },
-  "include": ["backend/**/*.mjs", "backend/**/*.d.ts", "ml/**/*.mjs", "eval/**/*.mjs", "tests/**/*.mjs"]
+  "include": ["backend/**/*.mjs", "backend/**/*.d.ts", "ml/**/*.mjs", "eval/**/*.mjs", "tests/**/*.mjs", "scripts/**/*.mjs"]
 }

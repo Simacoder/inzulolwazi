@@ -63,7 +63,8 @@ test('UI copy never uses "the real history" or "the truth" (AGENTS.md rule 4)', 
 test('the frontend labels draft and machine-translated content', async () => {
   const i18n = await readFile(new URL('../frontend/js/i18n.mjs', import.meta.url), 'utf8');
   assert.match(i18n, /Machine translated, not yet reviewed by a fluent speaker/);
-  assert.match(i18n, /draft: 'Draft'/);
+  assert.match(i18n, /draft: 'Research topic'/);
+  assert.match(i18n, /notReviewed: 'Review in progress'/);
   const render = await readFile(new URL('../frontend/js/render.mjs', import.meta.url), 'utf8');
   assert.match(render, /claim\.translation\.label/);
 });

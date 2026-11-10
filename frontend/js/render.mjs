@@ -2,6 +2,7 @@
  * Views as pure functions: data in, HTML string out. They read no globals, so Node can test them.
  * Every value that came from the API goes through esc() or highlight().
  */
+import { API_BASE } from './config.mjs';
 import { esc, highlight, buildHash } from './util.mjs';
 import { t } from './i18n.mjs';
 import { LENS_QUESTIONS, QUIZ_QUESTIONS } from './discovery.mjs';
@@ -286,8 +287,8 @@ export function apiView(lang, spec, meta) {
     return `<li class="endpoint"><div><span class="verb verb-${method.toLowerCase()}">${method}</span> <code>${esc(path)}</code></div><p class="muted">${esc(op.summary)}</p>${method === 'GET' && (runnable || path === '/api/v1/search') ? `<button type="button" class="button" data-api-run="${esc(tryUrl)}">${esc(t(lang, 'apiRun'))} <code>${esc(tryUrl)}</code></button>` : ''}</li>`;
   }).join('');
   return `<h1>${esc(t(lang, 'apiTitle'))}</h1><p class="lead">${esc(t(lang, 'apiIntro'))}</p>
-    <div class="actions"><a class="button" href="/api/v1/openapi.json" target="_blank" rel="noopener">${esc(t(lang, 'apiSpec'))} ↗</a></div>
-    <section class="panel"><h2>${esc(t(lang, 'apiExample'))}</h2><pre class="cite-out" tabindex="0">curl "${esc('https://YOUR-HOST')}/api/v1/search?q=pyramids"</pre></section>
+    <div class="actions"><a class="button" href="${esc(API_BASE)}/api/v1/openapi.json" target="_blank" rel="noopener">${esc(t(lang, 'apiSpec'))} ↗</a></div>
+    <section class="panel"><h2>${esc(t(lang, 'apiExample'))}</h2><pre class="cite-out" tabindex="0">curl "${esc(API_BASE || 'https://YOUR-HOST')}/api/v1/search?q=pyramids"</pre></section>
     <section><h2>${esc(t(lang, 'apiEndpoints'))}</h2><ul class="plain endpoints">${list}</ul><pre class="cite-out" tabindex="0" data-api-out aria-live="polite">${esc(t(lang, 'apiTry'))}…</pre></section>`;
 }
 
@@ -299,8 +300,8 @@ export function discoveryView(lang, cases) {
       <p class="eyebrow">${esc(item.region)} · ${esc(item.period)}</p>
       <h2>${esc(item.title)}</h2><p>${esc(item.finding)}</p>
       <p class="framing"><strong>${esc(t(lang, 'framingHeading'))}.</strong> ${esc(item.lens)}</p>
-      <ul class="factor-list">${item.factors.map((factor) => `<li>${esc(factor)}</li>`).join('')}</ul>
-      <div class="chips">${item.sources.map((source) => `<a class="chip chip-type" rel="noopener" target="_blank" href="${esc(source.url)}">${esc(source.label)} ↗</a>`).join('')}</div>
+      <ul class="factor-list">${item.factors.map((/** @type {string} */ factor) => `<li>${esc(factor)}</li>`).join('')}</ul>
+      <div class="chips">${item.sources.map((/** @type {{ label: string, url: string }} */ source) => `<a class="chip chip-type" rel="noopener" target="_blank" href="${esc(source.url)}">${esc(source.label)} ↗</a>`).join('')}</div>
     </article>`).join('');
   return `<div class="discovery-page" lang="en">${languageNote}<section class="hero hero-compact"><p class="eyebrow">inzulolwazi · Discover</p><h1>${esc(t(lang, 'discoveryTitle'))}</h1><p class="lead">${esc(t(lang, 'discoveryIntro'))}</p></section>
     <section class="panel note"><h2>${esc(t(lang, 'discoveryMethodTitle'))}</h2><p>${esc(t(lang, 'discoveryMethod'))}</p></section>
