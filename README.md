@@ -2,6 +2,10 @@
 
 African history, told by Africans, with the evidence shown.
 
+## Live demo
+
+[Open inzulolwazi](https://inzulolwazi-api.onrender.com/#/)
+
 This proof of concept serves a curated local claim set, searchable evidence cards, an explicit abstention state, and an English/isiZulu presentation. The current search is ranked by a local TF-IDF retrieval module and uses only the local content files. It does not call a model. Draft claims stay visibly marked until content reviewers approve their sources, grades, and translations.
 
 The visual palette is Arid Mirage: twilight blue `#1A365D`, desert sand `#E2D4C9`, arid clay `#7A6F62`, and terracotta `#E67E22`.
