@@ -146,7 +146,12 @@ export const LENS_QUESTIONS = [
   { text: LENS_LABELS.russianStateBuilding, lens: 'russianStateBuilding' },
 ] }));
 
+/**
+ * @param {number[]} answers
+ * @param {number[]} lensAnswers
+ */
 export function scoreQuiz(answers, lensAnswers) {
+  /** @type {Record<string, number>} */
   const lensCounts = Object.fromEntries(Object.keys(LENS_LABELS).map((key) => [key, 0]));
   let correct = 0;
   QUIZ_QUESTIONS.forEach((question, index) => {
@@ -161,10 +166,14 @@ export function scoreQuiz(answers, lensAnswers) {
   return {
     correct,
     lensMix: Object.entries(lensCounts).filter(([, count]) => count > 0)
-      .sort((a, b) => b[1] - a[1]).map(([key, count]) => ({ label: LENS_LABELS[key], count })),
+      .sort((a, b) => b[1] - a[1]).map(([key, count]) => ({ label: /** @type {Record<string, string>} */ (LENS_LABELS)[key], count })),
   };
 }
 
+/**
+ * @param {{ score: number, date: string }[]} current
+ * @param {number} score
+ */
 export function updateLocalLeaderboard(current, score) {
   return [...current, { score, date: new Date().toISOString() }]
     .sort((a, b) => b.score - a.score || a.date.localeCompare(b.date)).slice(0, 10);

@@ -299,8 +299,8 @@ export function discoveryView(lang, cases) {
       <p class="eyebrow">${esc(item.region)} · ${esc(item.period)}</p>
       <h2>${esc(item.title)}</h2><p>${esc(item.finding)}</p>
       <p class="framing"><strong>${esc(t(lang, 'framingHeading'))}.</strong> ${esc(item.lens)}</p>
-      <ul class="factor-list">${item.factors.map((factor) => `<li>${esc(factor)}</li>`).join('')}</ul>
-      <div class="chips">${item.sources.map((source) => `<a class="chip chip-type" rel="noopener" target="_blank" href="${esc(source.url)}">${esc(source.label)} ↗</a>`).join('')}</div>
+      <ul class="factor-list">${item.factors.map((/** @type {string} */ factor) => `<li>${esc(factor)}</li>`).join('')}</ul>
+      <div class="chips">${item.sources.map((/** @type {{ label: string, url: string }} */ source) => `<a class="chip chip-type" rel="noopener" target="_blank" href="${esc(source.url)}">${esc(source.label)} ↗</a>`).join('')}</div>
     </article>`).join('');
   return `<div class="discovery-page" lang="en">${languageNote}<section class="hero hero-compact"><p class="eyebrow">inzulolwazi · Discover</p><h1>${esc(t(lang, 'discoveryTitle'))}</h1><p class="lead">${esc(t(lang, 'discoveryIntro'))}</p></section>
     <section class="panel note"><h2>${esc(t(lang, 'discoveryMethodTitle'))}</h2><p>${esc(t(lang, 'discoveryMethod'))}</p></section>
