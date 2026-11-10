@@ -49,7 +49,7 @@ None of these ship with the app. Each was added for one job (AGENTS.md rule 23):
 
 ## Content status
 
-The five starter topics in `content/claims.json` follow the supplied design brief. They are drafts, not publishable historical claims. Source records are research leads for editorial review; the app will not present draft topics as answers. Add only reviewed, open-access or permissioned sources, and record reviewer sign-off before changing a draft to `published`.
+The six starter topics in `content/claims.json` follow the supplied design brief. They are drafts, not publishable historical claims. Source records are research leads for editorial review; the app will not present draft topics as answers. Add only reviewed, open-access or permissioned sources, and record reviewer sign-off before changing a draft to `published`.
 
 ## Architecture
 

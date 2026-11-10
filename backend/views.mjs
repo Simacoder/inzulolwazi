@@ -4,7 +4,7 @@
  */
 import { compose, ground, linkedSources, retrieve, RETRIEVAL_THRESHOLD } from './pipeline.mjs';
 import { CONTESTED_TERMS, FEEDBACK_TYPES, GRADES, GRADE_INFO, SOURCE_TYPE_INFO } from './schema.mjs';
-import { tokenize } from '../ml/tfidf.mjs';
+import { rankDocuments, tokenize } from '../ml/tfidf.mjs';
 
 /** @typedef {import('./types.js').Corpus} Corpus */
 /** @typedef {import('./types.js').Claim} Claim */
@@ -15,6 +15,8 @@ import { tokenize } from '../ml/tfidf.mjs';
 /** @typedef {import('./types.js').SearchView} SearchView */
 /** @typedef {import('./types.js').SourceDetailView} SourceDetailView */
 /** @typedef {import('./types.js').MatchStrength} MatchStrength */
+/** @typedef {import('./types.js').GlossaryView} GlossaryView */
+/** @typedef {import('./types.js').ChronologyView} ChronologyView */
 
 /** Longest question the search endpoints accept. */
 export const MAX_QUERY_LENGTH = 300;
@@ -25,6 +27,8 @@ export const EXAMPLE_QUESTIONS = [
   'What evidence is there of trade at Great Zimbabwe?',
   'Where did the term Khoisan come from?',
   'Do the Lebombo bone notches prove people used mathematics?',
+  'What does the word Bantu mean and where does it come from?',
+  'When was Great Zimbabwe built?',
 ];
 
 /**
@@ -156,6 +160,7 @@ export function claimView(claim, corpus) {
     newestSourceYear: sources.length ? Math.max(...sources.map((source) => source.year)) : null,
     reviewers: claim.reviewers,
     contestedTerms: contestedTermsIn(claim),
+    termNotes: claim.termNotes ?? [],
     readiness: readiness(claim, corpus),
   };
 }
@@ -174,6 +179,46 @@ export function claimDetailView(claim, corpus) {
  * @returns {string[]}
  */
 const words = (text) => text.split(/[^\p{L}\p{N}]+/u).filter(Boolean);
+
+/**
+ * @param {import('./types.js').GlossaryEntry} entry
+ * @param {Corpus} corpus
+ * @returns {GlossaryView}
+ */
+export function glossaryView(entry, corpus) {
+  const sources = linkedSources(entry, corpus);
+  return { id: entry.id, term: entry.term, aliases: entry.aliases, definition: entry.definition.en, framing: entry.framing.en, sourceCount: sources.length, sources: sources.map(sourceView) };
+}
+
+/**
+ * @param {import('./types.js').ChronologyEntry} entry
+ * @param {Corpus} corpus
+ * @returns {ChronologyView}
+ */
+export function chronologyView(entry, corpus) {
+  const sources = linkedSources(entry, corpus);
+  return { id: entry.id, label: entry.label, sortYear: entry.sortYear, endYear: entry.endYear ?? null, event: entry.event.en, framing: entry.framing.en, sourceCount: sources.length, sources: sources.map(sourceView) };
+}
+
+/** Minimum similarity for a term or dated event to appear in search. */
+const ENTRY_THRESHOLD = 0.2;
+
+/**
+ * Find entries whose text matches a question. A question that names a term or alias always finds it.
+ * @template {{ id: string }} T
+ * @param {string} question
+ * @param {T[]} entries
+ * @param {(entry: T) => string} textOf
+ * @param {(entry: T) => string[]} namesOf
+ * @returns {T[]}
+ */
+function matchEntries(question, entries, textOf, namesOf) {
+  const lowered = question.toLocaleLowerCase();
+  const named = new Set(entries.filter((entry) => namesOf(entry).some((name) => new RegExp(`(?<![\\p{L}\\p{N}])${name.toLocaleLowerCase().replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}])`, 'u').test(lowered))).map((entry) => entry.id));
+  const ranked = rankDocuments(question, entries.map((entry) => ({ id: entry.id, text: textOf(entry) })));
+  const similar = new Set(ranked.filter((item) => item.score >= ENTRY_THRESHOLD).map((item) => item.id));
+  return entries.filter((entry) => named.has(entry.id) || similar.has(entry.id)).slice(0, 5);
+}
 
 /**
  * Search the curated corpus. Drafts are returned as research leads, never as answers.
@@ -216,6 +261,8 @@ export function searchView(question, corpus) {
     answer: composed.answer,
     citations: composed.citations,
     results,
+    terms: matchEntries(question, corpus.glossary ?? [], (entry) => [entry.term, ...entry.aliases, entry.definition.en].join(' '), (entry) => [entry.term, ...entry.aliases]).map((entry) => glossaryView(entry, corpus)),
+    timeline: matchEntries(question, corpus.chronology ?? [], (entry) => [entry.label, entry.event.en].join(' '), (entry) => [entry.label]).map((entry) => chronologyView(entry, corpus)),
     suggestions: results.length ? [] : corpus.claims.map((claim) => ({ id: claim.id, topic: claim.topic })),
     retrieval: { method: 'tfidf-local', model: null, threshold: RETRIEVAL_THRESHOLD },
   };
@@ -290,6 +337,38 @@ export function listSources(corpus, options) {
 
 /**
  * @param {Corpus} corpus
+ * @param {{ q?: string, sort?: string, limit: number, offset: number }} options
+ * @returns {import('./types.js').Page<GlossaryView>}
+ */
+export function listGlossary(corpus, options) {
+  let entries = corpus.glossary ?? [];
+  if (options.q) {
+    const query = options.q;
+    entries = entries.filter((entry) => containsAllWords(query, [entry.term, ...entry.aliases, entry.definition.en].join(' ')));
+  }
+  const sorted = [...entries].sort((a, b) => a.term.localeCompare(b.term));
+  return paginate(sorted.map((entry) => glossaryView(entry, corpus)), options.limit, options.offset);
+}
+
+/**
+ * @param {Corpus} corpus
+ * @param {{ q?: string, from?: number, to?: number, limit: number, offset: number }} options
+ * @returns {import('./types.js').Page<ChronologyView>}
+ */
+export function listChronology(corpus, options) {
+  let entries = corpus.chronology ?? [];
+  if (options.from !== undefined) { const from = options.from; entries = entries.filter((entry) => (entry.endYear ?? entry.sortYear) >= from); }
+  if (options.to !== undefined) { const to = options.to; entries = entries.filter((entry) => entry.sortYear <= to); }
+  if (options.q) {
+    const query = options.q;
+    entries = entries.filter((entry) => containsAllWords(query, [entry.label, entry.event.en].join(' ')));
+  }
+  const sorted = [...entries].sort((a, b) => a.sortYear - b.sortYear || a.id.localeCompare(b.id));
+  return paginate(sorted.map((entry) => chronologyView(entry, corpus)), options.limit, options.offset);
+}
+
+/**
+ * @param {Corpus} corpus
  * @param {string} repository
  */
 export function metaView(corpus, repository) {
@@ -306,6 +385,8 @@ export function metaView(corpus, repository) {
       drafts: corpus.claims.filter((claim) => claim.status === 'draft').length,
       reviewed: corpus.claims.filter((claim) => claim.reviewers.length > 0).length,
       sources: corpus.sources.length,
+      terms: (corpus.glossary ?? []).length,
+      events: (corpus.chronology ?? []).length,
       sourcesByType,
     },
     grades: GRADE_INFO,

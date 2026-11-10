@@ -1,0 +1,96 @@
+[
+  {
+    "id": "term_bantu",
+    "term": "Bantu",
+    "aliases": [
+      "Bantu languages",
+      "Bantu peoples",
+      "abantu"
+    ],
+    "definition": {
+      "en": "A label for a large family of related languages. According to van der Waal (2011), it began as a linguistic label in a nineteenth-century grammar, built on a Zulu word for people. Later anthropology and apartheid-era policy used it as the name of distinct peoples, and many South Africans now find that use offensive. Yanovich (2025) reviews linguistic, archaeological and genetic work and cautions that current stories of Bantu history are not settled. Some sources, including the UNESCO record for Great Zimbabwe, still use the label for people."
+    },
+    "framing": {
+      "en": "Start with who applied the label, to whom, and for what purpose, before treating it as a neutral name. Ask how communities name themselves, and keep 'Bantu' as a language term unless a source for a specific use says otherwise."
+    },
+    "sourceIds": [
+      "src_vanderwaal_bantu_2011",
+      "src_bantu_classification_review",
+      "src_unesco_great_zimbabwe",
+      "src_hadebe_colonial_race_2025"
+    ]
+  },
+  {
+    "id": "term_khoisan",
+    "term": "Khoisan",
+    "aliases": [
+      "Khoesan",
+      "Khoikhoi",
+      "Khoekhoe"
+    ],
+    "definition": {
+      "en": "A collective label used in scholarship for several communities. Staphorst (2021) notes its historical uses while discussing the naming choices made in the study of nineteenth-century |xam narratives. Hadebe (2025), an opinion column, argues that the label belongs to colonial classification and that a 'First Nation' identity built on it risks reviving colonial divisions. The sources disagree, and neither is a source for how any community names itself."
+    },
+    "framing": {
+      "en": "Treat the label as something outsiders built and ask first how the communities concerned name themselves. Keep both readings visible rather than choosing one silently."
+    },
+    "sourceIds": [
+      "src_khoisan_term_history",
+      "src_hadebe_colonial_race_2025"
+    ]
+  },
+  {
+    "id": "term_colonial_classification",
+    "term": "Colonial classification of peoples",
+    "aliases": [
+      "racial classification",
+      "colonial labels",
+      "classification"
+    ],
+    "definition": {
+      "en": "The practice, described by Hadebe (2025), of sorting African peoples into labels such as Bantu, Nilotes and Khoi, which the column says served to justify control and a racial hierarchy. This is one commentator's argument, and it is recorded as a viewpoint, not as a finding."
+    },
+    "framing": {
+      "en": "Read colonial-era categories as records of what outsiders claimed and why, not as descriptions the people concerned would give of themselves."
+    },
+    "sourceIds": [
+      "src_hadebe_colonial_race_2025"
+    ]
+  },
+  {
+    "id": "term_hamitic_theory",
+    "term": "Hamitic theory",
+    "aliases": [
+      "Hamitic hypothesis",
+      "Hamitic myth"
+    ],
+    "definition": {
+      "en": "Named by Hadebe (2025) among the ideas, together with German scholarship and Hegel's views, that the column blames for denying Africa its own history and crediting outsiders with its achievements. This is one commentator's argument. A peer-reviewed source on the theory itself has not been added yet."
+    },
+    "framing": {
+      "en": "Read it as something outsiders claimed about Africans, and ask who it served. Keep what African scholars say in reply separate from what the theory said, and do not repeat its claims as findings."
+    },
+    "sourceIds": [
+      "src_hadebe_colonial_race_2025"
+    ]
+  },
+  {
+    "id": "term_great_zimbabwe_name",
+    "term": "Great Zimbabwe",
+    "aliases": [
+      "Zimbabwe",
+      "house in stone",
+      "the house in stone"
+    ],
+    "definition": {
+      "en": "The UNESCO record gives the meaning of the name as 'the house in stone' and attributes the city to the Shona. Vieri and colleagues (2023) study gold working there and stress local production and agency in its trade."
+    },
+    "framing": {
+      "en": "Begin with the name, the people who gave it and what they made there. Treat outsiders' later accounts of the site as claims to check, not as its history."
+    },
+    "sourceIds": [
+      "src_unesco_great_zimbabwe",
+      "src_great_zimbabwe_vieri_2023"
+    ]
+  }
+]

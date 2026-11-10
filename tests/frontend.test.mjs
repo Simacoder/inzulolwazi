@@ -4,7 +4,7 @@ import { esc, highlight, parseHash, buildHash } from '../frontend/js/util.mjs';
 import { STRINGS, t } from '../frontend/js/i18n.mjs';
 import * as view from '../frontend/js/render.mjs';
 import { loadCorpus } from '../backend/pipeline.mjs';
-import { searchView, claimDetailView, listClaims, listSources, metaView, sourceDetailView } from '../backend/views.mjs';
+import { searchView, claimDetailView, listChronology, listClaims, listGlossary, listSources, metaView, sourceDetailView } from '../backend/views.mjs';
 import { buildOpenApi } from '../backend/openapi.mjs';
 import { ROUTES } from '../backend/routes.mjs';
 
@@ -73,4 +73,29 @@ test('the topic chip always has text', async () => {
   for (const claim of corpus.claims) assert.ok(claim.topic.trim().length > 0);
   const { results } = searchView('trade', corpus);
   assert.ok(results.every((r) => r.claim.topic));
+});
+
+test('a written term note is shown instead of the pending message', async () => {
+  const corpus = await loadCorpus();
+  const bantu = corpus.claims.find((c) => c.id === 'claim_bantu_language_history');
+  assert.ok(bantu);
+  const meta = metaView(corpus, 'https://example.org/repo');
+  const html = view.claimDetailView('en', claimDetailView(bantu, corpus), meta);
+  assert.match(html, /van der Waal/);
+  assert.doesNotMatch(html, /has not been written yet/);
+});
+
+test('terminology and timeline pages and search sections render escaped, framed and sourced', async () => {
+  const corpus = await loadCorpus();
+  const gloss = view.glossaryPageView('en', { q: '"><svg>' }, listGlossary(corpus, { limit: 50, offset: 0 }));
+  const time = view.timelinePageView('en', {}, listChronology(corpus, { limit: 50, offset: 0 }));
+  const found = view.searchResultsView('en', searchView('Bantu', corpus));
+  for (const html of [gloss, time, found]) {
+    assert.doesNotMatch(html, /<svg>/i);
+    assert.doesNotMatch(html, /\sstyle=/i);
+  }
+  assert.match(gloss, /African-centred standpoint/);
+  assert.match(time, /1862/);
+  assert.match(found, /Terms and definitions/);
+  assert.match(found, /On the timeline/);
 });

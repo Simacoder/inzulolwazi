@@ -1,0 +1,59 @@
+[
+  {
+    "id": "time_great_zimbabwe_built",
+    "label": "1100–1450 AD",
+    "sortYear": 1100,
+    "endYear": 1450,
+    "event": {
+      "en": "Great Zimbabwe is built and occupied. The UNESCO record dates the property to between 1100 and 1450 AD and places the Great Enclosure in the 14th century. It attributes the city to the Shona."
+    },
+    "framing": {
+      "en": "Anchored in the city's own centuries of occupation, with its builders named, before any outsider's account of it."
+    },
+    "sourceIds": [
+      "src_unesco_great_zimbabwe"
+    ]
+  },
+  {
+    "id": "time_great_zimbabwe_abandoned",
+    "label": "around 1450 AD",
+    "sortYear": 1450,
+    "event": {
+      "en": "The capital at Great Zimbabwe is abandoned, according to the UNESCO record."
+    },
+    "framing": {
+      "en": "Told as a change within African history, and before the Portuguese settled the coast."
+    },
+    "sourceIds": [
+      "src_unesco_great_zimbabwe"
+    ]
+  },
+  {
+    "id": "time_portuguese_sofala",
+    "label": "1505 AD",
+    "sortYear": 1505,
+    "event": {
+      "en": "The Portuguese settle at Sofala. The UNESCO record places this after the abandonment of Great Zimbabwe."
+    },
+    "framing": {
+      "en": "Shown after the city's own history, so the order of events is not told from the arrival of outsiders."
+    },
+    "sourceIds": [
+      "src_unesco_great_zimbabwe"
+    ]
+  },
+  {
+    "id": "time_bleek_bantu_label",
+    "label": "1862",
+    "sortYear": 1862,
+    "event": {
+      "en": "The label 'Bantu' is introduced as a linguistic term in Wilhelm Bleek's grammar, according to van der Waal (2011)."
+    },
+    "framing": {
+      "en": "A date for when a label was applied to Africans by an outsider, not a date in the history of the people it was later used for."
+    },
+    "sourceIds": [
+      "src_vanderwaal_bantu_2011"
+    ]
+  }
+]

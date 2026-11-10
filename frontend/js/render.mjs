@@ -52,6 +52,8 @@ export function homeView(lang, meta, claims) {
       <div><dt>${esc(t(lang, 'statClaims'))}</dt><dd>${c.claims}</dd></div>
       <div><dt>${esc(t(lang, 'statSources'))}</dt><dd>${c.sources}</dd></div>
       <div><dt>${esc(t(lang, 'statTypes'))}</dt><dd>${types}</dd></div>
+      <div><dt>${esc(t(lang, 'navGlossary'))}</dt><dd>${c.terms}</dd></div>
+      <div><dt>${esc(t(lang, 'navTimeline'))}</dt><dd>${c.events}</dd></div>
       <div><dt>${esc(t(lang, 'statReviewed'))}</dt><dd>${c.reviewed}</dd></div>
     </dl>
     <aside class="panel note"><strong>${esc(t(lang, 'honestTitle'))}</strong> ${esc(t(lang, 'honestText'))}</aside>
@@ -71,12 +73,61 @@ export function searchBox(lang, value) {
 /** @param {Lang} lang @param {string} strength */
 const strengthLabel = (lang, strength) => t(lang, strength === 'close' ? 'matchClose' : strength === 'partial' ? 'matchPartial' : 'matchLoose');
 
+/** @param {Lang} lang @param {any} entry @param {string[]} [words] */
+export function termCard(lang, entry, words = []) {
+  return `<article class="card term">
+    <h3><a href="${buildHash('glossary', undefined, { q: entry.term })}">${highlight(entry.term, words)}</a></h3>
+    ${entry.aliases.length ? `<p class="muted small">${esc(t(lang, 'alsoCalled'))}: ${esc(entry.aliases.join(', '))}</p>` : ''}
+    <p>${highlight(entry.definition, words)}</p>
+    <p class="framing"><strong>${esc(t(lang, 'framingHeading'))}.</strong> ${esc(entry.framing)}</p>
+    <div class="chips">${entry.sources.map((/** @type {any} */ s) => `<a class="chip chip-type type-${esc(s.sourceType)}" href="${buildHash('source', s.id)}" title="${esc(s.title)}">${esc(s.authors[0])} (${esc(s.year)}) · ${esc(s.sourceTypeLabel)}</a>`).join('')}</div>
+  </article>`;
+}
+
+/** @param {Lang} lang @param {any} entry @param {string[]} [words] */
+export function eventCard(lang, entry, words = []) {
+  return `<article class="event" id="${esc(entry.id)}">
+    <p class="when">${esc(entry.label)}</p>
+    <div class="card">
+      <p>${highlight(entry.event, words)}</p>
+      <p class="framing"><strong>${esc(t(lang, 'framingHeading'))}.</strong> ${esc(entry.framing)}</p>
+      <div class="chips">${entry.sources.map((/** @type {any} */ s) => `<a class="chip chip-type type-${esc(s.sourceType)}" href="${buildHash('source', s.id)}" title="${esc(s.title)}">${esc(s.authors[0])} (${esc(s.year)}) · ${esc(s.sourceTypeLabel)}</a>`).join('')}</div>
+    </div>
+  </article>`;
+}
+
+/** @param {Lang} lang @param {Record<string,string>} query @param {any} page */
+export function glossaryPageView(lang, query, page) {
+  const filters = `<form class="filters" data-filters="glossary"><label class="field grow"><span>${esc(t(lang, 'filterWords'))}</span><input type="search" name="q" value="${esc(query.q ?? '')}" maxlength="100" data-filter /></label></form>`;
+  const body = page.items.length
+    ? `<p class="muted" aria-live="polite">${esc(t(lang, 'showing')(page.items.length, page.total))}</p><div class="stack">${page.items.map((/** @type {any} */ e) => termCard(lang, e, (query.q ?? '').split(/\s+/).filter(Boolean))).join('')}</div>`
+    : `<section class="panel notice" aria-live="polite"><p>${esc(t(lang, 'noEntries'))}</p><a class="button" href="#/glossary">${esc(t(lang, 'resetFilters'))}</a></section>`;
+  return `<h1>${esc(t(lang, 'glossaryTitle'))}</h1><p class="lead">${esc(t(lang, 'glossaryIntro'))}</p>${filters}<div id="glossary-results">${body}</div>`;
+}
+
+/** @param {Lang} lang @param {Record<string,string>} query @param {any} page */
+export function timelinePageView(lang, query, page) {
+  const filters = `<form class="filters" data-filters="timeline">
+    <label class="field grow"><span>${esc(t(lang, 'filterWords'))}</span><input type="search" name="q" value="${esc(query.q ?? '')}" maxlength="100" data-filter /></label>
+    <label class="field"><span>${esc(t(lang, 'fromYear'))}</span><input type="number" name="from" value="${esc(query.from ?? '')}" data-filter /></label>
+    <label class="field"><span>${esc(t(lang, 'toYear'))}</span><input type="number" name="to" value="${esc(query.to ?? '')}" data-filter /></label></form><p class="muted small">${esc(t(lang, 'yearHint'))}</p>`;
+  const body = page.items.length
+    ? `<p class="muted" aria-live="polite">${esc(t(lang, 'showing')(page.items.length, page.total))}</p><div class="timeline">${page.items.map((/** @type {any} */ e) => eventCard(lang, e, (query.q ?? '').split(/\s+/).filter(Boolean))).join('')}</div>`
+    : `<section class="panel notice" aria-live="polite"><p>${esc(t(lang, 'noEntries'))}</p><a class="button" href="#/timeline">${esc(t(lang, 'resetFilters'))}</a></section>`;
+  return `<h1>${esc(t(lang, 'timelineTitle'))}</h1><p class="lead">${esc(t(lang, 'timelineIntro'))}</p>${filters}<div id="timeline-results">${body}</div>`;
+}
+
 /** @param {Lang} lang @param {any} data */
 export function searchResultsView(lang, data) {
   const head = `<p class="results-for" aria-live="polite">${esc(t(lang, 'resultsFor'))} <strong>“${esc(data.query)}”</strong></p>`;
+  const words = data.query.split(/\s+/).filter(Boolean);
+  const terms = data.terms.length ? `<section aria-labelledby="terms-h"><h2 id="terms-h">${esc(t(lang, 'termsHeading'))}</h2><div class="stack">${data.terms.map((/** @type {any} */ e) => termCard(lang, e, words)).join('')}</div></section>` : '';
+  const timeline = data.timeline.length ? `<section aria-labelledby="time-h"><h2 id="time-h">${esc(t(lang, 'timelineHeading'))}</h2><div class="timeline">${data.timeline.map((/** @type {any} */ e) => eventCard(lang, e, words)).join('')}</div></section>` : '';
+  const browse = `<p class="try"><a class="pill" href="#/timeline">${esc(t(lang, 'browseTimeline'))}</a><a class="pill" href="#/glossary">${esc(t(lang, 'browseTerms'))}</a></p>`;
+  if (!data.results.length && (terms || timeline)) return `${head}${terms}${timeline}${browse}`;
   if (!data.results.length) {
     return `${head}<section class="panel notice"><h2>${esc(t(lang, 'noResultsTitle'))}</h2><p>${esc(t(lang, 'noResultsText'))}</p>
-      <ul class="plain">${data.suggestions.map((/** @type {any} */ s) => `<li><a href="${buildHash('claim', s.id)}">${esc(s.topic)}</a></li>`).join('')}</ul></section>`;
+      <ul class="plain">${data.suggestions.map((/** @type {any} */ s) => `<li><a href="${buildHash('claim', s.id)}">${esc(s.topic)}</a></li>`).join('')}</ul></section>${browse}`;
   }
   const answerable = data.results.filter((/** @type {any} */ r) => r.answerable);
   const answer = answerable.length
@@ -90,7 +141,7 @@ export function searchResultsView(lang, data) {
       <div class="chips">${r.claim.sourceTypes.map(typeChip).join('')}</div>
       <a class="card-link" href="${buildHash('claim', r.claim.id, { from: data.query })}">${esc(t(lang, 'openTopic'))} <span aria-hidden="true">→</span></a>
     </article>`).join('');
-  return `${head}${answer}<div class="grid">${cards}</div>`;
+  return `${head}${terms}${timeline}${answer}<div class="grid">${cards}</div>${browse}`;
 }
 
 /** @param {Lang} lang @param {string} query */
@@ -176,7 +227,7 @@ export function claimDetailView(lang, claim, meta, from) {
   const back = from ? `<a class="back" href="${buildHash('search', undefined, { q: from })}">← ${esc(t(lang, 'backToSearch'))}</a>` : `<a class="back" href="#/explore">← ${esc(t(lang, 'back'))}</a>`;
   const checks = r.checks.map((/** @type {any} */ c) => `<li class="${c.done ? 'done' : 'open'}"><span class="mark" aria-hidden="true">${c.done ? '✓' : '○'}</span><span><strong>${esc(c.label)}</strong><br /><span class="muted">${esc(c.detail)} · ${esc(t(lang, c.done ? 'checklistDone' : 'checklistOpen'))}</span></span></li>`).join('');
   const terms = claim.contestedTerms.length
-    ? `<section class="panel note"><h2>${esc(t(lang, 'termHeading'))}: ${esc(claim.contestedTerms.join(', '))}</h2><p>${esc(t(lang, 'termPending'))}</p></section>` : '';
+    ? `<section class="panel note"><h2>${esc(t(lang, 'termHeading'))}: ${esc(claim.contestedTerms.join(', '))}</h2>${claim.termNotes.length ? claim.termNotes.map((/** @type {string} */ note) => `<p>${esc(note)}</p>`).join('') : `<p>${esc(t(lang, 'termPending'))}</p>`}</section>` : '';
   const sources = claim.sources.map((/** @type {any} */ s) => sourceCard(lang, s)).join('');
   const zuReviewed = claim.translation.method === 'human_reviewed';
   return `${back}
@@ -213,7 +264,7 @@ export function sourceDetailView(lang, source) {
 
 /** @param {Lang} lang @param {any} meta */
 export function methodView(lang, meta) {
-  const rules = [1, 2, 3, 4, 5, 6].map((n) => `<article class="panel"><span class="step">0${n}</span><h2>${esc(t(lang, /** @type {any} */ (`m${n}t`)))}</h2><p>${esc(t(lang, /** @type {any} */ (`m${n}`)))}</p></article>`).join('');
+  const rules = [1, 2, 3, 4, 5, 6, 7].map((n) => `<article class="panel"><span class="step">0${n}</span><h2>${esc(t(lang, /** @type {any} */ (`m${n}t`)))}</h2><p>${esc(t(lang, /** @type {any} */ (`m${n}`)))}</p></article>`).join('');
   const grades = Object.values(meta.grades).map((/** @type {any} */ g) => `<dt>${esc(g.label)}</dt><dd>${esc(g.description)}</dd>`).join('');
   return `<h1>${esc(t(lang, 'methodTitle'))}</h1><p class="lead">${esc(t(lang, 'methodIntro'))}</p><div class="grid">${rules}</div>
     <section class="panel"><h2>${esc(t(lang, 'gradesHeading'))}</h2><dl class="defs">${grades}</dl></section>

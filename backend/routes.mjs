@@ -5,7 +5,7 @@
 import { CLAIM_STATUSES, SOURCE_TYPES } from './schema.mjs';
 import { CITATION_FILES, CITATION_FORMATS, formatCitations, isCitationFormat } from './cite.mjs';
 import { linkedSources } from './pipeline.mjs';
-import { MAX_QUERY_LENGTH, claimDetailView, listClaims, listSources, metaView, searchView, sourceDetailView } from './views.mjs';
+import { MAX_QUERY_LENGTH, claimDetailView, glossaryView, listChronology, listClaims, listGlossary, listSources, metaView, searchView, sourceDetailView } from './views.mjs';
 import { buildOpenApi } from './openapi.mjs';
 
 export class HttpError extends Error {
@@ -195,6 +195,20 @@ const sourceQuery = [
   limitParam, offsetParam,
 ];
 
+/** @type {ParamSpec[]} */
+const glossaryQuery = [
+  { name: 'q', description: 'Words that must all appear in the term, its aliases or its definition.', maxLength: 100 },
+  limitParam, offsetParam,
+];
+
+/** @type {ParamSpec[]} */
+const chronologyQuery = [
+  { name: 'q', description: 'Words that must all appear in the date label or the event.', maxLength: 100 },
+  { name: 'from', description: 'Only events that end in or after this year. Use negative numbers for BC.', type: 'integer', example: 1000 },
+  { name: 'to', description: 'Only events that start in or before this year.', type: 'integer', example: 1500 },
+  limitParam, offsetParam,
+];
+
 const startedAt = Date.now();
 
 /** @type {ParamSpec[]} */
@@ -282,6 +296,30 @@ export const ROUTES = [
     handler: (context) => {
       const source = sourceOr404(context);
       return citationResult([source], readQuery(context.url, [formatParam, downloadParam]), source.id);
+    },
+  },
+  {
+    method: 'GET', path: '/api/v1/glossary', tag: 'Glossary', summary: 'Defined terms. Each says whose reading it gives and how to read it from an African-centred standpoint.', response: 'GlossaryPage',
+    query: glossaryQuery,
+    handler: ({ url, corpus }) => {
+      const query = readQuery(url, glossaryQuery);
+      return { json: listGlossary(corpus, { q: /** @type {string | undefined} */ (query.q), limit: /** @type {number} */ (query.limit), offset: /** @type {number} */ (query.offset) }) };
+    },
+  },
+  {
+    method: 'GET', path: '/api/v1/glossary/:id', tag: 'Glossary', summary: 'One term with its sources.', response: 'GlossaryEntry',
+    handler: (context) => {
+      const entry = (context.corpus.glossary ?? []).find((item) => item.id === context.params.id);
+      if (!entry) throw new HttpError(404, 'not_found', `No term with id ${context.params.id}`);
+      return { json: glossaryView(entry, context.corpus) };
+    },
+  },
+  {
+    method: 'GET', path: '/api/v1/chronology', tag: 'Chronology', summary: 'Dated events in order, each from a cited source, with a framing line.', response: 'ChronologyPage',
+    query: chronologyQuery,
+    handler: ({ url, corpus }) => {
+      const query = readQuery(url, chronologyQuery);
+      return { json: listChronology(corpus, { q: /** @type {string | undefined} */ (query.q), from: /** @type {number | undefined} */ (query.from), to: /** @type {number | undefined} */ (query.to), limit: /** @type {number} */ (query.limit), offset: /** @type {number} */ (query.offset) }) };
     },
   },
   {

@@ -30,7 +30,7 @@ export function parseHash(hash) {
   });
   const query = Object.fromEntries(new URLSearchParams(queryPart));
   const [name = 'home', id] = segments;
-  const known = ['home', 'search', 'explore', 'claim', 'sources', 'source', 'method', 'api'];
+  const known = ['home', 'search', 'explore', 'claim', 'sources', 'source', 'glossary', 'timeline', 'method', 'api'];
   if (!known.includes(name)) return { name: 'notfound', id: undefined, query };
   return { name, id, query };
 }

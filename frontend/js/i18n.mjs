@@ -4,7 +4,7 @@
  */
 export const STRINGS = {
   en: {
-    navSearch: 'Search', navExplore: 'Explore', navSources: 'Sources', navMethod: 'Method', navApi: 'API',
+    navSearch: 'Search', navExplore: 'Explore', navTimeline: 'Timeline', navGlossary: 'Terms', navSources: 'Sources', navMethod: 'Method', navApi: 'API',
     skip: 'Skip to content', brandHome: 'inzulolwazi home',
     eyebrow: 'A living library of African history',
     heroTitle: 'History has a story.', heroEm: 'Evidence gives it depth.',
@@ -49,6 +49,12 @@ export const STRINGS = {
     m5t: 'Contested words get a note', m5: 'Labels such as Khoisan and Bantu have their own history. They need a term-history note before a topic can be published.',
     m6t: 'No tracking of what you ask', m6: 'Searches are not stored with your words. Feedback goes to a public issue you choose to open.',
     gradesHeading: 'Grades',
+    m7t: 'African-centred, and checked', m7: 'Every term and every date carries a line saying how it is read from an African-centred standpoint, and says who the source is. A source from outside Africa is labelled as what it is, and a colonial record is read as what the coloniser claimed. Reviewers check this line before anything is published.',
+    glossaryTitle: 'Terms and definitions', glossaryIntro: 'What a word means, where it came from, and who is saying so. Each term says how to read it from an African-centred standpoint.',
+    timelineTitle: 'Timeline', timelineIntro: 'Dated events, each from a cited source. Events are placed from African history outward, not from the arrival of outsiders.',
+    termsHeading: 'Terms and definitions', timelineHeading: 'On the timeline', framingHeading: 'Read from an African-centred standpoint', alsoCalled: 'Also written',
+    fromYear: 'From year', toYear: 'To year', yearHint: 'Use negative numbers for BC', browseTimeline: 'Browse the timeline', browseTerms: 'Browse the terms',
+    sourcesFor: 'Sources', noEntries: 'Nothing matches these filters.',
     apiTitle: 'Open API', apiIntro: 'The same data this app uses is available as JSON, read-only and open to any website. The full description is in OpenAPI 3.1.',
     apiTry: 'Try it', apiRun: 'Run', apiSpec: 'OpenAPI document', apiEndpoints: 'Endpoints', apiExample: 'Example',
     errorTitle: 'Something went wrong', retry: 'Try again', notFoundTitle: 'Page not found', notFoundText: 'That page does not exist.', goHome: 'Go to the start',

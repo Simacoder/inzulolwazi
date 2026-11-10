@@ -56,9 +56,53 @@ export interface Claim {
   termNotes?: string[];
 }
 
+/** A defined term. It must say whose reading it gives and carry a framing line (AGENTS.md rule 25). */
+export interface GlossaryEntry {
+  id: string;
+  term: string;
+  aliases: string[];
+  definition: { en: string };
+  framing: { en: string };
+  sourceIds: string[];
+}
+
+/** One dated event. Dates come from a cited source, never from memory. */
+export interface ChronologyEntry {
+  id: string;
+  label: string;
+  sortYear: number;
+  endYear?: number;
+  event: { en: string };
+  framing: { en: string };
+  sourceIds: string[];
+}
+
+export interface GlossaryView {
+  id: string;
+  term: string;
+  aliases: string[];
+  definition: string;
+  framing: string;
+  sourceCount: number;
+  sources: SourceView[];
+}
+
+export interface ChronologyView {
+  id: string;
+  label: string;
+  sortYear: number;
+  endYear: number | null;
+  event: string;
+  framing: string;
+  sourceCount: number;
+  sources: SourceView[];
+}
+
 export interface Corpus {
   claims: Claim[];
   sources: Source[];
+  glossary?: GlossaryEntry[];
+  chronology?: ChronologyEntry[];
 }
 
 export interface RankedClaim {
@@ -161,6 +205,7 @@ export interface ClaimView {
   newestSourceYear: number | null;
   reviewers: Reviewer[];
   contestedTerms: string[];
+  termNotes: string[];
   readiness: Readiness;
 }
 
@@ -197,6 +242,8 @@ export interface SearchView {
   citations: Citation[];
   results: SearchResultView[];
   /** Topics to try when nothing matched. */
+  terms: GlossaryView[];
+  timeline: ChronologyView[];
   suggestions: { id: string; topic: string }[];
   retrieval: { method: 'tfidf-local'; model: null; threshold: number };
 }

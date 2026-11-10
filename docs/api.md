@@ -14,6 +14,12 @@ Read-only JSON API, versioned under `/api/v1`. Open to any website (CORS `*`). T
 | GET | `/sources/{id}` | One source and the topics that cite it |
 | GET | `/sources/{id}/cite` | One citation |
 
+| GET | `/glossary` | Defined terms. Filter: `q`, `limit`, `offset` |
+| GET | `/glossary/{id}` | One term with sources and its African-centred framing |
+| GET | `/chronology` | Dated events in order. Filters: `q`, `from`, `to` (years, negative for BC), `limit`, `offset` |
+
+Search responses also carry `terms` and `timeline` arrays: terms whose name, alias or definition match the question, and events matching its words or a year it names.
+
 Citation endpoints take `format=text|bibtex|ris` and `download=true` for a file download.
 
 ## Behaviour

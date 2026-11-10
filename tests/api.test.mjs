@@ -132,8 +132,7 @@ test('claims list rejects bad parameters', async () => {
 });
 
 test('a claim carries its sources, labelled translation and readiness checklist', async () => {
-  const { json: list } = await api('/api/v1/claims');
-  const id = list.items[0].id;
+  const id = 'claim_khoisan_term';
   const { response, json } = await api(`/api/v1/claims/${id}`);
   assert.equal(response.status, 200);
   assert.equal(json.id, id);
@@ -276,4 +275,62 @@ test('legacy routes still work next to v1', async () => {
   assert.ok(Array.isArray(claims.json));
   const search = await api('/api/search', { method: 'POST', body: JSON.stringify({ question: 'pyramids' }) });
   assert.equal(search.response.status, 200);
+});
+
+test('the Bantu topic carries its term-history note and two distinct sources, and the page shows the note', async () => {
+  const { json } = await api('/api/v1/claims/claim_bantu_language_history');
+  assert.ok(json.termNotes.length >= 1);
+  assert.equal(json.sources.length, 2);
+  assert.ok(json.readiness.checks.find((/** @type {any} */ c) => c.id === 'terms').done);
+  assert.ok(json.readiness.checks.find((/** @type {any} */ c) => c.id === 'sources').done);
+  assert.equal(json.status, 'draft');
+});
+
+test('Williams is recorded as critical commentary, never as primary evidence', async () => {
+  const { json } = await api('/api/v1/sources/src_williams_destruction_1987');
+  assert.equal(json.sourceType, 'critical_commentary');
+  assert.match(json.summary, /not primary evidence/i);
+});
+
+test('glossary lists terms and returns one with its framing and sources', async () => {
+  const list = await api('/api/v1/glossary');
+  assert.equal(list.response.status, 200);
+  assert.ok(list.json.total >= 3);
+  const filtered = await api('/api/v1/glossary?q=hamitic');
+  assert.deepEqual(filtered.json.items.map((/** @type {any} */ t) => t.id), ['term_hamitic_theory']);
+  const one = await api('/api/v1/glossary/term_bantu');
+  assert.equal(one.response.status, 200);
+  assert.ok(one.json.framing.length > 20);
+  assert.ok(one.json.sources.length >= 2);
+  assert.equal((await api('/api/v1/glossary/nope')).response.status, 404);
+});
+
+test('chronology is ordered, filters by year and rejects bad years', async () => {
+  const all = await api('/api/v1/chronology');
+  const years = all.json.items.map((/** @type {any} */ e) => e.sortYear);
+  assert.deepEqual(years, [...years].sort((a, b) => a - b));
+  assert.ok(all.json.items.every((/** @type {any} */ e) => e.framing.length > 20 && e.sourceCount >= 1));
+  const window = await api('/api/v1/chronology?from=1500&to=1900');
+  assert.ok(window.json.items.length >= 1);
+  assert.ok(window.json.items.every((/** @type {any} */ e) => (e.endYear ?? e.sortYear) >= 1500 && e.sortYear <= 1900));
+  assert.equal((await api('/api/v1/chronology?from=abc')).response.status, 400);
+});
+
+test('search finds terms by name, alias and meaning, and events by year or century', async () => {
+  const bantu = await api('/api/v1/search?q=Bantu');
+  assert.ok(bantu.json.terms.some((/** @type {any} */ t) => t.id === 'term_bantu'));
+  const alias = await api(`/api/v1/search?q=${encodeURIComponent('what is the house in stone')}`);
+  assert.ok(alias.json.terms.some((/** @type {any} */ t) => t.id === 'term_great_zimbabwe_name'));
+  const year = await api('/api/v1/search?q=1862');
+  assert.ok(year.json.timeline.some((/** @type {any} */ e) => e.id === 'time_bleek_bantu_label'));
+  const century = await api(`/api/v1/search?q=${encodeURIComponent('14th century')}`);
+  assert.ok(century.json.timeline.some((/** @type {any} */ e) => e.id === 'time_great_zimbabwe_built'));
+});
+
+test('every term and dated event has an African-centred framing line and a source', async () => {
+  const corpus = await loadCorpus();
+  for (const entry of [...(corpus.glossary ?? []), ...(corpus.chronology ?? [])]) {
+    assert.ok(entry.framing.en.length > 20, entry.id);
+    assert.ok(entry.sourceIds.length >= 1, entry.id);
+  }
 });

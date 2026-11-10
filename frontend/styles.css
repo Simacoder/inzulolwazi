@@ -79,3 +79,11 @@ code{font-family:ui-monospace,Menlo,monospace;font-size:.9em;word-break:break-al
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;scroll-behavior:auto!important}}
 @media print{.topbar,.footer,.no-print,.zu-note,.skip,.searchbox,.tabs,.actions{display:none!important}body{background:#fff;color:#000;font-size:11pt}.panel,.card{border:1px solid #999;background:#fff;break-inside:avoid}a{color:#000}main{padding:0}}
 [tabindex="-1"]:focus{outline:none}
+
+.stack{display:grid;gap:1rem}
+.framing{border-left:4px solid var(--accent);padding-left:.8rem;color:var(--text);font-size:.95rem}
+.timeline{display:grid;gap:1rem;border-left:3px solid var(--ink);padding-left:1.2rem;margin-left:.4rem}
+.event{position:relative}.event::before{content:"";position:absolute;left:calc(-1.2rem - 9px);top:.35rem;width:15px;height:15px;border-radius:50%;background:var(--accent);border:3px solid var(--paper)}
+.when{font:600 1.15rem "Playfair Display",serif;color:var(--ink);margin:0 0 .35rem}
+.term a.chip{text-decoration:none}
+#results>*+*{margin-top:1.5rem}

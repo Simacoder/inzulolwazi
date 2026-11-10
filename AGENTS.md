@@ -5,7 +5,7 @@ Rules for any coding agent working in this repo. Read this first. App name: `inz
 ## What this project is
 `inzulolwazi` helps people discover African history told by Africans, with the evidence shown. Users ask a question or search a topic and get an answer drawn only from a curated, citable corpus. Every claim carries a grade and its evidence types. Answers can be read in English or machine-translated into isiZulu. The hackathon track is Discovery & Audience, with Truth, Authorship & Ownership as a secondary angle.
 
-This is a proof of concept for 5 claims, not a production system. Do not build features that are not in `docs/architecture.md`.
+This is a proof of concept for 6 topics (the 5 in the design brief plus African-centred history, added by the project owner), not a production system. Do not build features that are not in `docs/architecture.md`.
 
 ## Commands
 Keep these current. Node.js 22 was used to run the checks.
@@ -55,6 +55,7 @@ Run `npm run check` before declaring any task done.
 22. Report evaluation results per language and per claim. Never average across languages.
 23. Do not add dependencies without noting the reason in the PR or commit message.
 24. Do not claim something works until you have run it.
+25. **African-centred, always.** Every claim, term and dated event states how it is read from an African-centred standpoint (`rationale` or `framing`) and who the source is. Outside or colonial material is included only as what it is: a record of what outsiders claimed, labelled with its type, placed after African history in the timeline. The validator fails an entry with no framing line.
 
 ## Definition of done
 - Lint, type check, tests, and content validation pass.

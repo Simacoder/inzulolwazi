@@ -2,66 +2,228 @@
   {
     "id": "claim_khoisan_term",
     "topic": "Khoisan term history",
-    "keywords": ["khoisan", "khoesan", "khoikhoi", "khoekhoe", "san", "khoi", "term", "label", "identity"],
-    "keywordsZu": ["igama", "ubuwena", "umlando"],
+    "keywords": [
+      "khoisan",
+      "khoesan",
+      "khoikhoi",
+      "khoekhoe",
+      "san",
+      "khoi",
+      "term",
+      "label",
+      "identity"
+    ],
+    "keywordsZu": [
+      "igama",
+      "ubuwena",
+      "umlando"
+    ],
     "status": "draft",
     "grade": "draft",
-    "statement": { "en": "Research draft: examine how the collective term ‘Khoisan’ was formed and used; do not treat it as a single identity for distinct communities." },
-    "rationale": { "en": "Starter framing from the design brief. Source review and community-sensitive editorial review are required." },
-    "sourceIds": ["src_khoisan_term_history"],
+    "statement": {
+      "en": "Research draft: examine how the collective term ‘Khoisan’ was formed and used; do not treat it as a single identity for distinct communities."
+    },
+    "rationale": {
+      "en": "Starter framing from the design brief. Source review and community-sensitive editorial review are required."
+    },
+    "sourceIds": [
+      "src_khoisan_term_history",
+      "src_hadebe_colonial_race_2025"
+    ],
     "reviewers": [],
-    "translation": { "zu": "Umbhalo osalungiswa: cwaninga ukuthi igama elihlanganisayo elithi ‘Khoisan’ lakhiwa futhi lasetshenziswa kanjani; ungalisebenzisi njengokungathi lichaza ubuwena obubodwa bemiphakathi ehlukene.", "method": "machine", "reviewedBy": null }
+    "translation": {
+      "zu": "Umbhalo osalungiswa: cwaninga ukuthi igama elihlanganisayo elithi ‘Khoisan’ lakhiwa futhi lasetshenziswa kanjani; ungalisebenzisi njengokungathi lichaza ubuwena obubodwa bemiphakathi ehlukene.",
+      "method": "machine",
+      "reviewedBy": null
+    },
+    "termNotes": [
+      "The sources here disagree on how to read 'Khoisan'. Staphorst (2021) discusses the naming choices scholars made when they studied nineteenth-century |xam narratives, and notes the collective label's historical uses. Hadebe (2025), an opinion column, argues the label belongs to colonial classification and that a 'First Nation' identity built on it risks reviving colonial divisions. Neither is a source for how any community names itself, so listen to those communities first."
+    ]
   },
   {
     "id": "claim_giza_builders",
     "topic": "Pyramids at Giza",
-    "keywords": ["pyramids", "giza", "egypt", "builders", "workers", "tombs", "archaeology"],
-    "keywordsZu": ["obani", "abakha", "amaphiramidi", "abasebenzi"],
+    "keywords": [
+      "pyramids",
+      "giza",
+      "egypt",
+      "builders",
+      "workers",
+      "tombs",
+      "archaeology"
+    ],
+    "keywordsZu": [
+      "obani",
+      "abakha",
+      "amaphiramidi",
+      "abasebenzi"
+    ],
     "status": "draft",
     "grade": "draft",
-    "statement": { "en": "Research draft: describe the Giza pyramids within ancient Egyptian history and use excavated settlement evidence carefully when discussing the people who built them." },
-    "rationale": { "en": "Starter framing from the design brief. Specific claims about workforce size and working conditions need source review." },
-    "sourceIds": ["src_giza_lehner_2001"],
+    "statement": {
+      "en": "Research draft: describe the Giza pyramids within ancient Egyptian history and use excavated settlement evidence carefully when discussing the people who built them."
+    },
+    "rationale": {
+      "en": "Starter framing from the design brief. Specific claims about workforce size and working conditions need source review."
+    },
+    "sourceIds": [
+      "src_giza_lehner_2001"
+    ],
     "reviewers": [],
-    "translation": { "zu": "Umbhalo osalungiswa: chaza amaphiramidi aseGiza emlandweni waseGibhithe lasendulo, futhi usebenzise ngokucophelela ubufakazi bezindawo zokuhlala ezambiwa lapho ukhuluma ngabantu abawakhayo.", "method": "machine", "reviewedBy": null }
+    "translation": {
+      "zu": "Umbhalo osalungiswa: chaza amaphiramidi aseGiza emlandweni waseGibhithe lasendulo, futhi usebenzise ngokucophelela ubufakazi bezindawo zokuhlala ezambiwa lapho ukhuluma ngabantu abawakhayo.",
+      "method": "machine",
+      "reviewedBy": null
+    }
   },
   {
     "id": "claim_counting_bones",
     "topic": "Lebombo and Ishango bones",
-    "keywords": ["lebombo", "ishango", "bones", "notches", "counting", "mathematics", "maths", "artefact"],
-    "keywordsZu": ["amathambo", "izimpawu", "ukubala", "izibalo"],
+    "keywords": [
+      "lebombo",
+      "ishango",
+      "bones",
+      "notches",
+      "counting",
+      "mathematics",
+      "maths",
+      "artefact"
+    ],
+    "keywordsZu": [
+      "amathambo",
+      "izimpawu",
+      "ukubala",
+      "izibalo"
+    ],
     "status": "draft",
     "grade": "draft",
-    "statement": { "en": "Research draft: distinguish the age and markings of the artefacts from claims about what their markings meant." },
-    "rationale": { "en": "Starter framing from the design brief. Locate and review archaeological publications before making a claim about counting or mathematics." },
-    "sourceIds": ["src_lebombo_border_cave_derrico_2012"],
+    "statement": {
+      "en": "Research draft: distinguish the age and markings of the artefacts from claims about what their markings meant."
+    },
+    "rationale": {
+      "en": "Starter framing from the design brief. Locate and review archaeological publications before making a claim about counting or mathematics."
+    },
+    "sourceIds": [
+      "src_lebombo_border_cave_derrico_2012"
+    ],
     "reviewers": [],
-    "translation": { "zu": "Umbhalo osalungiswa: hlukanisa ubudala nezimpawu zezinto ezitholakele nezimangalo mayelana nencazelo yalezo zimpawu.", "method": "machine", "reviewedBy": null }
+    "translation": {
+      "zu": "Umbhalo osalungiswa: hlukanisa ubudala nezimpawu zezinto ezitholakele nezimangalo mayelana nencazelo yalezo zimpawu.",
+      "method": "machine",
+      "reviewedBy": null
+    }
   },
   {
     "id": "claim_bantu_language_history",
     "topic": "Language history and Bantu",
-    "keywords": ["bantu", "languages", "linguistics", "migration", "expansion", "classification", "term"],
-    "keywordsZu": ["izilimi", "ukufuduka", "umlando"],
+    "keywords": [
+      "abantu",
+      "apartheid",
+      "bantu",
+      "bleek",
+      "classification",
+      "expansion",
+      "languages",
+      "linguistics",
+      "migration",
+      "misnomer",
+      "term"
+    ],
+    "keywordsZu": [
+      "izilimi",
+      "ukufuduka",
+      "umlando"
+    ],
     "status": "draft",
     "grade": "draft",
-    "statement": { "en": "Research draft: separate the linguistic classification of related languages from debated reconstructions of population movement." },
-    "rationale": { "en": "Starter framing from the design brief. A term-history note and review of competing models are required." },
-    "sourceIds": ["src_bantu_classification_review"],
+    "statement": {
+      "en": "Research draft: separate the linguistic classification of related languages from debated reconstructions of population movement."
+    },
+    "rationale": {
+      "en": "Starter framing from the design brief. A term-history note and review of competing models are required."
+    },
+    "sourceIds": [
+      "src_bantu_classification_review",
+      "src_vanderwaal_bantu_2011"
+    ],
     "reviewers": [],
-    "translation": { "zu": "Umbhalo osalungiswa: hlukanisa ukuhlukaniswa kwezilimi ezihlobene nokwakhiwa kabusha komlando wokufuduka kwabantu, okuyimpikiswano.", "method": "machine", "reviewedBy": null }
+    "translation": {
+      "zu": "Umbhalo osalungiswa: hlukanisa ukuhlukaniswa kwezilimi ezihlobene nokwakhiwa kabusha komlando wokufuduka kwabantu, okuyimpikiswano.",
+      "method": "machine",
+      "reviewedBy": null
+    },
+    "termNotes": [
+      "According to van der Waal (2011), 'Bantu' entered scholarship as a language-family label in a nineteenth-century grammar, built on a Zulu word for people. Later anthropology and apartheid-era policy used it as a name for peoples, and that use is why many South Africans find it offensive. Read the label as a linguistic term first, and treat claims about 'Bantu peoples' with care."
+    ]
   },
   {
     "id": "claim_great_zimbabwe_trade",
     "topic": "Trade and Great Zimbabwe",
-    "keywords": ["great", "zimbabwe", "trade", "archaeology", "porcelain", "beads", "kilwa"],
-    "keywordsZu": ["ukuhwebelana", "ubufakazi", "ukuxhumana"],
+    "keywords": [
+      "great",
+      "zimbabwe",
+      "trade",
+      "archaeology",
+      "porcelain",
+      "beads",
+      "kilwa"
+    ],
+    "keywordsZu": [
+      "ukuhwebelana",
+      "ubufakazi",
+      "ukuxhumana"
+    ],
     "status": "draft",
     "grade": "draft",
-    "statement": { "en": "Research draft: use archaeological finds to explain Great Zimbabwe’s regional and long-distance connections, and distinguish evidence from later claims about the site’s origins." },
-    "rationale": { "en": "The UNESCO site record is a starting source. Add independent archaeological research and reviewer sign-off before assigning a grade." },
-    "sourceIds": ["src_unesco_great_zimbabwe", "src_great_zimbabwe_vieri_2023"],
+    "statement": {
+      "en": "Research draft: use archaeological finds to explain Great Zimbabwe’s regional and long-distance connections, and distinguish evidence from later claims about the site’s origins."
+    },
+    "rationale": {
+      "en": "The UNESCO site record is a starting source. Add independent archaeological research and reviewer sign-off before assigning a grade."
+    },
+    "sourceIds": [
+      "src_unesco_great_zimbabwe",
+      "src_great_zimbabwe_vieri_2023"
+    ],
     "reviewers": [],
-    "translation": { "zu": "Umbhalo osalungiswa: sebenzisa izinto ezitholwe abavubukuli ukuchaza ukuxhumana kwesifunda nokukude kweGreat Zimbabwe, futhi uhlukanise ubufakazi nezimangalo zakamuva ngemvelaphi yalesi siza.", "method": "machine", "reviewedBy": null }
+    "translation": {
+      "zu": "Umbhalo osalungiswa: sebenzisa izinto ezitholwe abavubukuli ukuchaza ukuxhumana kwesifunda nokukude kweGreat Zimbabwe, futhi uhlukanise ubufakazi nezimangalo zakamuva ngemvelaphi yalesi siza.",
+      "method": "machine",
+      "reviewedBy": null
+    }
+  },
+  {
+    "id": "claim_african_centred_history",
+    "topic": "African-centred history (Chancellor Williams)",
+    "keywords": [
+      "williams",
+      "chancellor",
+      "destruction",
+      "civilization",
+      "civilisation",
+      "african-centred",
+      "afrocentric"
+    ],
+    "keywordsZu": [
+      "abansundu",
+      "imvelaphi"
+    ],
+    "status": "draft",
+    "grade": "draft",
+    "statement": {
+      "en": "Research draft: present Chancellor Williams's book as an African-centred interpretation of Black Africa's past, attribute each point to him, and read it beside archaeological, linguistic and genetic evidence."
+    },
+    "rationale": {
+      "en": "Added because this perspective is central to the project. The book is recorded as critical commentary, not primary evidence. Any specific claim taken from it needs a page reference, a second source, and reviewer sign-off before it can be published."
+    },
+    "sourceIds": [
+      "src_williams_destruction_1987"
+    ],
+    "reviewers": [],
+    "translation": {
+      "zu": "Umbhalo osalungiswa: nikeza incwadi ka-Chancellor Williams njengencazelo egxile e-Afrika yesikhathi esedlule sabantu abansundu base-Afrika, uyibhekise kuye ngamunye umbono, futhi uyifunde eduze kobufakazi bokuvubukula, bezilimi nobofuzo.",
+      "method": "machine",
+      "reviewedBy": null
+    }
   }
 ]
