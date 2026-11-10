@@ -81,6 +81,14 @@ code{font-family:ui-monospace,Menlo,monospace;font-size:.9em;word-break:break-al
 [tabindex="-1"]:focus{outline:none}
 
 .discovery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:1rem}
+.comparison-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);background:var(--card)}
+.comparison-table{width:100%;min-width:760px;border-collapse:collapse;font-size:.92rem}
+.comparison-table th,.comparison-table td{padding:.8rem .9rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.comparison-table thead th{background:var(--ink);color:var(--paper);font-size:.82rem}
+.comparison-table tbody th{min-width:210px;color:var(--ink)}
+.comparison-table tbody th span{display:block;margin-top:.2rem;color:var(--muted);font-size:.8rem;font-weight:400}
+.comparison-table tbody tr:last-child>*{border-bottom:0}
+.comparison-scroll:focus-visible{outline:3px solid var(--focus);outline-offset:3px}
 .discovery-card h2{font-size:1.25rem;margin-bottom:.55rem}
 .discovery-card .eyebrow{font-size:.72rem;letter-spacing:.07em}
 .factor-list{margin:.2rem 0;padding-left:1.25rem;color:var(--muted);font-size:.92rem}

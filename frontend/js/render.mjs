@@ -294,6 +294,7 @@ export function apiView(lang, spec, meta) {
 /** @param {Lang} lang @param {any[]} cases */
 export function discoveryView(lang, cases) {
   const languageNote = lang === 'zu' ? '<p class="panel language-note" lang="zu">Leli khasi le-Discovery litholakala ngesiNgisi okwamanje.</p>' : '';
+  const comparisonRows = cases.map((item) => `<tr><th scope="row"><strong>${esc(item.title)}</strong><span>${esc(item.period)} · ${esc(item.region)}</span></th><td>${esc(item.comparison.work)}</td><td>${esc(item.comparison.support)}<br /><span class="muted">${esc(item.comparison.circulation)}</span></td><td>${esc(item.comparison.limit)}</td></tr>`).join('');
   const cards = cases.map((item) => `<article class="card discovery-card" id="${esc(item.id)}">
       <p class="eyebrow">${esc(item.region)} · ${esc(item.period)}</p>
       <h2>${esc(item.title)}</h2><p>${esc(item.finding)}</p>
@@ -304,6 +305,7 @@ export function discoveryView(lang, cases) {
   return `<div class="discovery-page" lang="en">${languageNote}<section class="hero hero-compact"><p class="eyebrow">inzulolwazi · Discover</p><h1>${esc(t(lang, 'discoveryTitle'))}</h1><p class="lead">${esc(t(lang, 'discoveryIntro'))}</p></section>
     <section class="panel note"><h2>${esc(t(lang, 'discoveryMethodTitle'))}</h2><p>${esc(t(lang, 'discoveryMethod'))}</p></section>
     <section class="panel african-frame"><h2>${esc(t(lang, 'africanFrameTitle'))}</h2><p>${esc(t(lang, 'africanFrameText'))}</p></section>
+    <section class="comparison-section"><h2>${esc(t(lang, 'comparisonTitle'))}</h2><div class="comparison-scroll" tabindex="0" role="region" aria-label="Scrollable comparative case table"><table class="comparison-table"><thead><tr><th scope="col">${esc(t(lang, 'comparisonCase'))}</th><th scope="col">${esc(t(lang, 'comparisonWork'))}</th><th scope="col">${esc(t(lang, 'comparisonSupport'))}</th><th scope="col">${esc(t(lang, 'comparisonLimit'))}</th></tr></thead><tbody>${comparisonRows}</tbody></table></div></section>
     <section class="discovery-grid" aria-label="Comparative historical case studies">${cards}</section>
     <section class="panel protagoras"><h2>${esc(t(lang, 'protagorasTitle'))}</h2><p>${esc(t(lang, 'protagorasText'))} <a rel="noopener" target="_blank" href="https://atlas.perseus.tufts.edu/library/passage/urn%3Acts%3AgreekLit%3Atlg0059.tlg006.perseus-eng2%3A152-156/">Plato, Theaetetus 152a ↗</a></p></section>
     ${discoveryQuizView(lang)}</div>`;
