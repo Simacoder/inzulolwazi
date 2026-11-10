@@ -2,7 +2,7 @@
  * inzulolwazi front end: hash routes, live search, filters, citations.
  * Pages are built by pure functions in js/render.js. This file only handles the browser: fetching, focus and events.
  */
-import { api, ApiError } from './js/api.mjs';
+import { api, apiUrl, ApiError } from './js/api.mjs';
 import { t } from './js/i18n.mjs';
 import { debounce, parseHash, buildHash } from './js/util.mjs';
 import * as view from './js/render.mjs';
@@ -135,7 +135,7 @@ async function render() {
       show(view.discoveryView(state.lang, DISCOVERY_CASES), t(state.lang, 'discoveryTitle'));
       paintLocalLeaderboard();
     } else if (name === 'api') {
-      const res = await fetch('/api/v1/openapi.json', { signal });
+      const res = await fetch(apiUrl('/api/v1/openapi.json'), { signal });
       show(view.apiView(state.lang, await res.json(), meta), t(state.lang, 'apiTitle'));
     } else {
       show(view.notFoundView(state.lang), t(state.lang, 'notFoundTitle'));
@@ -267,7 +267,7 @@ document.addEventListener('click', async (event) => {
       const out = /** @type {HTMLElement} */ (main.querySelector('[data-api-out]'));
       out.textContent = t(state.lang, 'loading');
       try {
-        const res = await fetch(String(run.dataset.apiRun));
+        const res = await fetch(apiUrl(String(run.dataset.apiRun)));
         const text = await res.text();
         try { out.textContent = JSON.stringify(JSON.parse(text), null, 2).slice(0, 6000); } catch { out.textContent = text.slice(0, 6000); }
       } catch { out.textContent = 'Network error'; }

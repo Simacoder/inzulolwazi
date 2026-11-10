@@ -16,6 +16,7 @@ Keep these current. Node.js 22 was used to run the checks.
 - Tests: `npm test`
 - Validate content (corpus, claims, translations): `npm run validate:content`
 - Run evaluation: `npm run eval` (writes `eval/results/latest.md` and `eval/results/translation-review.csv`)
+- Build the static frontend for separate hosting: `API_BASE_URL=https://... npm run build:frontend`
 - Everything at once: `npm run check`
 
 Run `npm run check` before declaring any task done.

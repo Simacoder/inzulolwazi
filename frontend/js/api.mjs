@@ -1,4 +1,9 @@
+import { API_BASE } from './config.mjs';
+
 /** Thin client for the /api/v1 endpoints. Errors carry the code and message the API sent. */
+
+/** @param {string} path A path that starts with /api/v1. */
+export const apiUrl = (path) => `${API_BASE}${path}`;
 
 export class ApiError extends Error {
   /**
@@ -20,7 +25,7 @@ export class ApiError extends Error {
 async function request(path, options = {}) {
   let response;
   try {
-    response = await fetch(`/api/v1${path}`, {
+    response = await fetch(`${API_BASE}/api/v1${path}`, {
       signal: options.signal,
       method: options.method ?? 'GET',
       headers: options.body ? { 'content-type': 'application/json' } : undefined,
@@ -63,5 +68,5 @@ export const api = {
   /** @param {string} kind @param {string} id @param {string} format */
   cite: (kind, id, format) => request(`/${kind}/${encodeURIComponent(id)}/cite${qs({ format })}`).then((r) => r.text()),
   /** Link that downloads a citation file. @param {string} kind @param {string} id @param {string} format */
-  citeDownloadUrl: (kind, id, format) => `/api/v1/${kind}/${encodeURIComponent(id)}/cite${qs({ format, download: 'true' })}`,
+  citeDownloadUrl: (kind, id, format) => `${API_BASE}/api/v1/${kind}/${encodeURIComponent(id)}/cite${qs({ format, download: 'true' })}`,
 };

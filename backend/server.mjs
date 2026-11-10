@@ -41,6 +41,20 @@ async function bodyJson(request) {
 }
 
 /**
+ * The address to rate-limit. Behind a trusted proxy (Render), the last X-Forwarded-For entry is the client
+ * as that proxy saw it. Entries before it can be forged, so they are ignored.
+ * @param {import('node:http').IncomingMessage} request
+ * @param {boolean} trustProxy
+ */
+export function clientAddress(request, trustProxy) {
+  if (trustProxy) {
+    const forwarded = String(request.headers['x-forwarded-for'] ?? '').split(',').map((part) => part.trim()).filter(Boolean);
+    if (forwarded.length) return forwarded[forwarded.length - 1];
+  }
+  return request.socket.remoteAddress ?? 'unknown';
+}
+
+/**
  * @param {import('node:http').ServerResponse} response
  * @param {number} status
  * @param {unknown} payload
@@ -61,12 +75,13 @@ function sendJson(response, status, payload, headers = {}) {
 const sendError = (response, status, code, message, headers) => sendJson(response, status, { error: { code, message } }, headers);
 
 /**
- * @param {{ repository?: string, log?: (entry: Record<string, unknown>) => void, rateLimitPerMinute?: number, now?: () => number }} [options]
+ * @param {{ repository?: string, log?: (entry: Record<string, unknown>) => void, rateLimitPerMinute?: number, now?: () => number, trustProxy?: boolean }} [options]
  */
 export function createAppServer(options = {}) {
   const config = {
     repository: options.repository ?? process.env.REPO_URL ?? DEFAULT_REPOSITORY,
     log: options.log ?? (() => {}),
+    trustProxy: options.trustProxy ?? process.env.TRUST_PROXY === 'true',
   };
   const limiter = createRateLimiter({
     limit: options.rateLimitPerMinute ?? (Number(process.env.RATE_LIMIT_PER_MINUTE) || 120),
@@ -95,7 +110,7 @@ export function createAppServer(options = {}) {
           response.end();
           return;
         }
-        const verdict = limiter.check(request.socket.remoteAddress ?? 'unknown');
+        const verdict = limiter.check(clientAddress(request, config.trustProxy));
         response.setHeader('x-ratelimit-limit', String(verdict.limit));
         response.setHeader('x-ratelimit-remaining', String(verdict.remaining));
         if (!verdict.allowed) {
@@ -169,6 +184,8 @@ export function createAppServer(options = {}) {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const port = Number(process.env.PORT || 3000);
+  // Locally the server listens on this machine only. A host such as Render sets HOST=0.0.0.0 so its router can reach it.
+  const host = process.env.HOST || '127.0.0.1';
   const log = (/** @type {Record<string, unknown>} */ entry) => console.log(JSON.stringify(entry));
-  createAppServer({ log }).listen(port, '127.0.0.1', () => console.log(`inzulolwazi listening at http://localhost:${port}`));
+  createAppServer({ log }).listen(port, host, () => console.log(`inzulolwazi listening on ${host}:${port}`));
 }

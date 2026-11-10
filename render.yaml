@@ -1,0 +1,22 @@
+# Render Blueprint: the backend (API, search and the in-process TF-IDF retrieval).
+# It also serves the frontend, so this one service is a complete deployment on its own.
+services:
+  - type: web
+    name: inzulolwazi-api
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /api/v1/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 22
+      - key: HOST
+        value: 0.0.0.0
+      - key: TRUST_PROXY
+        value: "true"
+      - key: RATE_LIMIT_PER_MINUTE
+        value: 120
+      - key: REPO_URL
+        value: https://github.com/Simacoder/inzulolwazi

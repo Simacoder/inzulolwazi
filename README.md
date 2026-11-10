@@ -13,6 +13,10 @@ The visual palette is Arid Mirage: twilight blue `#1A365D`, desert sand `#E2D4C9
 - Copy or download citations as plain text, BibTeX or RIS. Print a topic. Share a link.
 - Use the same data through the open JSON API: see `docs/api.md` and `/api/v1/openapi.json`.
 
+## Deploy
+
+See `docs/deployment.md`: the backend on Render (`render.yaml`) and the frontend on Vercel (`vercel.json`), or Render alone.
+
 ## Run
 
 The app has no runtime dependencies. The checks were run on Node.js 22.
