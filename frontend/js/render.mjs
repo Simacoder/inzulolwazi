@@ -4,6 +4,7 @@
  */
 import { esc, highlight, buildHash } from './util.mjs';
 import { t } from './i18n.mjs';
+import { LENS_QUESTIONS, QUIZ_QUESTIONS } from './discovery.mjs';
 
 /** @typedef {'en' | 'zu'} Lang */
 
@@ -288,4 +289,50 @@ export function apiView(lang, spec, meta) {
     <div class="actions"><a class="button" href="/api/v1/openapi.json" target="_blank" rel="noopener">${esc(t(lang, 'apiSpec'))} ↗</a></div>
     <section class="panel"><h2>${esc(t(lang, 'apiExample'))}</h2><pre class="cite-out" tabindex="0">curl "${esc('https://YOUR-HOST')}/api/v1/search?q=pyramids"</pre></section>
     <section><h2>${esc(t(lang, 'apiEndpoints'))}</h2><ul class="plain endpoints">${list}</ul><pre class="cite-out" tabindex="0" data-api-out aria-live="polite">${esc(t(lang, 'apiTry'))}…</pre></section>`;
+}
+
+/** @param {Lang} lang @param {any[]} cases */
+export function discoveryView(lang, cases) {
+  const languageNote = lang === 'zu' ? '<p class="panel language-note" lang="zu">Leli khasi le-Discovery litholakala ngesiNgisi okwamanje.</p>' : '';
+  const cards = cases.map((item) => `<article class="card discovery-card" id="${esc(item.id)}">
+      <p class="eyebrow">${esc(item.region)} · ${esc(item.period)}</p>
+      <h2>${esc(item.title)}</h2><p>${esc(item.finding)}</p>
+      <p class="framing"><strong>${esc(t(lang, 'framingHeading'))}.</strong> ${esc(item.lens)}</p>
+      <ul class="factor-list">${item.factors.map((factor) => `<li>${esc(factor)}</li>`).join('')}</ul>
+      <div class="chips">${item.sources.map((source) => `<a class="chip chip-type" rel="noopener" target="_blank" href="${esc(source.url)}">${esc(source.label)} ↗</a>`).join('')}</div>
+    </article>`).join('');
+  return `<div class="discovery-page" lang="en">${languageNote}<section class="hero hero-compact"><p class="eyebrow">inzulolwazi · Discover</p><h1>${esc(t(lang, 'discoveryTitle'))}</h1><p class="lead">${esc(t(lang, 'discoveryIntro'))}</p></section>
+    <section class="panel note"><h2>${esc(t(lang, 'discoveryMethodTitle'))}</h2><p>${esc(t(lang, 'discoveryMethod'))}</p></section>
+    <section class="panel african-frame"><h2>${esc(t(lang, 'africanFrameTitle'))}</h2><p>${esc(t(lang, 'africanFrameText'))}</p></section>
+    <section class="discovery-grid" aria-label="Comparative historical case studies">${cards}</section>
+    <section class="panel protagoras"><h2>${esc(t(lang, 'protagorasTitle'))}</h2><p>${esc(t(lang, 'protagorasText'))} <a rel="noopener" target="_blank" href="https://atlas.perseus.tufts.edu/library/passage/urn%3Acts%3AgreekLit%3Atlg0059.tlg006.perseus-eng2%3A152-156/">Plato, Theaetetus 152a ↗</a></p></section>
+    ${discoveryQuizView(lang)}</div>`;
+}
+
+/** @param {Lang} lang */
+function discoveryQuizView(lang) {
+  const questions = QUIZ_QUESTIONS.map((question, index) => `<fieldset class="quiz-question"><legend><span class="step">${String(index + 1).padStart(2, '0')}</span> ${esc(question.prompt)}</legend>
+      ${question.options.map((option, optionIndex) => `<label class="quiz-option"><input type="radio" name="q${index}" value="${optionIndex}" required /><span>${esc(option.text)}</span></label>`).join('')}
+    </fieldset>`).join('');
+  const lensQuestions = LENS_QUESTIONS.map((question, index) => `<fieldset class="quiz-question lens-question"><legend><span class="step">L${index + 1}</span> ${esc(question.prompt)}</legend>
+      ${question.options.map((option, optionIndex) => `<label class="quiz-option"><input type="radio" name="lens${index}" value="${optionIndex}" required /><span>${esc(option.text)}</span></label>`).join('')}
+    </fieldset>`).join('');
+  return `<section class="quiz-section" id="discovery-quiz"><h2>${esc(t(lang, 'quizTitle'))}</h2><p class="lead">${esc(t(lang, 'quizIntro'))}</p>
+      <form class="quiz-form" data-discovery-quiz><h3>Part one · evidence check</h3>${questions}<h3>Part two · choose your lenses</h3><p class="muted">Choose the case or perspective you want to explore. These choices are preferences for this quiz, not fixed traits.</p>${lensQuestions}<button class="button button-primary" type="submit">${esc(t(lang, 'quizSubmit'))}</button></form>
+      <div id="quiz-result" aria-live="polite"></div>
+      <section class="panel leaderboard" id="quiz-leaderboard"><h3>${esc(t(lang, 'leaderboardTitle'))}</h3><p class="muted small">${esc(t(lang, 'leaderboardNote'))}</p><ol data-score-list></ol></section>
+    </section>`;
+}
+
+/** @param {Lang} lang @param {{ correct: number, answers: number[], lensMix: {label: string, count: number}[], leaderboard: {score:number,date:string}[] }} result */
+export function discoveryResultView(lang, result) {
+  const mix = result.lensMix.map((item) => `<li><span>${esc(item.label)}</span><strong>${item.count} ${esc(t(lang, 'lensChoice'))}</strong></li>`).join('');
+  const feedback = QUIZ_QUESTIONS.map((question, index) => {
+    const answer = question.options[result.answers[index]];
+    return `<li><strong>${answer.correct ? '✓' : '↗'} ${esc(answer.text)}</strong><p class="muted small">${esc(answer.why)} <a rel="noopener" target="_blank" href="${esc(question.source.url)}">${esc(question.source.label)} ↗</a></p></li>`;
+  }).join('');
+  const scores = result.leaderboard.map((item) => `<li><strong>${item.score} / ${QUIZ_QUESTIONS.length}</strong><span>${esc(new Date(item.date).toLocaleDateString())}</span></li>`).join('');
+  return `<section class="panel quiz-result"><h3>${esc(t(lang, 'quizScore'))}: ${result.correct} / ${QUIZ_QUESTIONS.length} ${esc(t(lang, 'correctAnswers'))}</h3>
+    <h4>${esc(t(lang, 'quizLensMix'))}</h4><ol class="lens-mix">${mix}</ol><p class="muted small">${esc(t(lang, 'quizNotIdentity'))}</p><h4>Review your answers</h4><ol class="quiz-feedback">${feedback}</ol>
+    ${scores ? `<h4>${esc(t(lang, 'leaderboardTitle'))}</h4><ol class="leaderboard-list">${scores}</ol>` : ''}</section>`;
 }

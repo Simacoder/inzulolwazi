@@ -4,7 +4,7 @@
  */
 export const STRINGS = {
   en: {
-    navSearch: 'Search', navExplore: 'Explore', navTimeline: 'Timeline', navGlossary: 'Terms', navSources: 'Sources', navMethod: 'Method', navApi: 'API',
+    navSearch: 'Search', navExplore: 'Explore', navDiscover: 'Discover', navTimeline: 'Timeline', navGlossary: 'Terms', navSources: 'Sources', navMethod: 'Method', navApi: 'API',
     skip: 'Skip to content', brandHome: 'inzulolwazi home',
     eyebrow: 'African-centred history, grounded in African scholarship',
     heroTitle: 'Africa is the starting point.', heroEm: 'African people shape the story.',
@@ -51,6 +51,18 @@ export const STRINGS = {
     gradesHeading: 'Grades',
     m7t: 'African-centred by design', m7: 'African people, societies and knowledge shape the frame of every topic. We start from African histories and scholarship, name each source and show its limits. Outside and colonial records appear in their own context, as evidence of what their makers recorded or claimed. Reviewers check this framing before publication.',
     glossaryTitle: 'Terms and definitions', glossaryIntro: 'What a word means, where it came from, and who is saying so. Each term says how to read it from an African-centred standpoint.',
+    discoveryTitle: 'How societies built and shared knowledge',
+    discoveryIntro: 'Compare African, Islamic-world, East Asian, European and Russian case studies through the conditions that shaped inquiry: local knowledge, exchange, patronage, institutions, audiences and power. These cases span different regions and centuries; they are not a civilization ranking.',
+    discoveryMethodTitle: 'Compare the conditions that shape discovery',
+    discoveryMethod: 'This comparison looks at possible conditions for discovery: accumulated knowledge, local questions, exchange, patronage, tools, institutions and access. Each case comes from a different time and place, so the examples are not a civilization ranking or a like-for-like statistical sample. A correlation between national power and a period of discovery does not establish that cultural self-focus caused either.',
+    africanFrameTitle: 'What African-centred means here',
+    africanFrameText: 'African-centred inquiry starts from African evidence, scholarship, people and questions when telling African histories. It sets the research agenda and makes African agency visible; it does not assume one African worldview or treat cultural self-focus as a single cause of innovation or political power. We use the same comparative questions across cases: what knowledge existed, who supported it, how it moved, who could participate, and what purposes it served.',
+    quizTitle: 'Take the discovery quiz', quizIntro: 'Test your reading of the evidence and see which historical lenses your choices emphasized. This reflects this quiz session, not your race, ethnicity or identity.',
+    quizSubmit: 'See my results', quizScore: 'Evidence score', quizLensMix: 'Your selected historical lenses', quizNotIdentity: 'This is a transparent tally of your answers, not a machine-learning or personality assessment.',
+    leaderboardTitle: 'Local leaderboard', leaderboardNote: 'Scores are saved only in this browser. No account, name or answers are sent to a server.',
+    quizRequired: 'Answer every question to see your score.', quizQuestion: 'Question', correctAnswers: 'correct', lensChoice: 'emphasis',
+    protagorasTitle: 'A question from ancient Greek philosophy',
+    protagorasText: 'Plato’s Theaetetus attributes “man is the measure of all things” to Protagoras. Treat it as one ancient philosophical argument, not the origin of all European confidence or a complete explanation for later innovation.',
     timelineTitle: 'Timeline', timelineIntro: 'Dated events, each from a cited source. Events are placed from African history outward, not from the arrival of outsiders.',
     termsHeading: 'Terms and definitions', timelineHeading: 'On the timeline', framingHeading: 'Read from an African-centred standpoint', alsoCalled: 'Also written',
     fromYear: 'From year', toYear: 'To year', yearHint: 'Use negative numbers for BC', browseTimeline: 'Browse the timeline', browseTerms: 'Browse the terms',
@@ -62,7 +74,7 @@ export const STRINGS = {
     langSwitch: 'Switch to isiZulu',
   },
   zu: {
-    navSearch: 'Cinga', navExplore: 'Hlola', navSources: 'Imithombo', navMethod: 'Indlela',
+    navSearch: 'Cinga', navExplore: 'Hlola', navDiscover: 'Thola', navSources: 'Imithombo', navMethod: 'Indlela',
     eyebrow: 'Umlando ogxile e-Afrika, usekelwe ezifundweni zase-Afrika',
     heroTitle: 'I-Afrika iyisiqalo.', heroEm: 'Abantu base-Afrika balolonga indaba.',
     heroText: 'Hlola imiphakathi, ulwazi, abakhi nabacabangi base-Afrika ngezifundo zase-Afrika nobufakazi obucashuniwe. I-akhawunti ngayinye iveza imithombo yayo, lokho eyisekelayo, nokungavumelani noma izikhala emlandweni.',

@@ -9,11 +9,11 @@ Status: draft for a hackathon proof of concept. Rewrite sections in your own wor
 **Proof-of-concept loop.**
 question → retrieve from curated corpus → grounded answer with citations → claim grade and evidence types → isiZulu translation with labels → shareable card.
 
-**In scope.** 5 demo claims, about 15 to 25 sources, English and isiZulu, web app (mobile first), share card, evaluation.
+**In scope.** The six starter research topics, about 15 to 25 sources, English and isiZulu, web app (mobile first), share card, evaluation, and the comparative Discovery page with a sourced quiz and browser-local score list.
 
 **Out of scope.** Accounts, social features, native apps, speech, auto language detection, other languages, full-book ingestion.
 
-**Expansion path.** Add isiXhosa, Sesotho, Setswana by configuration; add oral-testimony intake with ASR (isiZulu speech to English); add reviewer tooling; add more claims.
+**Expansion path.** Add isiXhosa, Sesotho, Setswana by configuration; add oral-testimony intake with ASR (isiZulu speech to English); add reviewer tooling; add more claims; consider a server leaderboard only after privacy, moderation and hosting decisions.
 
 ## 2. Design principles
 

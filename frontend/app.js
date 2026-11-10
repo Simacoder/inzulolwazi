@@ -6,11 +6,13 @@ import { api, ApiError } from './js/api.mjs';
 import { t } from './js/i18n.mjs';
 import { debounce, parseHash, buildHash } from './js/util.mjs';
 import * as view from './js/render.mjs';
+import { DISCOVERY_CASES, LENS_QUESTIONS, QUIZ_QUESTIONS, scoreQuiz, updateLocalLeaderboard } from './js/discovery.mjs';
 
 /** @type {{ lang: 'en' | 'zu', meta: any, route: ReturnType<typeof parseHash>, controller: AbortController | null }} */
 const state = { lang: 'en', meta: null, route: parseHash(location.hash), controller: null };
 const main = /** @type {HTMLElement} */ (document.querySelector('#view'));
 const status = /** @type {HTMLElement} */ (document.querySelector('#status'));
+const SCORE_KEY = 'inzulolwazi-discovery-scores-v1';
 
 try { if (localStorage.getItem('lang') === 'zu') state.lang = 'zu'; } catch { /* storage may be blocked */ }
 
@@ -41,7 +43,7 @@ function focusHeading() {
 
 function applyChrome() {
   document.documentElement.lang = state.lang;
-  const names = { navSearch: '#/search', navExplore: '#/explore', navTimeline: '#/timeline', navGlossary: '#/glossary', navSources: '#/sources', navMethod: '#/method', navApi: '#/api' };
+  const names = { navSearch: '#/search', navExplore: '#/explore', navDiscover: '#/discover', navTimeline: '#/timeline', navGlossary: '#/glossary', navSources: '#/sources', navMethod: '#/method', navApi: '#/api' };
   document.querySelectorAll('[data-nav]').forEach((link) => {
     const key = /** @type {keyof typeof names} */ (link.getAttribute('data-nav'));
     link.textContent = t(state.lang, key);
@@ -55,6 +57,27 @@ function applyChrome() {
   const note = /** @type {HTMLElement} */ (document.querySelector('#zuNote'));
   note.hidden = state.lang !== 'zu';
   note.textContent = t(state.lang, 'zuNote');
+}
+
+function localScores() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(SCORE_KEY) ?? '[]');
+    if (!Array.isArray(saved)) return [];
+    return saved.filter((item) => Number.isInteger(item?.score) && item.score >= 0 && item.score <= QUIZ_QUESTIONS.length && typeof item.date === 'string').slice(0, 10);
+  } catch { return []; }
+}
+
+function paintLocalLeaderboard() {
+  const list = /** @type {HTMLOListElement | null} */ (main.querySelector('[data-score-list]'));
+  if (!list) return;
+  list.replaceChildren();
+  const scores = localScores();
+  if (!scores.length) { const empty = document.createElement('li'); empty.textContent = 'Take the quiz to set the first score on this device.'; list.append(empty); return; }
+  for (const item of scores) {
+    const row = document.createElement('li');
+    row.textContent = `${item.score} / ${QUIZ_QUESTIONS.length} · ${new Date(item.date).toLocaleDateString()}`;
+    list.append(row);
+  }
 }
 
 /** @param {string} html @param {string} title */
@@ -108,6 +131,9 @@ async function render() {
       await loadCitations();
     } else if (name === 'method') {
       show(view.methodView(state.lang, meta), t(state.lang, 'methodTitle'));
+    } else if (name === 'discover') {
+      show(view.discoveryView(state.lang, DISCOVERY_CASES), t(state.lang, 'discoveryTitle'));
+      paintLocalLeaderboard();
     } else if (name === 'api') {
       const res = await fetch('/api/v1/openapi.json', { signal });
       show(view.apiView(state.lang, await res.json(), meta), t(state.lang, 'apiTitle'));
@@ -264,6 +290,22 @@ document.addEventListener('submit', (event) => {
     if (q) location.hash = buildHash('search', undefined, { q });
     if (state.route.name === 'search' && q) void render();
   } else if (form.matches('[data-filters]')) event.preventDefault();
+  else if (form.matches('[data-discovery-quiz]')) {
+    event.preventDefault();
+    const formData = new FormData(form);
+    const answers = QUIZ_QUESTIONS.map((_, index) => formData.get(`q${index}`) === null ? NaN : Number(formData.get(`q${index}`)));
+    const lensAnswers = LENS_QUESTIONS.map((_, index) => formData.get(`lens${index}`) === null ? NaN : Number(formData.get(`lens${index}`)));
+    const valid = answers.every((answer, index) => Number.isInteger(answer) && answer >= 0 && answer < QUIZ_QUESTIONS[index].options.length)
+      && lensAnswers.every((answer, index) => Number.isInteger(answer) && answer >= 0 && answer < LENS_QUESTIONS[index].options.length);
+    const output = /** @type {HTMLElement} */ (main.querySelector('#quiz-result'));
+    if (!valid) { output.textContent = t(state.lang, 'quizRequired'); return; }
+    const result = scoreQuiz(answers, lensAnswers);
+    const scores = updateLocalLeaderboard(localScores(), result.correct);
+    try { localStorage.setItem(SCORE_KEY, JSON.stringify(scores)); } catch { /* the quiz still works if local storage is unavailable */ }
+    output.innerHTML = view.discoveryResultView(state.lang, { ...result, answers, leaderboard: scores });
+    paintLocalLeaderboard();
+    output.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 });
 
 document.addEventListener('keydown', (event) => {

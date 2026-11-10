@@ -80,6 +80,29 @@ code{font-family:ui-monospace,Menlo,monospace;font-size:.9em;word-break:break-al
 @media print{.topbar,.footer,.no-print,.zu-note,.skip,.searchbox,.tabs,.actions{display:none!important}body{background:#fff;color:#000;font-size:11pt}.panel,.card{border:1px solid #999;background:#fff;break-inside:avoid}a{color:#000}main{padding:0}}
 [tabindex="-1"]:focus{outline:none}
 
+.discovery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:1rem}
+.discovery-card h2{font-size:1.25rem;margin-bottom:.55rem}
+.discovery-card .eyebrow{font-size:.72rem;letter-spacing:.07em}
+.factor-list{margin:.2rem 0;padding-left:1.25rem;color:var(--muted);font-size:.92rem}
+.factor-list li+li{margin-top:.15rem}
+.protagoras a{font-weight:600}
+.quiz-section{display:grid;gap:1rem;scroll-margin-top:1rem}
+.quiz-section>h2,.quiz-section>p{margin-bottom:0}
+.quiz-form{display:grid;gap:1rem}
+.quiz-question{min-width:0;margin:0;padding:1.1rem 1.25rem;border:1px solid var(--line);border-radius:var(--radius);background:var(--card)}
+.quiz-question legend{max-width:100%;padding:0 .25rem;font:600 1.15rem/1.35 "Playfair Display",Georgia,serif;color:var(--ink)}
+.quiz-option{display:flex;align-items:flex-start;gap:.65rem;margin-top:.7rem;padding:.65rem .75rem;border:1px solid var(--line);border-radius:10px;cursor:pointer}
+.quiz-option:hover{border-color:var(--accent);background:var(--paper)}
+.quiz-option input{width:1.15rem;height:1.15rem;flex:none;margin:.15rem 0 0;accent-color:var(--accent)}
+.quiz-result{scroll-margin-top:1rem}
+.lens-mix,.quiz-feedback,.leaderboard-list{display:grid;gap:.45rem;padding-left:1.3rem}
+.lens-mix li,.leaderboard-list li{display:flex;justify-content:space-between;gap:1rem}
+.quiz-feedback li{padding:.55rem 0;border-bottom:1px solid var(--line)}
+.quiz-feedback p{margin:.2rem 0 0}
+.leaderboard{margin-top:.5rem}
+.leaderboard ol{padding-left:1.4rem}
+@media(max-width:640px){.lens-mix li,.leaderboard-list li{align-items:flex-start;flex-direction:column;gap:.1rem}}
+
 .stack{display:grid;gap:1rem}
 .framing{border-left:4px solid var(--accent);padding-left:.8rem;color:var(--text);font-size:.95rem}
 .timeline{display:grid;gap:1rem;border-left:3px solid var(--ink);padding-left:1.2rem;margin-left:.4rem}
