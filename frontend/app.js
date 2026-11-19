@@ -44,12 +44,14 @@ function focusHeading() {
 
 function applyChrome() {
   document.documentElement.lang = state.lang;
-  const names = { navSearch: '#/search', navExplore: '#/explore', navDiscover: '#/discover', navTimeline: '#/timeline', navGlossary: '#/glossary', navSources: '#/sources', navMethod: '#/method', navApi: '#/api' };
+  const names = { navSearch: '#/search', navExplore: '#/explore', navDiscover: '#/discover', navCases: '#/discover', navQuiz: '#/quiz', navTimeline: '#/timeline', navGlossary: '#/glossary', navSources: '#/sources', navMethod: '#/method', navApi: '#/api' };
   document.querySelectorAll('[data-nav]').forEach((link) => {
     const key = /** @type {keyof typeof names} */ (link.getAttribute('data-nav'));
     link.textContent = t(state.lang, key);
     if (names[key]?.slice(2) === state.route.name) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
+    if (key === 'navDiscover') link.toggleAttribute('data-active', state.route.name === 'quiz');
   });
+  document.querySelector('[data-nav-toggle]')?.setAttribute('aria-label', t(state.lang, 'navDiscoverMenu'));
   const button = /** @type {HTMLButtonElement} */ (document.querySelector('#lang'));
   button.textContent = state.lang === 'en' ? 'isiZulu' : 'English';
   button.setAttribute('aria-label', t(state.lang, 'langSwitch'));
@@ -135,6 +137,9 @@ async function render() {
       show(view.methodView(state.lang, meta), t(state.lang, 'methodTitle'));
     } else if (name === 'discover') {
       show(view.discoveryView(state.lang, DISCOVERY_CASES), t(state.lang, 'discoveryTitle'));
+      paintLocalLeaderboard();
+    } else if (name === 'quiz') {
+      show(view.quizPageView(state.lang), t(state.lang, 'quizPageTitle'));
       paintLocalLeaderboard();
     } else if (name === 'api') {
       const res = await fetch(apiUrl('/api/v1/openapi.json'), { signal });
@@ -259,6 +264,9 @@ document.addEventListener('click', async (event) => {
     window.print();
   } else if (target.closest('[data-retry]')) {
     void render();
+  } else if (target.closest('[data-nav-toggle]')) {
+    const group = /** @type {HTMLElement} */ (target.closest('[data-nav-group]'));
+    setMenu(group, !group.classList.contains('open'));
   } else if (target.closest('[data-clear-scores]')) {
     try { localStorage.removeItem(SCORE_KEY); } catch { /* nothing to clear if storage is blocked */ }
     const output = main.querySelector('#quiz-result');
@@ -317,8 +325,38 @@ document.addEventListener('submit', (event) => {
   }
 });
 
+/**
+ * Open or close the Discover submenu, and keep aria-expanded in step.
+ * @param {HTMLElement} group
+ * @param {boolean} open
+ */
+function setMenu(group, open) {
+  group.classList.toggle('open', open);
+  group.querySelector('[data-nav-toggle]')?.setAttribute('aria-expanded', String(open));
+}
+
+function closeMenus() {
+  document.querySelectorAll('[data-nav-group]').forEach((group) => setMenu(/** @type {HTMLElement} */ (group), false));
+}
+
+document.addEventListener('click', (event) => {
+  if (!(/** @type {HTMLElement} */ (event.target)).closest('[data-nav-group]')) closeMenus();
+});
+
+/** An Escape press hides the menu even while the pointer or focus is still on it. Leaving the menu lets it open again. */
+for (const type of ['mouseout', 'focusout']) {
+  document.addEventListener(type, (event) => {
+    const group = /** @type {HTMLElement | null} */ ((/** @type {HTMLElement} */ (event.target)).closest('[data-nav-group]'));
+    if (group && !group.contains(/** @type {Node | null} */ (/** @type {FocusEvent | MouseEvent} */ (event).relatedTarget))) group.classList.remove('dismissed');
+  });
+}
+
 document.addEventListener('keydown', (event) => {
   const target = /** @type {HTMLElement} */ (event.target);
+  if (event.key === 'Escape') {
+    const group = /** @type {HTMLElement | null} */ (target.closest('[data-nav-group]'));
+    if (group && (group.classList.contains('open') || group.matches(':hover, :focus-within'))) { setMenu(group, false); group.classList.add('dismissed'); group.querySelector('button')?.focus(); }
+  }
   const typing = target.matches('input, textarea, select') || target.isContentEditable;
   if (event.key === '/' && !typing && !event.metaKey && !event.ctrlKey) {
     event.preventDefault();
@@ -330,6 +368,6 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-window.addEventListener('hashchange', () => void render());
+window.addEventListener('hashchange', () => { closeMenus(); void render(); });
 applyChrome();
 void render();

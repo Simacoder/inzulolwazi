@@ -310,7 +310,13 @@ export function discoveryView(lang, cases) {
     <section class="comparison-section"><h2>${esc(t(lang, 'comparisonTitle'))}</h2><div class="comparison-scroll" tabindex="0" role="region" aria-label="Scrollable comparative case table"><table class="comparison-table"><thead><tr><th scope="col">${esc(t(lang, 'comparisonCase'))}</th><th scope="col">${esc(t(lang, 'comparisonWork'))}</th><th scope="col">${esc(t(lang, 'comparisonSupport'))}</th><th scope="col">${esc(t(lang, 'comparisonLimit'))}</th></tr></thead><tbody>${comparisonRows}</tbody></table></div></section>
     <section class="discovery-grid" aria-label="Comparative historical case studies">${cards}</section>
     <section class="panel protagoras"><h2>${esc(t(lang, 'protagorasTitle'))}</h2><p>${esc(t(lang, 'protagorasText'))} <a rel="noopener" target="_blank" href="https://atlas.perseus.tufts.edu/library/passage/urn%3Acts%3AgreekLit%3Atlg0059.tlg006.perseus-eng2%3A152-156/">Plato, Theaetetus 152a ↗</a></p></section>
-    ${discoveryQuizView(lang)}</div>`;
+    <section class="panel quiz-cta"><h2>${esc(t(lang, 'quizTitle'))}</h2><p>${esc(t(lang, 'quizCtaText'))}</p><a class="button button-primary" href="#/quiz">${esc(t(lang, 'quizCta'))}</a></section></div>`;
+}
+
+/** @param {Lang} lang */
+export function quizPageView(lang) {
+  const languageNote = lang === 'zu' ? '<p class="panel language-note" lang="zu">Leli khasi le-quiz litholakala ngesiNgisi okwamanje.</p>' : '';
+  return `<div class="discovery-page" lang="en">${languageNote}<section class="hero hero-compact"><p class="eyebrow">inzulolwazi · Quiz</p><h1>${esc(t(lang, 'quizPageTitle'))}</h1></section>${discoveryQuizView(lang)}</div>`;
 }
 
 /** @param {Lang} lang */
