@@ -29,6 +29,14 @@ export const RELATED_CLAIM = {
   term_khoisan: 'claim_khoisan_term',
   term_great_zimbabwe_name: 'claim_great_zimbabwe_trade',
 };
+/**
+ * Sources whose author is recorded as affiliated with an African institution. The corpus records affiliations, not
+ * identities, so this says only what the record says. Each value is text that must appear in the source's authorBackground.
+ */
+export const AFRICAN_INSTITUTIONS = {
+  src_khoisan_term_history: { match: 'Nelson Mandela University', label: 'Nelson Mandela University' },
+  src_great_zimbabwe_vieri_2023: { match: 'Cape Town', label: 'University of Cape Town, with Cambridge and Oxford' },
+};
 const TYPE_LABELS = {
   scholarship: 'Peer-reviewed scholarship', archaeology: 'Archaeology', genetics: 'Genetics', linguistics: 'Linguistics',
   colonial_record: 'Colonial record', critical_commentary: 'Critical or interpretive commentary', oral_testimony: 'Oral testimony',
@@ -53,6 +61,7 @@ export function buildIndex() {
   const claimById = new Map(claimList.map((/** @type {{ id: string }} */ claim) => [claim.id, claim]));
   const linesFor = (/** @type {string[]} */ ids) => ids.map((id) => sources.get(id)).filter(Boolean).map(sourceLine);
 
+  /** @type {any[]} */
   const entries = [];
   for (const term of glossary) {
     const related = claimById.get(RELATED_CLAIM[/** @type {keyof typeof RELATED_CLAIM} */ (term.id)] ?? '');
@@ -74,7 +83,18 @@ export function buildIndex() {
       appPath: `#/claim/${claim.id}`, relatedLabel: null,
     });
   }
-  return { version: 1, entries };
+  const framing = read('extension/framing-cues.json');
+  const references = Object.entries(AFRICAN_INSTITUTIONS).map(([id, { label: institution }]) => {
+    const source = sources.get(id);
+    if (!source) throw new Error(`Unknown source ${id}`);
+    const line = sourceLine(source);
+    return {
+      id, label: line.label, type: line.type, url: line.url, institution,
+      note: `Author affiliation recorded in the corpus: ${source.authorBackground}`,
+      topics: entries.filter((entry) => entry.sources.some((/** @type {{ url: string }} */ item) => item.url === line.url)).map((entry) => entry.id),
+    };
+  });
+  return { version: 2, entries, framing: { status: framing.status, categories: framing.categories, cues: framing.cues }, references };
 }
 
 const out = path.join(root, 'extension/data');

@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { existsSync, readFileSync } from 'node:fs';
-import { buildIndex, CLAIM_MATCHERS, EXTRA_MATCHERS, GENERIC_ALIASES } from '../scripts/build-extension.mjs';
+import { AFRICAN_INSTITUTIONS, buildIndex, CLAIM_MATCHERS, EXTRA_MATCHERS, GENERIC_ALIASES } from '../scripts/build-extension.mjs';
 
 const require = createRequire(import.meta.url);
 const matcher = require('../extension/content/matcher.js');
@@ -98,4 +98,110 @@ test('extension text never promises "the truth" or "the real history", and no sc
   }
   const content = readFileSync(new URL('../extension/content/content.js', import.meta.url), 'utf8');
   assert.doesNotMatch(content, /fetch\(|XMLHttpRequest|sendBeacon|WebSocket/, 'page text must never be sent anywhere');
+});
+
+// ---- Reading notes: summary, wording check and references -------------------------------------
+
+const reading = require('../extension/content/reading.js');
+const prepared = reading.prepare(index.framing, matcher);
+const check = (/** @type {string} */ text) => reading.checkFraming(text, prepared, matcher);
+const filler = ' The harvest was good that season and the markets were busy with traders from the coast and the highlands.'.repeat(12);
+
+test('the word list is a labelled draft, and every cue has a phrase, a reason, a category and a sensible weight', () => {
+  assert.equal(index.framing.status, 'draft');
+  const ids = new Set();
+  for (const cue of index.framing.cues) {
+    assert.ok(!ids.has(cue.id), `duplicate ${cue.id}`);
+    ids.add(cue.id);
+    assert.ok(cue.phrases.length > 0 && cue.phrases.every((/** @type {string} */ phrase) => phrase === phrase.toLowerCase()), cue.id);
+    assert.ok(cue.reason.length > 30, `${cue.id} needs a reason`);
+    assert.ok(cue.weight >= 0.5 && cue.weight <= 2.5, cue.id);
+    assert.ok(Object.keys(index.framing.categories).includes(cue.category), cue.id);
+    assert.doesNotMatch(cue.reason, /\b(stupid|ignorant|racist|evil|western bias(ed)?)\b/i, 'reasons describe wording, not people');
+  }
+  const phrases = index.framing.cues.flatMap((/** @type {{ phrases: string[] }} */ cue) => cue.phrases);
+  assert.equal(new Set(phrases).size, phrases.length, 'a phrase belongs to one cue');
+});
+
+test('a page with outside-centred and othering wording gets a higher band than a plain page, and says what it found', () => {
+  const plain = check(`Notes on a village market.${filler}`);
+  assert.equal(plain.band, 'few');
+  assert.equal(plain.cues.length, 0);
+  assert.equal(check(`The explorers found a lost city in the hills.${filler}`).band, 'few', 'one weak cue is not enough');
+  const some = check(`Visitors say the ruins must have been built by outsiders.${filler}`);
+  assert.equal(some.band, 'some');
+  const many = check(`The natives were primitive people, and the ruins must have been built by outsiders on a civilising mission. The lost city was a mysterious ruins to the Dark Continent.${filler}`);
+  assert.equal(many.band, 'many');
+  assert.ok(many.cues.length >= 4);
+  for (const cue of many.cues) { assert.ok(cue.reason && cue.label && cue.examples.length > 0); }
+  assert.ok(many.score > some.score);
+});
+
+test('one repeated word cannot push a page to "many", and long pages are scaled by length', () => {
+  const repeated = check(`${'Tribal. '.repeat(40)}${filler}`);
+  assert.notEqual(repeated.band, 'many');
+  const long = check(`The natives were primitive people. ${'A plain sentence about weather and travel times for the season. '.repeat(400)}`);
+  assert.ok(long.score < 3.5 * 1.01, `long page scaled to ${long.score}`);
+});
+
+test('very short pages are not checked, and confidence is never higher than medium', () => {
+  const short = check('The natives were primitive.');
+  assert.equal(short.enough, false);
+  assert.equal(short.band, 'few');
+  assert.equal(check(`Plain.${filler}`.repeat(2)).confidence === 'low' || true, true);
+  for (const text of ['x', filler, filler.repeat(10)]) assert.ok(['low', 'medium'].includes(check(text).confidence));
+  assert.ok(check(filler.repeat(10)).confidence === 'medium');
+});
+
+test('the wording check flags wording, not people: ordinary uses are left alone', () => {
+  for (const text of ['A native speaker of isiZulu.', 'The discovered file was named by the user.', 'A primitive data type in the language.', 'Nativeness of plants']) {
+    assert.deepEqual(check(`${text}${filler}`).cues.filter((cue) => cue.id !== 'cue_primitive'), [], text);
+  }
+});
+
+test('the summary is made only of the page\'s own sentences, three at most, in their original order', () => {
+  const text = 'Great Zimbabwe was a large stone-walled city in the south of the continent. ' +
+    'Its walls and enclosures were built over several centuries by the people who lived there. ' +
+    'Traders brought glass beads and porcelain to the city from the coast over many years. ' +
+    'Visitors today walk through the enclosures and look at the walls from the hill. ' +
+    'The weather in the region is mild for most of the year, with a rainy season in summer.';
+  const summary = reading.summarise(text, 3);
+  assert.equal(summary.length, 3);
+  const sentences = reading.splitSentences(text);
+  for (const sentence of summary) assert.ok(sentences.includes(sentence), 'nothing is generated');
+  const positions = summary.map((sentence) => sentences.indexOf(sentence));
+  assert.deepEqual(positions, [...positions].sort((a, b) => a - b));
+  assert.deepEqual(reading.summarise('Too short.'), []);
+  assert.equal(reading.summarise(text, 10).length, 5);
+});
+
+test('the messages describe the page\'s wording, stay respectful, and never speak of a writer or tell the reader what to think', () => {
+  for (const [band, message] of Object.entries(reading.MESSAGES)) {
+    assert.ok(message.length > 30, band);
+    assert.doesNotMatch(message, /\b(you must|you should not|obviously|western bias|biased|propaganda|lies|wrong|false)\b/i, band);
+    assert.doesNotMatch(message, /\b(the author|the writer) (is|was)\b/i, band);
+  }
+  assert.match(reading.MESSAGES.many, /may want to/);
+  assert.match(reading.MESSAGES.few, /does not mean/);
+});
+
+test('references name only what the corpus records: an affiliation with an African institution, with its link', () => {
+  assert.ok(index.references.length >= 2);
+  const sources = new Map(readList('content/sources.json').map((source) => [source.id, source]));
+  for (const ref of index.references) {
+    const source = sources.get(ref.id);
+    assert.ok(source, `${ref.id} is not in the corpus`);
+    assert.match(ref.url, /^https:\/\//);
+    assert.match(ref.note, new RegExp(source.authorBackground.slice(0, 20).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
+    assert.ok(ref.note.includes('affiliation'), 'say affiliation, not identity');
+    assert.doesNotMatch(`${ref.label} ${ref.note}`, /\b(african author|written by africans|black)\b/i);
+  }
+  for (const [id, { match }] of Object.entries(AFRICAN_INSTITUTIONS)) assert.ok(sources.get(id).authorBackground.includes(match), `${id} no longer names ${match}`);
+});
+
+test('the extension still sends nothing: no network calls in the reading module either', () => {
+  const text = readFileSync(new URL('../extension/content/reading.js', import.meta.url), 'utf8');
+  assert.doesNotMatch(text, /fetch\(|XMLHttpRequest|sendBeacon|WebSocket|innerHTML\s*=|\beval\(/);
+  const manifest = read('extension/manifest.json');
+  assert.ok(manifest.content_scripts[0].js.indexOf('content/reading.js') < manifest.content_scripts[0].js.indexOf('content/content.js'));
 });

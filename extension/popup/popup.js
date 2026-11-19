@@ -4,6 +4,13 @@ const $ = (id) => document.getElementById(id);
 let tabId = null;
 let host = '';
 
+const BAND_TEXT = {
+  few: 'Wording check: few signals found.',
+  some: 'Wording check: some signals of outside-centred wording. Reading notes list them and sources to read alongside.',
+  many: 'Wording check: many signals of outside-centred wording. You may want to read with care. Reading notes list them.',
+  short: 'Wording check: not enough text on this page.',
+};
+
 function show(result) {
   const items = $('items');
   items.replaceChildren();
@@ -13,6 +20,10 @@ function show(result) {
     return;
   }
   $('scan').hidden = false;
+  const band = result.framing?.band;
+  $('reading').hidden = !band;
+  $('open-reading').hidden = !band || band === 'short' || result.paused;
+  if (band) $('reading').textContent = BAND_TEXT[band];
   host = result.host;
   $('site').textContent = host;
   $('pause').checked = result.paused;
@@ -56,6 +67,11 @@ async function init() {
 $('scan').addEventListener('click', async () => {
   $('status').textContent = 'Scanning…';
   show(await ask({ type: 'inz:rescan', unpause: false }));
+});
+
+$('open-reading').addEventListener('click', async () => {
+  await chrome.tabs.sendMessage(tabId, { type: 'inz:open', id: 'reading' });
+  window.close();
 });
 
 $('auto').addEventListener('change', (event) => chrome.storage.sync.set({ autoScan: event.target.checked }));

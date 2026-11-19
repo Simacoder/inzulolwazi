@@ -24,9 +24,25 @@ A small "Inzulolwazi" pill with a count appears on pages with matches. It opens 
 
 The toolbar popup lists the same notes, lets the person scan again, pause a site, turn automatic scanning off, search the app, and set the app address. Right-clicking selected text offers "Look up in Inzulolwazi".
 
+## Reading notes: summary, wording check and references
+
+The first card in the panel is "Reading notes". It is computed in the browser from the page's main text (`extension/content/reading.js`).
+
+- **Extract.** Three sentences from the page, chosen because the words in them recur, kept in their original order. They are the page's own words. Nothing is generated.
+- **Wording check.** The page is checked against a short word list (`extension/framing-cues.json`) of phrases that outsiders have often used about African peoples and places, in two groups: wording that casts people as lesser or other (for example "primitive", "the natives", "dark continent") and wording that puts outsiders at the centre (for example "lost city", "must have been built by", "civilising mission", "Hamitic"). It lists each phrase found with a short surrounding quote and the reason it is flagged, and gives a band of **few**, **some** or **many** signals. Each phrase has a weight; one repeated word counts at most five times, and long pages are scaled by length.
+- **Read alongside.** Sources in the corpus whose author is recorded as affiliated with an African institution, with their links. Sources about topics found on the page come first. **Copy reading notes** puts the band, the phrases found and these links on the clipboard to share. It never includes the page's text.
+
+### What it is, and what it does not claim
+
+- It checks **wording**. It does not decide whether a page is "Western", does not judge the writer, and cannot tell who wrote a page. Wording signals are evidence for "read this with care", not proof of anything.
+- It cannot read tone, cannot judge a whole book from one page, and a page with no matches may still carry outside framing. Confidence is never higher than "medium", and pages under 120 words are not checked.
+- The word list is a **draft**. It is a heuristic, not historical content, so a history reviewer should sign it off before the extension is published. The panel says "draft word list".
+- Messages describe the page's wording and use "you may want to", not instructions.
+- The corpus records affiliations, not identities, so the references say "author affiliation recorded in the corpus" and name the institution. Today only two sources qualify (Nelson Mandela University; the University of Cape Town alongside Cambridge and Oxford). Growing this list means adding African-authored sources to `content/sources.json` with a reviewer, then listing them in `AFRICAN_INSTITUTIONS` in `scripts/build-extension.mjs`. A test checks each entry against the source's recorded background.
+
 ## Data
 
-`scripts/build-extension.mjs` selects and copies from `content/glossary.json`, `content/claims.json` and `content/sources.json` into `extension/data/index.json` and `index.js`. It writes no facts of its own (rule 15). Run `npm run build:extension` after any content change. `node scripts/build-extension.mjs --check` and a test fail if the generated files are stale.
+`scripts/build-extension.mjs` selects and copies from `content/glossary.json`, `content/claims.json`, `content/sources.json` and the draft word list `extension/framing-cues.json` into `extension/data/index.json` and `index.js`. It writes no facts of its own (rule 15). Run `npm run build:extension` after any content change. `node scripts/build-extension.mjs --check` and a test fail if the generated files are stale.
 
 ## Privacy
 
@@ -48,7 +64,7 @@ The toolbar popup lists the same notes, lets the person scan again, pause a site
 1. Open `chrome://extensions` and turn on Developer mode.
 2. Choose "Load unpacked" and pick the `extension/` folder.
 3. Pin the Inzulolwazi icon.
-4. Open any page that mentions these terms, or serve the demo page: `cd extension/demo && python3 -m http.server 8081`, then open `http://localhost:8081/demo.html`.
+4. Open any page that mentions these terms, or serve the demo pages: `cd extension/demo && python3 -m http.server 8081`, then open `http://localhost:8081/demo.html` (terms) and `http://localhost:8081/demo-old-style.html` (wording check). Both are test fixtures, not sources.
 
 ## Checks
 

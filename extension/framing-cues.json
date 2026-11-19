@@ -1,0 +1,43 @@
+{
+  "status": "draft",
+  "note": "A short word list for a wording check. It is not historical content: each cue is a phrase plus the reason it is flagged. It is a draft until a history reviewer signs it off, and the extension says so. Weights run from 0.5 (a contested label) to 2.5 (a claim that Africans could not have done something).",
+  "categories": {
+    "othering": "Wording that casts people as lesser or as other",
+    "outsider": "Wording that puts outsiders at the centre of the story"
+  },
+  "cues": [
+    { "id": "cue_primitive", "category": "othering", "weight": 1.5, "label": "primitive, savage, uncivilised",
+      "phrases": ["primitive people", "primitive peoples", "primitive tribes", "savage", "savages", "uncivilised", "uncivilized", "heathen", "heathens"],
+      "reason": "Describes people or societies as lesser or less developed. That is a judgement about them, not a description of what they did." },
+    { "id": "cue_natives", "category": "othering", "weight": 1, "label": "\"the natives\"",
+      "phrases": ["the natives", "native tribes", "natives"],
+      "reason": "Names people only by contrast with outsiders, not by how they name themselves." },
+    { "id": "cue_tribe", "category": "othering", "weight": 0.5, "label": "tribe, tribal",
+      "phrases": ["tribe", "tribes", "tribal"],
+      "reason": "A catch-all label that can hide distinct nations, kingdoms and languages. Check how the people name themselves." },
+    { "id": "cue_dark_continent", "category": "othering", "weight": 2, "label": "\"dark continent\"",
+      "phrases": ["dark continent", "darkest africa"],
+      "reason": "Presents Africa as unknown or empty until outsiders arrived." },
+    { "id": "cue_witch_doctor", "category": "othering", "weight": 1, "label": "\"witch doctor\"",
+      "phrases": ["witch doctor", "witch doctors"],
+      "reason": "An outsider's label for healers and spiritual leaders, which hides the roles they actually held." },
+    { "id": "cue_discovery", "category": "outsider", "weight": 1.5, "label": "\"discovered by\" outsiders",
+      "phrases": ["european discovery", "discovered by europeans", "discovered by european explorers", "discovered by explorers", "explorers discovered"],
+      "reason": "Treats a place the people who lived there already knew as new once outsiders reached it." },
+    { "id": "cue_civilising", "category": "outsider", "weight": 2.5, "label": "\"civilising mission\"",
+      "phrases": ["civilizing mission", "civilising mission", "brought civilization", "brought civilisation", "bring civilization", "bring civilisation", "white man's burden"],
+      "reason": "Frames outside rule as a gift to the people it ruled." },
+    { "id": "cue_lost_city", "category": "outsider", "weight": 1.5, "label": "\"lost city\", \"mysterious ruins\"",
+      "phrases": ["lost city", "mysterious ruins", "mysterious origins"],
+      "reason": "Implies the builders are unknown, which can sideline the people who lived there and their descendants." },
+    { "id": "cue_could_not", "category": "outsider", "weight": 2.5, "label": "\"must have been built by\"",
+      "phrases": ["must have been built by", "could not have been built by", "too advanced for"],
+      "reason": "Suggests African people could not have done something, so someone else must have." },
+    { "id": "cue_hamitic", "category": "outsider", "weight": 2, "label": "\"Hamitic\"",
+      "phrases": ["hamitic", "hamites"],
+      "reason": "Names a theory that credited outside origins for African achievements. See the Hamitic theory note." },
+    { "id": "cue_opened_up", "category": "outsider", "weight": 1.5, "label": "\"opened up Africa\"",
+      "phrases": ["opened up africa", "opening up africa"],
+      "reason": "Describes Africa from the point of view of those who arrived, not those already there." }
+  ]
+}
