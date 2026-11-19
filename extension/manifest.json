@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "Inzulolwazi: African history context",
+  "short_name": "Inzulolwazi",
+  "version": "0.1.0",
+  "description": "Flags loaded terms and topics in African history on any web page, and shows the African-centred reading and the cited evidence. Runs in your browser.",
+  "icons": { "16": "icons/icon-16.png", "48": "icons/icon-48.png", "128": "icons/icon-128.png" },
+  "action": {
+    "default_title": "Inzulolwazi: African history context",
+    "default_popup": "popup/popup.html",
+    "default_icon": { "16": "icons/icon-16.png", "48": "icons/icon-48.png" }
+  },
+  "background": { "service_worker": "background.js" },
+  "permissions": ["storage", "contextMenus"],
+  "content_scripts": [
+    {
+      "matches": ["https://*/*", "http://*/*"],
+      "exclude_matches": ["https://inzulolwazi-api.onrender.com/*"],
+      "js": ["data/index.js", "content/matcher.js", "content/content.js"],
+      "css": ["content/marks.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "content_security_policy": { "extension_pages": "script-src 'self'; object-src 'self'" }
+}

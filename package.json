@@ -12,7 +12,8 @@
     "test": "node --test --test-reporter=spec \"tests/*.test.mjs\"",
     "eval": "node eval/run.mjs",
     "check": "npm run lint && npm run typecheck && npm run validate:content && npm test && npm run eval",
-    "build:frontend": "node scripts/build-frontend.mjs"
+    "build:frontend": "node scripts/build-frontend.mjs",
+    "build:extension": "node scripts/build-extension.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

@@ -19,6 +19,7 @@ The visual palette is Arid Mirage: twilight blue `#1A365D`, desert sand `#E2D4C9
 - Search as you type (press `/` from anywhere). Results are research leads while every topic is a draft, with matched words highlighted.
 - Explore topics and sources with filters and sorting, open a topic to see its translation label, what it still needs before publication, and its evidence.
 - Copy or download citations as plain text, BibTeX or RIS. Print a topic. Share a link.
+- Install the Chrome extension from `extension/` to see term-history notes on other websites: it flags terms such as Bantu and Khoisan, and shows the African-centred reading with cited sources. It runs in the browser. See `docs/browser-extension.md`.
 - Use the same data through the open JSON API: see `docs/api.md` and `/api/v1/openapi.json`.
 
 ## Deploy
@@ -70,6 +71,7 @@ The six starter topics in `content/claims.json` follow the supplied design brief
 - `backend/validate/content.mjs`: content metadata validation
 - `frontend/`: mobile-first interface and client-side interactions
 - `ml/tfidf.mjs`: local TF-IDF model for claim ranking
+- `extension/`: Chrome extension (Manifest V3), data built by `npm run build:extension`
 - `content/`: reviewable JSON claim and source records
 
 The backend exposes `GET /api/claims`, `GET /api/sources`, and `POST /api/search` with `{ "question": "..." }`.
