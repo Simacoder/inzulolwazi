@@ -19,7 +19,14 @@
       <nav class="topnav" aria-label="Main">
         <a data-nav="navSearch" href="#/search">Search</a>
         <a data-nav="navExplore" href="#/explore">Explore</a>
-        <a data-nav="navDiscover" href="#/discover">Discover</a>
+        <div class="nav-group" data-nav-group>
+          <a data-nav="navDiscover" href="#/discover">Discover</a>
+          <button class="nav-caret" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="discoverMenu" aria-label="Discover menu" data-nav-toggle><span aria-hidden="true">▾</span></button>
+          <ul class="submenu" id="discoverMenu">
+            <li><a data-nav="navCases" href="#/discover">Case studies</a></li>
+            <li><a data-nav="navQuiz" href="#/quiz">Knowledge quiz</a></li>
+          </ul>
+        </div>
         <a data-nav="navTimeline" href="#/timeline">Timeline</a>
         <a data-nav="navGlossary" href="#/glossary">Terms</a>
         <a data-nav="navSources" href="#/sources">Sources</a>

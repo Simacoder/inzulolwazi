@@ -99,3 +99,16 @@ test('terminology and timeline pages and search sections render escaped, framed 
   assert.match(found, /Terms and definitions/);
   assert.match(found, /On the timeline/);
 });
+
+test('the quiz has its own route, page and a link from the Discover page', () => {
+  assert.equal(parseHash('#/quiz').name, 'quiz');
+  assert.equal(buildHash('quiz'), '#/quiz');
+  const quiz = view.quizPageView('en');
+  assert.match(quiz, /<h1>Knowledge quiz<\/h1>/);
+  assert.match(quiz, /data-discovery-quiz/);
+  const discover = view.discoveryView('en', []);
+  assert.match(discover, /href="#\/quiz"/);
+  assert.doesNotMatch(discover, /data-discovery-quiz/);
+  for (const html of [quiz, discover]) assert.doesNotMatch(html, /\sstyle=/i);
+  assert.equal(t('zu', 'navQuiz'), 'Knowledge quiz');
+});
