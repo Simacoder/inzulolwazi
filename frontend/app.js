@@ -6,13 +6,14 @@ import { api, apiUrl, ApiError } from './js/api.mjs';
 import { t } from './js/i18n.mjs';
 import { debounce, parseHash, buildHash } from './js/util.mjs';
 import * as view from './js/render.mjs';
-import { DISCOVERY_CASES, LENS_QUESTIONS, QUIZ_QUESTIONS, scoreQuiz, updateLocalLeaderboard } from './js/discovery.mjs';
+import { DISCOVERY_CASES, LENS_QUESTIONS, MAX_ATTEMPTS, QUIZ_QUESTIONS, addAttempt, scoreQuiz, topScores } from './js/discovery.mjs';
+import { progressSince } from './js/knowledge-model.mjs';
 
 /** @type {{ lang: 'en' | 'zu', meta: any, route: ReturnType<typeof parseHash>, controller: AbortController | null }} */
 const state = { lang: 'en', meta: null, route: parseHash(location.hash), controller: null };
 const main = /** @type {HTMLElement} */ (document.querySelector('#view'));
 const status = /** @type {HTMLElement} */ (document.querySelector('#status'));
-const SCORE_KEY = 'inzulolwazi-discovery-scores-v1';
+const SCORE_KEY = 'inzulolwazi-knowledge-history-v2';
 
 try { if (localStorage.getItem('lang') === 'zu') state.lang = 'zu'; } catch { /* storage may be blocked */ }
 
@@ -59,11 +60,12 @@ function applyChrome() {
   note.textContent = t(state.lang, 'zuNote');
 }
 
-function localScores() {
+/** Saved attempts on this device, oldest first. Only scores, topic numbers and dates are kept. */
+function localHistory() {
   try {
     const saved = JSON.parse(localStorage.getItem(SCORE_KEY) ?? '[]');
     if (!Array.isArray(saved)) return [];
-    return saved.filter((item) => Number.isInteger(item?.score) && item.score >= 0 && item.score <= QUIZ_QUESTIONS.length && typeof item.date === 'string').slice(0, 10);
+    return saved.filter((item) => Number.isInteger(item?.score) && item.score >= 0 && item.score <= 100 && typeof item.date === 'string' && item.topics && typeof item.topics === 'object').slice(-MAX_ATTEMPTS);
   } catch { return []; }
 }
 
@@ -71,11 +73,11 @@ function paintLocalLeaderboard() {
   const list = /** @type {HTMLOListElement | null} */ (main.querySelector('[data-score-list]'));
   if (!list) return;
   list.replaceChildren();
-  const scores = localScores();
+  const scores = topScores(localHistory());
   if (!scores.length) { const empty = document.createElement('li'); empty.textContent = 'Take the quiz to set the first score on this device.'; list.append(empty); return; }
   for (const item of scores) {
     const row = document.createElement('li');
-    row.textContent = `${item.score} / ${QUIZ_QUESTIONS.length} · ${new Date(item.date).toLocaleDateString()}`;
+    row.textContent = `${item.score} / 100 · ${new Date(item.date).toLocaleDateString()}`;
     list.append(row);
   }
 }
@@ -257,6 +259,12 @@ document.addEventListener('click', async (event) => {
     window.print();
   } else if (target.closest('[data-retry]')) {
     void render();
+  } else if (target.closest('[data-clear-scores]')) {
+    try { localStorage.removeItem(SCORE_KEY); } catch { /* nothing to clear if storage is blocked */ }
+    const output = main.querySelector('#quiz-result');
+    if (output) output.replaceChildren();
+    paintLocalLeaderboard();
+    announce(t(state.lang, 'progressCleared'));
   } else if (target.closest('#lang')) {
     state.lang = state.lang === 'en' ? 'zu' : 'en';
     try { localStorage.setItem('lang', state.lang); } catch { /* ignore */ }
@@ -300,9 +308,10 @@ document.addEventListener('submit', (event) => {
     const output = /** @type {HTMLElement} */ (main.querySelector('#quiz-result'));
     if (!valid) { output.textContent = t(state.lang, 'quizRequired'); return; }
     const result = scoreQuiz(answers, lensAnswers);
-    const scores = updateLocalLeaderboard(localScores(), result.correct);
-    try { localStorage.setItem(SCORE_KEY, JSON.stringify(scores)); } catch { /* the quiz still works if local storage is unavailable */ }
-    output.innerHTML = view.discoveryResultView(state.lang, { ...result, answers, leaderboard: scores });
+    const before = localHistory();
+    const history = addAttempt(before, result.knowledge);
+    try { localStorage.setItem(SCORE_KEY, JSON.stringify(history)); } catch { /* the quiz still works if local storage is unavailable */ }
+    output.innerHTML = view.discoveryResultView(state.lang, { ...result, answers, previous: progressSince(result.knowledge.score, before), leaderboard: topScores(history) });
     paintLocalLeaderboard();
     output.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }

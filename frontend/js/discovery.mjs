@@ -1,3 +1,5 @@
+import { estimateKnowledge } from './knowledge-model.mjs';
+
 /**
  * Comparative discovery learning material. Each historical summary is paired with its source.
  * The lens quiz is a transparent scoring activity, not a demographic or identity classifier.
@@ -97,40 +99,65 @@ export const LENS_LABELS = {
 };
 
 export const QUIZ_QUESTIONS = [
-  { prompt: 'What can the study of notched bones from Border Cave support?', source: { label: 'd’Errico et al., PNAS (2012)', url: 'https://doi.org/10.1073/pnas.1204213109' }, options: [
-    { text: 'Some researchers interpret the marks as possible notation, while their exact meaning remains open', correct: true, why: 'The study interprets some artefacts as evidence of notational use; the marks do not by themselves prove a formal number system.' },
+  { area: 'deep-time-africa', difficulty: 'foundation', prompt: 'What does the Border Cave research describe for around 44,000 to 42,000 years ago?', source: { label: 'd’Errico et al., PNAS (2012)', url: 'https://doi.org/10.1073/pnas.1202629109' }, options: [
+    { text: 'No ornaments or symbolic markings of any kind', correct: false, why: 'The research describes worked bone, ornaments and symbolic markings.' },
+    { text: 'Changing tool-making alongside worked bone, ornaments and symbolic markings', correct: true, why: 'The study describes these changes and interprets them as developing through internal regional processes.' },
+    { text: 'A sudden replacement of local technology by tools brought from outside the region', correct: false, why: 'The authors interpret the change as developing through internal regional processes.' },
+  ] },
+  { area: 'deep-time-africa', difficulty: 'stretch', prompt: 'How far does the Border Cave record go on the history of number systems?', source: { label: 'd’Errico et al., PNAS (2012)', url: 'https://doi.org/10.1073/pnas.1202629109' }, options: [
+    { text: 'It supports technological skill, but does not by itself prove a formal number system', correct: true, why: 'The archaeological record shows skill with materials; a formal number system needs more evidence than tool-making.' },
+    { text: 'It proves that a formal number system existed', correct: false, why: 'The record does not by itself prove a formal number system.' },
+    { text: 'It says nothing about the technological skill of the makers', correct: false, why: 'The study describes changing tool-making, worked bone and ornaments, which show technological skill.' },
+  ] },
+  { area: 'african-counting-evidence', difficulty: 'core', prompt: 'What can the study of notched bones from Border Cave support?', source: { label: 'd’Errico et al., PNAS (2012)', url: 'https://doi.org/10.1073/pnas.1204213109' }, options: [
     { text: 'A written alphabet used across the continent', correct: false, why: 'The cited archaeological study does not establish a written alphabet.' },
     { text: 'A proven formal number system with a known calculation method', correct: false, why: 'The material evidence does not establish the exact meaning or a formal calculation system.' },
+    { text: 'Some researchers interpret the marks as possible notation, while their exact meaning remains open', correct: true, why: 'The study interprets some artefacts as evidence of notational use; the marks do not by themselves prove a formal number system.' },
   ] },
-  { prompt: 'What is one evidence-based way to describe Great Zimbabwe?', source: { label: 'Vieri et al. (2023)', url: 'https://doi.org/10.1007/s12520-023-01811-7' }, options: [
+  { area: 'african-counting-evidence', difficulty: 'stretch', prompt: 'For the Border Cave notched bones, what separates evidence from interpretation?', source: { label: 'd’Errico et al., PNAS (2012)', url: 'https://doi.org/10.1073/pnas.1204213109' }, options: [
+    { text: 'Neither the notches nor any reading of them can be studied', correct: false, why: 'The study re-examines the notched bones and interprets some as possible notation.' },
+    { text: 'The notches are material evidence; whether they show mathematical counting is an interpretive question', correct: true, why: 'The marks are material evidence; their exact use and whether they represent mathematical counting remain interpretive questions.' },
+    { text: 'Both the notches and their mathematical meaning are settled facts', correct: false, why: 'The exact use and mathematical meaning are not settled.' },
+  ] },
+  { area: 'great-zimbabwe', difficulty: 'foundation', prompt: 'What is one evidence-based way to describe Great Zimbabwe?', source: { label: 'Vieri et al. (2023)', url: 'https://doi.org/10.1007/s12520-023-01811-7' }, options: [
     { text: 'An African city with local production and regional and Indian Ocean connections', correct: true, why: 'Archaeological work studies local gold production and the city’s exchange networks.' },
     { text: 'A settlement created by foreign traders', correct: false, why: 'The cited sources centre African settlement and production.' },
     { text: 'A site isolated from wider exchange', correct: false, why: 'Finds and scholarship document regional and long-distance connections.' },
   ] },
-  { prompt: 'What happened in medieval astronomy across the Islamic world?', source: { label: 'Marika Sardar, The Met (2011)', url: 'https://www.metmuseum.org/essays/astronomy-and-astrology-in-the-medieval-islamic-world' }, options: [
+  { area: 'great-zimbabwe', difficulty: 'stretch', prompt: 'What do imported objects found at Great Zimbabwe show?', source: { label: 'Vieri et al. (2023)', url: 'https://doi.org/10.1007/s12520-023-01811-7' }, options: [
+    { text: 'That outside traders controlled every exchange', correct: false, why: 'Imports show connection, not who controlled every exchange.' },
+    { text: 'That the city had no local production of its own', correct: false, why: 'Research studies local gold production at Great Zimbabwe.' },
+    { text: 'Connection to wider exchange, though not by themselves who controlled every exchange', correct: true, why: 'Imported objects show connection; local production and African decision-making remain central to the account.' },
+  ] },
+  { area: 'colonial-legacies', difficulty: 'core', prompt: 'What does research on colonial legacies in Africa emphasize?', source: { label: 'Michalopoulos & Papaioannou (2020)', url: 'https://doi.org/10.1257/jel.20181447' }, options: [
+    { text: 'One uniform colonial experience explains every present outcome', correct: false, why: 'Comparative research studies varied institutions and mechanisms.' },
+    { text: 'Colonial rule had no institutional or economic effects', correct: false, why: 'The reviewed evidence examines significant effects and asks where they persisted.' },
+    { text: 'Both lasting institutional effects and substantial variation across places', correct: true, why: 'The review documents extractive institutions and colonial investments while noting continuity, rupture and open questions.' },
+  ] },
+  { area: 'colonial-legacies', difficulty: 'stretch', prompt: 'What is a strong way to study colonial legacies in Africa?', source: { label: 'Michalopoulos & Papaioannou (2020)', url: 'https://doi.org/10.1257/jel.20181447' }, options: [
+    { text: 'Assume colonial rule erased African agency', correct: false, why: 'Colonial rule reshaped African institutions and economies, but it did not erase African agency.' },
+    { text: 'Compare places and mechanisms, and test which effects persisted', correct: true, why: 'The review emphasizes variation, continuity, rupture and open questions across places and periods.' },
+    { text: 'Treat colonization as the single explanation for every later condition', correct: false, why: 'The review documents varied outcomes, so one explanation does not fit every place or period.' },
+  ] },
+  { area: 'islamic-world', difficulty: 'core', prompt: 'What happened in medieval astronomy across the Islamic world?', source: { label: 'Marika Sardar, The Met (2011)', url: 'https://www.metmuseum.org/essays/astronomy-and-astrology-in-the-medieval-islamic-world' }, options: [
     { text: 'Scholars translated and revised knowledge across Greek, Persian and Sanskrit traditions', correct: true, why: 'The Met account describes translation, new observations and refinement of astronomical models.' },
     { text: 'All research took place in one Baghdad institution', correct: false, why: 'The source also names Cairo, Rayy, Isfahan and other centres.' },
     { text: 'Earlier knowledge was copied without new observations', correct: false, why: 'The source describes updating methods, observations, instruments and models.' },
   ] },
-  { prompt: 'What helped early printing develop in China?', source: { label: 'The Metropolitan Museum of Art', url: 'https://www.metmuseum.org/exhibitions/listings/2012/printed-image-in-china' }, options: [
+  { area: 'song-china', difficulty: 'core', prompt: 'What helped early printing develop in China?', source: { label: 'The Metropolitan Museum of Art', url: 'https://www.metmuseum.org/exhibitions/listings/2012/printed-image-in-china' }, options: [
+    { text: 'Printing used only for government maps', correct: false, why: 'The source describes religious, artistic and popular uses.' },
     { text: 'Reproducing Buddhist texts and images, alongside later urban uses', correct: true, why: 'The Met links early printing with Buddhist practice and later growth in urban audiences.' },
     { text: 'European academies importing a printing system', correct: false, why: 'The cited source dates printing on paper in China to around 700 CE.' },
-    { text: 'Printing used only for government maps', correct: false, why: 'The source describes religious, artistic and popular uses.' },
   ] },
-  { prompt: 'How did the early Royal Society circulate and evaluate knowledge?', source: { label: 'The Royal Society', url: 'https://royalsociety.org/about-us/who-we-are/history/' }, options: [
-    { text: 'Through observation, experiments, correspondence and publication', correct: true, why: 'The Society’s history describes these practices and its early journal.' },
+  { area: 'european-enlightenment', difficulty: 'core', prompt: 'How did the early Royal Society circulate and evaluate knowledge?', source: { label: 'The Royal Society', url: 'https://royalsociety.org/about-us/who-we-are/history/' }, options: [
     { text: 'By admitting every social group on equal terms from its beginning', correct: false, why: 'Its own history says early fellows were male and drawn from professional and aristocratic classes.' },
     { text: 'By avoiding communication beyond Britain', correct: false, why: 'It used correspondence and elected members across Europe and the Atlantic world.' },
+    { text: 'Through observation, experiments, correspondence and publication', correct: true, why: 'The Society’s history describes these practices and its early journal.' },
   ] },
-  { prompt: 'What did Russian state-backed scientific exploration do in the 18th century?', source: { label: 'Denis J. B. Shaw, UCL Press (2024)', url: 'https://doi.org/10.14324/111.9781800085909' }, options: [
+  { area: 'russian-exploration', difficulty: 'core', prompt: 'What did Russian state-backed scientific exploration do in the 18th century?', source: { label: 'Denis J. B. Shaw, UCL Press (2024)', url: 'https://doi.org/10.14324/111.9781800085909' }, options: [
     { text: 'Supported mapping and expeditions tied to state-building and imperial aims', correct: true, why: 'Historian Denis Shaw connects the Academy and expeditions to mapping, security and resource assessment.' },
     { text: 'Developed entirely outside state influence', correct: false, why: 'The study describes centralized state planning and patronage.' },
     { text: 'Focused only on abstract philosophy', correct: false, why: 'The source documents mapping and geographical expeditions.' },
-  ] },
-  { prompt: 'What does research on colonial legacies in Africa emphasize?', source: { label: 'Michalopoulos & Papaioannou (2020)', url: 'https://doi.org/10.1257/jel.20181447' }, options: [
-    { text: 'Both lasting institutional effects and substantial variation across places', correct: true, why: 'The review documents extractive institutions and colonial investments while noting continuity, rupture and open questions.' },
-    { text: 'One uniform colonial experience explains every present outcome', correct: false, why: 'Comparative research studies varied institutions and mechanisms.' },
-    { text: 'Colonial rule had no institutional or economic effects', correct: false, why: 'The reviewed evidence examines significant effects and asks where they persisted.' },
   ] },
 ];
 
@@ -147,34 +174,56 @@ export const LENS_QUESTIONS = [
 ] }));
 
 /**
+ * Every topic the knowledge model reports on: one per case study, in the order the cases are shown.
+ * @type {{ id: string, label: string, african: boolean }[]}
+ */
+export const KNOWLEDGE_AREAS = DISCOVERY_CASES.map((item) => ({ id: item.id, label: item.title, african: item.region === 'African histories' }));
+
+/**
+ * Score the evidence check with the knowledge model and tally the lens choices.
+ * An unanswered question is skipped, not counted as wrong.
  * @param {number[]} answers
  * @param {number[]} lensAnswers
  */
 export function scoreQuiz(answers, lensAnswers) {
   /** @type {Record<string, number>} */
   const lensCounts = Object.fromEntries(Object.keys(LENS_LABELS).map((key) => [key, 0]));
-  let correct = 0;
+  /** @type {import('./knowledge-model.mjs').Response[]} */
+  const responses = [];
   QUIZ_QUESTIONS.forEach((question, index) => {
     const choice = question.options[answers[index]];
-    if (!choice) return;
-    if (choice.correct) correct += 1;
+    if (choice) responses.push({ area: question.area, difficulty: /** @type {import('./knowledge-model.mjs').Difficulty} */ (question.difficulty), correct: choice.correct });
   });
   LENS_QUESTIONS.forEach((question, index) => {
     const choice = question.options[lensAnswers[index]];
     if (choice) lensCounts[choice.lens] += 1;
   });
+  const knowledge = estimateKnowledge(responses, KNOWLEDGE_AREAS);
   return {
-    correct,
+    correct: knowledge.correct,
+    knowledge,
     lensMix: Object.entries(lensCounts).filter(([, count]) => count > 0)
       .sort((a, b) => b[1] - a[1]).map(([key, count]) => ({ label: /** @type {Record<string, string>} */ (LENS_LABELS)[key], count })),
   };
 }
 
+/** Attempts kept on this device, newest last. */
+export const MAX_ATTEMPTS = 20;
+
 /**
- * @param {{ score: number, date: string }[]} current
- * @param {number} score
+ * Add an attempt to the saved history. Only numbers and a date are kept: no name, no answers.
+ * @param {{ score: number, date: string, topics: Record<string, number> }[]} history
+ * @param {{ score: number, topics: { id: string, mastery: number }[] }} knowledge
  */
-export function updateLocalLeaderboard(current, score) {
-  return [...current, { score, date: new Date().toISOString() }]
-    .sort((a, b) => b.score - a.score || a.date.localeCompare(b.date)).slice(0, 10);
+export function addAttempt(history, knowledge) {
+  const topics = Object.fromEntries(knowledge.topics.map((topic) => [topic.id, Math.round(topic.mastery * 100)]));
+  return [...history, { score: knowledge.score, date: new Date().toISOString(), topics }].slice(-MAX_ATTEMPTS);
+}
+
+/**
+ * The best scores on this device, highest first. Earlier attempts win ties.
+ * @param {{ score: number, date: string }[]} history
+ */
+export function topScores(history) {
+  return [...history].sort((a, b) => b.score - a.score || a.date.localeCompare(b.date)).slice(0, 10);
 }

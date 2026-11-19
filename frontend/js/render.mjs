@@ -5,7 +5,8 @@
 import { API_BASE } from './config.mjs';
 import { esc, highlight, buildHash } from './util.mjs';
 import { t } from './i18n.mjs';
-import { LENS_QUESTIONS, QUIZ_QUESTIONS } from './discovery.mjs';
+import { DISCOVERY_CASES, LENS_QUESTIONS, QUIZ_QUESTIONS } from './discovery.mjs';
+import { levelFor } from './knowledge-model.mjs';
 
 /** @typedef {'en' | 'zu'} Lang */
 
@@ -327,15 +328,51 @@ function discoveryQuizView(lang) {
     </section>`;
 }
 
-/** @param {Lang} lang @param {{ correct: number, answers: number[], lensMix: {label: string, count: number}[], leaderboard: {score:number,date:string}[] }} result */
+/** @param {number} value 0 to 1 */
+const percent = (value) => Math.round(value * 100);
+
+/**
+ * One line on why a topic is on the study plan, from the answers behind it.
+ * @param {Lang} lang
+ * @param {import('./knowledge-model.mjs').AreaEstimate} topic
+ */
+function topicReason(lang, topic) {
+  return `${t(lang, 'topicAnswered')(topic.correct, topic.answered)} · ${t(lang, 'topicMastery')} ${percent(topic.mastery)}`;
+}
+
+/** @param {Lang} lang @param {import('./knowledge-model.mjs').AreaEstimate[]} topics @param {string} className */
+function planList(lang, topics, className) {
+  return `<ol class="${className}">${topics.map((topic) => {
+    const source = DISCOVERY_CASES.find((item) => item.id === topic.id)?.sources[0];
+    return `<li><strong>${esc(topic.label)}</strong><span class="muted small">${esc(topicReason(lang, topic))}</span>${source ? `<a rel="noopener" target="_blank" href="${esc(source.url)}">${esc(t(lang, 'readNext'))}: ${esc(source.label)} ↗</a>` : ''}</li>`;
+  }).join('')}</ol>`;
+}
+
+/**
+ * @param {Lang} lang
+ * @param {{ correct: number, answers: number[], knowledge: ReturnType<typeof import('./knowledge-model.mjs').estimateKnowledge>, previous: number | null, lensMix: {label: string, count: number}[], leaderboard: {score:number,date:string}[] }} result
+ */
 export function discoveryResultView(lang, result) {
+  const { knowledge } = result;
   const mix = result.lensMix.map((item) => `<li><span>${esc(item.label)}</span><strong>${item.count} ${esc(t(lang, 'lensChoice'))}</strong></li>`).join('');
   const feedback = QUIZ_QUESTIONS.map((question, index) => {
     const answer = question.options[result.answers[index]];
-    return `<li><strong>${answer.correct ? '✓' : '↗'} ${esc(answer.text)}</strong><p class="muted small">${esc(answer.why)} <a rel="noopener" target="_blank" href="${esc(question.source.url)}">${esc(question.source.label)} ↗</a></p></li>`;
+    const better = answer.correct ? '' : `<p class="small"><strong>${esc(t(lang, 'betterAnswer'))}:</strong> ${esc(question.options.find((option) => option.correct)?.text ?? '')}</p>`;
+    return `<li><strong>${answer.correct ? '✓' : '↗'} ${esc(answer.text)}</strong>${better}<p class="muted small">${esc(answer.why)} <a rel="noopener" target="_blank" href="${esc(question.source.url)}">${esc(question.source.label)} ↗</a></p></li>`;
   }).join('');
-  const scores = result.leaderboard.map((item) => `<li><strong>${item.score} / ${QUIZ_QUESTIONS.length}</strong><span>${esc(new Date(item.date).toLocaleDateString())}</span></li>`).join('');
-  return `<section class="panel quiz-result"><h3>${esc(t(lang, 'quizScore'))}: ${result.correct} / ${QUIZ_QUESTIONS.length} ${esc(t(lang, 'correctAnswers'))}</h3>
-    <h4>${esc(t(lang, 'quizLensMix'))}</h4><ol class="lens-mix">${mix}</ol><p class="muted small">${esc(t(lang, 'quizNotIdentity'))}</p><h4>Review your answers</h4><ol class="quiz-feedback">${feedback}</ol>
-    ${scores ? `<h4>${esc(t(lang, 'leaderboardTitle'))}</h4><ol class="leaderboard-list">${scores}</ol>` : ''}</section>`;
+  const scores = result.leaderboard.map((item) => `<li><strong>${item.score} / 100</strong><span>${esc(new Date(item.date).toLocaleDateString())}</span></li>`).join('');
+  const level = levelFor(knowledge.score);
+  const change = result.previous === null ? t(lang, 'firstAttempt') : result.previous === 0 ? t(lang, 'sameAsBefore') : `${result.previous > 0 ? '+' : '−'}${Math.abs(result.previous)} ${t(lang, 'sinceLast')}`;
+  const topics = knowledge.topics.map((topic) => `<li><span>${esc(topic.label)}</span><meter min="0" max="100" value="${percent(topic.mastery)}" aria-label="${esc(topic.label)}">${percent(topic.mastery)}</meter><strong>${percent(topic.mastery)}</strong><span class="muted small">${esc(t(lang, 'topicAnswered')(topic.correct, topic.answered))} · ${esc(t(lang, `confidence_${topic.confidence}`))}</span></li>`).join('');
+  const { focus, strengths } = knowledge.plan;
+  return `<section class="panel quiz-result"><div class="score-hero"><p class="eyebrow">${esc(t(lang, 'knowledgeScore'))}</p>
+    <p class="score-number"><strong>${knowledge.score}</strong> / 100</p><h3>${esc(level.label)}</h3><p>${esc(level.next)}</p>
+    <p class="muted small">${esc(t(lang, 'basedOn')(knowledge.answered))} · ${esc(t(lang, 'confidenceWord'))}: ${esc(t(lang, `confidence_${knowledge.confidence}`))} · ${esc(change)}</p></div>
+    <h4>${esc(t(lang, 'topicByTopic'))}</h4><ol class="topic-scores">${topics}</ol>
+    <h4>${esc(t(lang, 'focusTitle'))}</h4>${focus.length ? planList(lang, focus, 'plan-list') : `<p class="muted">${esc(t(lang, 'focusNone'))}</p>`}
+    <h4>${esc(t(lang, 'doubleDownTitle'))}</h4>${strengths.length ? planList(lang, strengths, 'plan-list') : `<p class="muted">${esc(t(lang, 'doubleDownNone'))}</p>`}
+    <p class="muted small">${esc(t(lang, 'quizHow'))}</p>
+    <h4>${esc(t(lang, 'quizLensMix'))}</h4><ol class="lens-mix">${mix}</ol><p class="muted small">${esc(t(lang, 'quizNotIdentity'))}</p><h4>${esc(t(lang, 'reviewAnswers'))}</h4><ol class="quiz-feedback">${feedback}</ol>
+    ${scores ? `<h4>${esc(t(lang, 'leaderboardTitle'))}</h4><ol class="leaderboard-list">${scores}</ol>` : ''}
+    <button class="button" type="button" data-clear-scores>${esc(t(lang, 'clearProgress'))}</button></section>`;
 }
