@@ -8,16 +8,34 @@ The comparison is organized around mechanisms: local knowledge and questions, tr
 
 Each case has a source link next to its summary. The quiz includes citations in its answer feedback. The Protagoras passage is presented as an argument attributed to him in Plato's *Theaetetus* (152a); it is not described as the beginning of a single Western mindset or as a sufficient explanation for later European scientific institutions.
 
-## Quiz and score list
+## Quiz, knowledge score and study plan
 
-The quiz separates two activities:
+The quiz has two parts:
 
-- An evidence check scores correct answers against the cited readings.
-- A short preference check records which historical cases the visitor wants to explore. It produces a lens mix for that quiz session, with labels such as African agency, Islamic-world knowledge networks, East Asian institutions, European publication institutions and Russian state-backed exploration.
+- **Evidence check (12 questions).** Each question is tied to one case study, carries a difficulty (foundation, core or stretch), and cites its source. Every African history case has two questions and every other case has one. The correct answer is not always in the same position.
+- **Lens check (3 questions).** A short preference check records which historical cases the visitor wants to explore. It is a transparent tally, not a model, and it never classifies a person's race, ethnicity, identity, ideology or worldview.
 
-The preference check reports selections, not a person's race, ethnicity, identity, ideology or stable worldview. It is a transparent tally, not a machine-learning model. The existing TF-IDF search ranks source text; it does not learn or infer visitor traits. No quiz responses or lens choices are stored or sent to the server. The leaderboard stores only scores and dates in this browser's local storage, with no account or name.
+### Knowledge model
 
-A future machine-learning recommender could suggest further readings from a visitor's explicit topic choices. It would need a clear opt-in and validation before it is described as ML. The app must not classify a visitor's ethnic or cultural identity from quiz answers.
+`frontend/js/knowledge-model.mjs` scores the evidence check with a Bayesian item-response model (three-parameter logistic):
+
+- Each question has a difficulty, a shared discrimination (1.2) and a guessing floor of one in three.
+- The learner's ability is a probability distribution on a grid, updated with Bayes' rule from every answer.
+- Each topic's ability is pulled toward the learner's overall ability (partial pooling), so one answer cannot swing a topic wildly and a short quiz can still say something about every topic.
+- Mastery is the chance of answering a typical core-level question on that topic correctly beyond guessing. The score is overall mastery from 0 to 100.
+- The result shows a level (Starting out, Building foundations, Growing strong, Strong grasp of the evidence, Mastering the evidence) and a confidence label (low, medium, high) that depends on how many answers back the estimate.
+
+The study plan is rule-based on the model's output: **Focus here first** lists up to three topics with a missed answer, weakest first; **Double down** lists up to two topics answered correctly every time, strongest first. Each item links to its cited reading. Topics with no answers are never called weak.
+
+### Limits
+
+- The model is not trained on learner data. Question settings are set by hand from the difficulty tag. Recalibrate them (for example by fitting difficulty from anonymous, consented response counts) before calling the score validated.
+- A history educator should review the questions and answer key. The five newest questions were written only from the text and sources of the existing case summaries and are drafts until reviewed.
+- The score describes understanding of these cited readings. It is not an exam grade.
+
+### Privacy
+
+Nothing is sent to a server. The browser keeps up to 20 attempts in local storage under `inzulolwazi-knowledge-history-v2`: a score from 0 to 100, a date, and a mastery number per topic. It keeps no name, no account and no answers. The "Clear my saved progress" button removes it. The earlier v1 score list is no longer read.
 
 ## Evidence limits and next review
 
