@@ -4,7 +4,7 @@
  */
 export const STRINGS = {
   en: {
-    navSearch: 'Search', navExplore: 'Explore', navDiscover: 'Discover', navCases: 'Case studies', navQuiz: 'Knowledge quiz', navDiscoverMenu: 'Discover menu', navTimeline: 'Timeline', navGlossary: 'Terms', navSources: 'Sources', navMethod: 'Method', navApi: 'API',
+    navSearch: 'Search', navExplore: 'Explore', navDiscover: 'Discover', navCases: 'Case studies', navQuiz: 'Knowledge quiz', navDiscoverMenu: 'Discover menu', navTimeline: 'Timeline', navGlossary: 'Terms', navSources: 'Sources', navMethod: 'Method', navApi: 'API', navExtension: 'Extension',
     skip: 'Skip to content', brandHome: 'inzulolwazi home',
     eyebrow: 'African-centred history, grounded in African scholarship',
     heroTitle: 'Africa is the starting point.', heroEm: 'African people shape the story.',
@@ -58,6 +58,15 @@ export const STRINGS = {
     africanFrameTitle: 'What African-centred means here',
     africanFrameText: 'African-centred inquiry starts from African evidence, scholarship, people and questions when telling African histories. It sets the research agenda and makes African agency visible; it does not assume one African worldview or treat cultural self-focus as a single cause of innovation or political power. We use the same comparative questions across cases: what knowledge existed, who supported it, how it moved, who could participate, and what purposes it served.',
     comparisonTitle: 'Comparison at a glance', comparisonCase: 'Case and period', comparisonWork: 'Knowledge work', comparisonSupport: 'Support and circulation', comparisonLimit: 'Evidence limits',
+    extTitle: 'Get the browser extension', extLead: 'Take the evidence with you. The extension flags terms like Bantu and Khoisan on any web page, shows an extract and a wording check, and points to sources from African institutions. It runs in your browser and sends nothing anywhere.',
+    extInstalled: (/** @type {string} */ version) => `Installed ✓ Version ${version}.`, extNotInstalled: 'Not installed yet.', extReady: 'It is ready to work. Open any page that mentions these terms. Pages that were already open need a reload.',
+    extAdd: 'Add to Chrome', extDownload: 'Download the extension', extWhy: 'Chrome only installs an extension in one click from the Chrome Web Store, and this one is not listed there yet. Until it is, installing takes about 30 seconds.',
+    extStepsTitle: 'Install in five steps', extStep1: 'Download the zip and unzip it. You get a folder called inzulolwazi-extension.', extStep2: 'Open chrome://extensions in a new tab. Browsers block links to that address from a web page, so copy it.',
+    extStep3: 'Turn on Developer mode, at the top right.', extStep4: 'Choose Load unpacked, then pick the inzulolwazi-extension folder.', extStep5: 'Pin the Inzulolwazi icon and reload any open tabs. This page will then say Installed.',
+    extCopy: 'Copy chrome://extensions', extCopied: 'Copied ✓', extOther: 'This browser cannot load the extension. Use Chrome, Edge, Brave or another Chromium browser.',
+    extTryTitle: 'Try it', extTryText: 'Open one of these pages. Terms the extension has notes on are underlined, and an Inzulolwazi button appears at the bottom right.', extJustInstalled: 'Thank you for installing the extension.',
+    extPrivacyTitle: 'Privacy and limits', extPrivacy1: 'Pages are read inside your browser and nothing about them is sent anywhere. The extension asks only to store its settings and to add a right-click menu.',
+    extPrivacy2: 'It checks wording, not people. The word list is a draft pending review, and the list of sources from African institutions is still small.', extHow: 'Read how it works',
     quizPageTitle: 'Knowledge quiz', quizCtaText: 'Twelve questions on the cited readings. A model scores your knowledge from 0 to 100 and shows where to focus first and where to double down.', quizCta: 'Take the knowledge quiz',
     quizTitle: 'Test and grow your knowledge', quizIntro: 'Answer twelve questions about the cited readings. A statistical model scores your knowledge, shows how sure it is, and builds a study plan: where to focus first and where to double down. It reflects what you know about these readings, not your race, ethnicity or identity.',
     quizSubmit: 'Score my knowledge', quizLensMix: 'Your selected historical lenses', quizNotIdentity: 'The lens choices are a transparent tally of what you picked, not a personality or identity assessment.',

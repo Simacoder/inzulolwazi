@@ -8,6 +8,7 @@ import { debounce, parseHash, buildHash } from './js/util.mjs';
 import * as view from './js/render.mjs';
 import { DISCOVERY_CASES, LENS_QUESTIONS, MAX_ATTEMPTS, QUIZ_QUESTIONS, addAttempt, scoreQuiz, topScores } from './js/discovery.mjs';
 import { progressSince } from './js/knowledge-model.mjs';
+import { EXTENSION_STORE_URL, EXTENSION_ZIP_PATH, installedVersion, isChromiumBrowser } from './js/extension-install.mjs';
 
 /** @type {{ lang: 'en' | 'zu', meta: any, route: ReturnType<typeof parseHash>, controller: AbortController | null }} */
 const state = { lang: 'en', meta: null, route: parseHash(location.hash), controller: null };
@@ -44,7 +45,7 @@ function focusHeading() {
 
 function applyChrome() {
   document.documentElement.lang = state.lang;
-  const names = { navSearch: '#/search', navExplore: '#/explore', navDiscover: '#/discover', navCases: '#/discover', navQuiz: '#/quiz', navTimeline: '#/timeline', navGlossary: '#/glossary', navSources: '#/sources', navMethod: '#/method', navApi: '#/api' };
+  const names = { navSearch: '#/search', navExplore: '#/explore', navDiscover: '#/discover', navCases: '#/discover', navQuiz: '#/quiz', navTimeline: '#/timeline', navGlossary: '#/glossary', navSources: '#/sources', navMethod: '#/method', navApi: '#/api', navExtension: '#/extension' };
   document.querySelectorAll('[data-nav]').forEach((link) => {
     const key = /** @type {keyof typeof names} */ (link.getAttribute('data-nav'));
     link.textContent = t(state.lang, key);
@@ -141,6 +142,15 @@ async function render() {
     } else if (name === 'quiz') {
       show(view.quizPageView(state.lang), t(state.lang, 'quizPageTitle'));
       paintLocalLeaderboard();
+    } else if (name === 'extension') {
+      const brands = /** @type {{ userAgentData?: { brands?: { brand: string }[] } }} */ (navigator).userAgentData?.brands;
+      show(view.extensionView(state.lang, {
+        installed: installedVersion(document.documentElement),
+        chromium: isChromiumBrowser({ userAgent: navigator.userAgent, brands }),
+        storeUrl: EXTENSION_STORE_URL,
+        downloadUrl: apiUrl(EXTENSION_ZIP_PATH),
+        justInstalled: state.route.query.installed === '1',
+      }), t(state.lang, 'extTitle'));
     } else if (name === 'api') {
       const res = await fetch(apiUrl('/api/v1/openapi.json'), { signal });
       show(view.apiView(state.lang, await res.json(), meta), t(state.lang, 'apiTitle'));
@@ -264,6 +274,13 @@ document.addEventListener('click', async (event) => {
     window.print();
   } else if (target.closest('[data-retry]')) {
     void render();
+  } else if (target.closest('[data-copy]')) {
+    const button = /** @type {HTMLElement} */ (target.closest('[data-copy]'));
+    const text = button.dataset.copy ?? '';
+    const label = button.textContent;
+    await copyText(text);
+    button.textContent = button.dataset.copied ?? 'Copied';
+    setTimeout(() => { button.textContent = label; }, 2000);
   } else if (target.closest('[data-nav-toggle]')) {
     const group = /** @type {HTMLElement} */ (target.closest('[data-nav-group]'));
     setMenu(group, !group.classList.contains('open'));
@@ -367,6 +384,9 @@ document.addEventListener('keydown', (event) => {
     if (input.value) { input.value = ''; liveSearch(); }
   }
 });
+
+/** The extension announces itself on this site, so the Extension page can show that it is installed. */
+document.addEventListener('inzulolwazi:extension', () => { if (state.route.name === 'extension') void render(); });
 
 window.addEventListener('hashchange', () => { closeMenus(); void render(); });
 applyChrome();
