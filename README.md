@@ -20,6 +20,7 @@ The visual palette is Arid Mirage: twilight blue `#1A365D`, desert sand `#E2D4C9
 - Explore topics and sources with filters and sorting, open a topic to see its translation label, what it still needs before publication, and its evidence.
 - Take the knowledge check on the Discover page: a statistical model gives a 0 to 100 score, a level, a topic-by-topic breakdown, and a study plan (where to focus first, where to double down). It runs in your browser and saves only numbers on your device.
 - Copy or download citations as plain text, BibTeX or RIS. Print a topic. Share a link.
+- Install the Chrome extension from the Extension page (`#/extension`) to see term-history notes on other websites: it flags terms such as Bantu and Khoisan, shows an extract and a wording check, and points to sources from African institutions. It runs in the browser. See `docs/browser-extension.md`.
 - Use the same data through the open JSON API: see `docs/api.md` and `/api/v1/openapi.json`.
 
 ## Deploy
@@ -71,6 +72,7 @@ The six starter topics in `content/claims.json` follow the supplied design brief
 - `backend/validate/content.mjs`: content metadata validation
 - `frontend/`: mobile-first interface and client-side interactions
 - `ml/tfidf.mjs`: local TF-IDF model for claim ranking
+- `extension/`: Chrome extension (Manifest V3), data built by `npm run build:extension`
 - `frontend/js/knowledge-model.mjs`: browser-side knowledge scoring model (see `ml/README.md`)
 - `content/`: reviewable JSON claim and source records
 

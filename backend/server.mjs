@@ -5,6 +5,7 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 import { answer, loadCorpus } from './pipeline.mjs';
 import { createRateLimiter } from './ratelimit.mjs';
 import { HttpError, matchRoute } from './routes.mjs';
+import { createZip, filesIn } from './zip.mjs';
 
 const root = path.dirname(fileURLToPath(import.meta.url));
 const publicRoot = path.join(root, '..', 'frontend');
@@ -13,6 +14,12 @@ const mime = {
   '.html': 'text/html; charset=utf-8', '.css': 'text/css; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8',
   '.svg': 'image/svg+xml', '.json': 'application/json; charset=utf-8', '.png': 'image/png', '.ico': 'image/x-icon', '.txt': 'text/plain; charset=utf-8',
 };
+
+/** The browser extension, zipped from extension/ the first time it is asked for. */
+const extensionRoot = path.join(root, '..', 'extension');
+/** @type {Promise<Buffer> | undefined} */
+let extensionZip;
+export const EXTENSION_ZIP_PATH = '/downloads/inzulolwazi-extension.zip';
 
 export const MAX_BODY_BYTES = 20_000;
 const DEFAULT_REPOSITORY = 'https://github.com/Simacoder/inzulolwazi';
@@ -155,6 +162,19 @@ export function createAppServer(options = {}) {
         return;
       }
       if (isApi) throw new Error('Not found');
+
+      if (url.pathname === EXTENSION_ZIP_PATH && (request.method === 'GET' || request.method === 'HEAD')) {
+        extensionZip ??= filesIn(extensionRoot, 'inzulolwazi-extension').then(createZip);
+        const zip = await extensionZip;
+        response.writeHead(200, {
+          'content-type': 'application/zip',
+          'content-disposition': 'attachment; filename="inzulolwazi-extension.zip"',
+          'content-length': String(zip.length),
+          'cache-control': 'no-cache',
+        });
+        response.end(request.method === 'HEAD' ? undefined : zip);
+        return;
+      }
 
       const relative = decodeURIComponent(url.pathname === '/' ? '/index.html' : url.pathname);
       const target = path.resolve(publicRoot, `.${relative}`);

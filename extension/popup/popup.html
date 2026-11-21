@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Inzulolwazi</title>
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+  <header>
+    <span class="mark" aria-hidden="true">i<span>.</span></span>
+    <div><h1>Inzulolwazi</h1><p>African history, with the evidence shown</p></div>
+  </header>
+  <main>
+    <section aria-labelledby="found">
+      <h2 id="found">On this page</h2>
+      <p id="status" role="status">Checking this page…</p>
+      <ul id="items"></ul>
+      <p id="reading" class="reading" hidden></p>
+      <button id="open-reading" type="button" hidden>Open reading notes</button>
+      <button id="scan" type="button">Scan this page again</button>
+    </section>
+    <section aria-labelledby="look">
+      <h2 id="look">Look something up</h2>
+      <form id="search"><label class="sr" for="q">Search Inzulolwazi</label><input id="q" type="search" maxlength="120" placeholder="e.g. Bantu, Great Zimbabwe" /><button type="submit">Search</button></form>
+    </section>
+    <section aria-labelledby="set">
+      <h2 id="set">Settings</h2>
+      <label class="row"><input id="auto" type="checkbox" /> Scan pages automatically</label>
+      <label class="row"><input id="pause" type="checkbox" /> <span>Pause on <strong id="site">this site</strong></span></label>
+      <details><summary>App address</summary><label class="sr" for="base">App address</label><input id="base" type="url" placeholder="https://inzulolwazi-api.onrender.com" /><p class="hint">Where “See the full evidence” links open. Use http://localhost:3000 when running the app yourself.</p></details>
+    </section>
+  </main>
+  <footer><p>Runs in your browser. Nothing about the pages you read is sent anywhere. Notes are context from cited sources, not a verdict on a page.</p></footer>
+  <script src="../data/index.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

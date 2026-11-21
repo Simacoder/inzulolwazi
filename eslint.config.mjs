@@ -15,6 +15,16 @@ export default [
     },
   },
   {
+    files: ['extension/**/*.js'],
+    languageOptions: { ecmaVersion: 2024, sourceType: 'script', globals: { ...globals.browser, ...globals.webextensions, module: 'readonly' } },
+    rules: {
+      'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      eqeqeq: ['error', 'always'],
+      'no-var': 'error',
+      'prefer-const': 'error',
+    },
+  },
+  {
     files: ['frontend/**/*.js', 'frontend/**/*.mjs'],
     languageOptions: { ecmaVersion: 2024, sourceType: 'module', globals: globals.browser },
     rules: {

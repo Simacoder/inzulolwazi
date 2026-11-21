@@ -7,6 +7,7 @@ import { esc, highlight, buildHash } from './util.mjs';
 import { t } from './i18n.mjs';
 import { DISCOVERY_CASES, LENS_QUESTIONS, QUIZ_QUESTIONS } from './discovery.mjs';
 import { levelFor } from './knowledge-model.mjs';
+import { TRY_PAGES } from './extension-install.mjs';
 
 /** @typedef {'en' | 'zu'} Lang */
 
@@ -311,6 +312,30 @@ export function discoveryView(lang, cases) {
     <section class="discovery-grid" aria-label="Comparative historical case studies">${cards}</section>
     <section class="panel protagoras"><h2>${esc(t(lang, 'protagorasTitle'))}</h2><p>${esc(t(lang, 'protagorasText'))} <a rel="noopener" target="_blank" href="https://atlas.perseus.tufts.edu/library/passage/urn%3Acts%3AgreekLit%3Atlg0059.tlg006.perseus-eng2%3A152-156/">Plato, Theaetetus 152a ↗</a></p></section>
     <section class="panel quiz-cta"><h2>${esc(t(lang, 'quizTitle'))}</h2><p>${esc(t(lang, 'quizCtaText'))}</p><a class="button button-primary" href="#/quiz">${esc(t(lang, 'quizCta'))}</a></section></div>`;
+}
+
+/**
+ * The Extension page: install status, the download or store button, the steps, and where to try it.
+ * @param {Lang} lang
+ * @param {{ installed: string | null, chromium: boolean, storeUrl: string, downloadUrl: string, justInstalled: boolean }} info
+ */
+export function extensionView(lang, info) {
+  const status = info.installed
+    ? `<p class="ext-status ok" id="ext-status" role="status"><strong>${esc(t(lang, 'extInstalled')(info.installed))}</strong> ${esc(t(lang, 'extReady'))}</p>`
+    : `<p class="ext-status" id="ext-status" role="status">${esc(t(lang, 'extNotInstalled'))}</p>`;
+  const button = info.storeUrl
+    ? `<a class="button button-primary" rel="noopener" href="${esc(info.storeUrl)}">${esc(t(lang, 'extAdd'))}</a>`
+    : `<a class="button button-primary" href="${esc(info.downloadUrl)}" download>${esc(t(lang, 'extDownload'))}</a>`;
+  const stepKeys = /** @type {const} */ (['extStep1', 'extStep2', 'extStep3', 'extStep4', 'extStep5']);
+  const steps = stepKeys.map((key, index) => `<li>${esc(t(lang, key))}${index === 1 ? ` <button class="button" type="button" data-copy="chrome://extensions" data-copied="${esc(t(lang, 'extCopied'))}">${esc(t(lang, 'extCopy'))}</button>` : ''}</li>`).join('');
+  const install = !info.chromium
+    ? `<p class="panel language-note">${esc(t(lang, 'extOther'))}</p>`
+    : info.installed ? ''
+      : `<section class="panel"><div class="ext-actions">${button}</div>${info.storeUrl ? '' : `<p class="muted">${esc(t(lang, 'extWhy'))}</p><h2>${esc(t(lang, 'extStepsTitle'))}</h2><ol class="ext-steps">${steps}</ol>`}</section>`;
+  const tryIt = info.chromium ? `<section class="panel"><h2>${esc(t(lang, 'extTryTitle'))}</h2><p>${esc(t(lang, 'extTryText'))}</p><ul class="ext-try">${TRY_PAGES.map((page) => `<li><a rel="noopener" target="_blank" href="${esc(page.url)}">${esc(page.label)} ↗</a></li>`).join('')}</ul></section>` : '';
+  return `<div class="discovery-page" lang="en"><section class="hero hero-compact"><p class="eyebrow">inzulolwazi · Extension</p><h1>${esc(t(lang, 'extTitle'))}</h1><p class="lead">${esc(t(lang, 'extLead'))}</p></section>
+    ${info.justInstalled ? `<p class="panel note">${esc(t(lang, 'extJustInstalled'))}</p>` : ''}${status}${install}${tryIt}
+    <section class="panel"><h2>${esc(t(lang, 'extPrivacyTitle'))}</h2><p>${esc(t(lang, 'extPrivacy1'))}</p><p>${esc(t(lang, 'extPrivacy2'))}</p><p><a rel="noopener" target="_blank" href="https://github.com/Simacoder/inzulolwazi/blob/main/docs/browser-extension.md">${esc(t(lang, 'extHow'))} ↗</a></p></section></div>`;
 }
 
 /** @param {Lang} lang */

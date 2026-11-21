@@ -82,6 +82,10 @@ One interface per capability (`embed`, `generate`, `translate`). Provider and mo
 
 **Prototype implementation:** the current backend uses an in-process TF-IDF ranker in `ml/tfidf.mjs`. Generation and machine translation providers are not connected; draft content is shown with an explicit unreviewed translation label.
 
+### Browser extension (added at the owner's request)
+
+`extension/` carries the term-history notes to other websites. It matches words from the glossary and a few claims on the page the person is reading, and shows their cited notes. It runs in the browser, sends nothing, and has no server component. The website offers it for download at `/downloads/inzulolwazi-extension.zip` (zipped from `extension/` on request) and explains installation on the Extension page. See `docs/browser-extension.md`.
+
 ## 4. Data model
 
 Use plain JSON or YAML files in `content/` for the PoC, validated by a schema and loaded into the database at build time. This makes content reviewable in git.
